@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        .slide-title {
+            color: var(--primary);
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        .marabu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        .marabu-header img { height: 45px; }
+        .marabu-header .services {
+            font-size: 22px;
+            font-weight: 700;
+            color: #444;
+        }
+        .marabu-header .services span { color: #8bc34a; }
+
+        .friction-items { display: flex; gap: 20px; }
+        .friction-item { 
+            background: #f0f2f5; 
+            border: 1px solid #d1d9e6; 
+            font-weight: 500;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 80px;
+        }
+        
+        .friction-group.major { background: #fee2e2; border-color: #f87171; }
+        .friction-group.major .friction-label { color: #b91c1c; }
+        
+        .friction-group.moderate { background: #ffedd5; border-color: #fb923c; }
+        .friction-group.moderate .friction-label { color: #c2410c; }
+        
+        .friction-group.minor { background: #fef9c3; border-color: #facc15; }
+        .friction-group.minor .friction-label { color: #a16207; }
+    </style>
+</head>
+<body>
+    <div class="slide-content">
+        <h1 class="slide-title">Cartographie typique des frictions sur une plateforme de type GUCE :</h1>
+
+        <div class="marabu-header">
+            <img src="../assets/marabou logo.png" alt="MARABU">
+            <div class="services">Conseils - <span>Services</span> - Intermédiations</div>
+        </div>
+
+        <div class="friction-container">
+            <!-- Minor -->
+            <div class="friction-group minor">
+                <div class="friction-label">3. Frictions MINEURES (Irritantes)</div>
+                <div class="friction-items">
+                    <div class="friction-item">Re-saisie<br>(absence sauvegarde auto)</div>
+                    <div class="friction-item">Absence d'estimation<br>des délais</div>
+                    <div class="friction-item">Format pièces jointes<br>limité au PDF</div>
+                </div>
+            </div>
+
+            <!-- Moderate -->
+            <div class="friction-group moderate">
+                <div class="friction-label">2. Frictions MODÉRÉES (Pénibles)</div>
+                <div class="friction-items">
+                    <div class="friction-item">Navigation complexe<br>perte dans l'arborescence</div>
+                    <div class="friction-item">Messages d'erreur<br>non actionnables</div>
+                    <div class="friction-item">Délais de traitement<br>opaques</div>
+                </div>
+            </div>
+
+            <!-- Major -->
+            <div class="friction-group major">
+                <div class="friction-label">1. Frictions MAJEURES (Critiques)</div>
+                <div class="friction-items">
+                    <div class="friction-item">Authentification :<br>parcours non fluide</div>
+                    <div class="friction-item">Upload documents :<br>limites de taille bloquantes</div>
+                    <div class="friction-item">Documents officiels<br>non ré-éditables</div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="slide-footer">
+            <div class="legal-text">
+                MARABU — SARL au capital de 100 000 000 FCFA — RCCM CI-ABJ-03-2023-B13-01765<br>
+                www.marabu.services — contact@marabu.services — (+225) 07 20 77 70 00
+            </div>
+            <div class="footer-logos">
+                <img src="../assets/guce.png" alt="GUCE-CI">
+                <img src="../assets/marabou logo-white.png" alt="MARABU">
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

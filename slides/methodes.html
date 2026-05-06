@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        .slide-title {
+            color: #7eb344;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 30px;
+        }
+        .decision-box {
+            margin-top: 40px;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            padding: 20px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        .decision-title {
+            font-size: 14px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+        .decision-item {
+            background: #e8f0fe;
+            padding: 12px;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            font-size: 13px;
+            text-align: center;
+        }
+        .decision-item strong { color: var(--primary); }
+    </style>
+</head>
+<body>
+    <div class="slide-content">
+        <h1 class="slide-title">6.1 — Méthodes comparées : Nielsen vs Bastien & Scapin</h1>
+
+        <div class="comparison-grid">
+            <!-- Claude Design -->
+            <div class="comparison-card" style="border-top: 4px solid #a5d6a7;">
+                <h3>Claude Design — Anthropic</h3>
+                <div class="card-content">
+                    <div class="card-item">Intégré dans claude.ai<br>Pro / Max / Team / Enterprise</div>
+                    <div class="card-item">Lit ton codebase → design system automatique<br>Couleurs, typo, composants extraits</div>
+                    <div class="card-item">Output : HTML · React · SVG<br>Code réel et déployable — pas une image</div>
+                    <div class="card-item">Export : PDF · URL · PPTX<br>Handoff natif vers Claude Code</div>
+                </div>
+            </div>
+
+            <!-- Google Stitch -->
+            <div class="comparison-card" style="border-top: 4px solid #fff59d;">
+                <h3>Google Stitch — Google Labs</h3>
+                <div class="card-content">
+                    <div class="card-item">Prompt → 5 écrans interconnectés en 90 sec<br>Voice canvas · Critique design en temps réel</div>
+                    <div class="card-item">Prototypes interactifs multi-écrans<br>Cliquer 'Play' → prévisualiser le flux</div>
+                    <div class="card-item">Export Figma · HTML/CSS · React · Flutter · SwiftUI</div>
+                    <div class="card-item" style="background: #fff3e0;">Limite : instabilités beta<br>Meilleur pour idéation rapide</div>
+                </div>
+            </div>
+
+            <!-- Figma Make -->
+            <div class="comparison-card" style="border-top: 4px solid #9fa8da;">
+                <h3>Figma Make — Figma</h3>
+                <div class="card-content">
+                    <div class="card-item">Prompt → prototype fonctionnel dans l'environnement Figma</div>
+                    <div class="card-item">Make Kits : composants réels du design system en contexte</div>
+                    <div class="card-item">Voice-to-text · Version history<br>Collaboration native Figma</div>
+                    <div class="card-item" style="background: #fff3e0;">Limite : nécessite abonnement Figma</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="decision-box">
+            <div class="decision-title">Quand utiliser quoi — décision terrain</div>
+            <div class="decision-item">Tu pars d'un codebase existant → <strong>Claude Design</strong></div>
+            <div class="decision-item">Tu veux idéer vite, page blanche → <strong>Google Stitch</strong></div>
+            <div class="decision-item">Ton design system est déjà dans Figma → <strong>Figma Make</strong></div>
+        </div>
+
+        <footer class="slide-footer">
+            <div class="legal-text">MARABU — Formation GUCE-CI · 2026</div>
+            <div class="footer-logos">
+                <img src="../assets/guce.png" alt="GUCE-CI">
+                <img src="../assets/marabou logo-white.png" alt="MARABU">
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
