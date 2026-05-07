@@ -143,6 +143,10 @@
           el.classList.add(status === 'error' ? 'highlight-error' : 'highlight-success');
           el.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
+      } else if (action === 'reset') {
+        document.querySelectorAll('.highlight-error, .highlight-success').forEach(el => {
+          el.classList.remove('highlight-error', 'highlight-success');
+        });
       }
     });
   </script>

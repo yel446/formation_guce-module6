@@ -473,9 +473,19 @@
 
       function inspectPoint(method, index, el) {
         const point = labs[method].points[index];
+        const isActive = el.classList.contains('active');
+        
+        // Remove active from all
         document.querySelectorAll('.audit-point').forEach(p => p.classList.remove('active'));
-        el.classList.add('active');
-        document.getElementById('lab-iframe').contentWindow.postMessage({ action: 'highlight', targetId: point.tid, status: point.s }, '*');
+        
+        if (isActive) {
+          // Toggle off
+          document.getElementById('lab-iframe').contentWindow.postMessage({ action: 'reset' }, '*');
+        } else {
+          // Toggle on
+          el.classList.add('active');
+          document.getElementById('lab-iframe').contentWindow.postMessage({ action: 'highlight', targetId: point.tid, status: point.s }, '*');
+        }
       }
 
       function getGravityLabel(g) { return ["Respecté", "Mineur", "Majeur", "Critique", "Bloquant"][g]; }
