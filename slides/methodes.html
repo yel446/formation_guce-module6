@@ -463,17 +463,29 @@
         nielsen: {
           img: "../assets/nielsen_lab.png",
           steps: [
-            { t: "H1 - Visibilité", d: "L'utilisateur clique sur 'Submit' mais aucun indicateur de chargement n'apparaît. Il reclique 10 fois." },
-            { t: "H4 - Standards", d: "Le bouton 'Annuler' est rouge et à droite, alors que sur iOS il est normalement à gauche et gris." },
-            { t: "H8 - Minimalisme", d: "La page d'accueil affiche 12 bannières promotionnelles animées. L'utilisateur ne trouve plus le bouton de recherche." }
+            { t: "H1 - Visibilité de l'état", d: "AUCUN indicateur de chargement au clic sur 'Submit'.", s: "error" },
+            { t: "H2 - Correspondance monde réel", d: "Utilisation de termes métiers simples et compréhensibles.", s: "success" },
+            { t: "H3 - Contrôle utilisateur", d: "Impossible d'annuler une commande une fois validée.", s: "error" },
+            { t: "H4 - Cohérence & Standards", d: "Icône de panier inhabituelle (une étoile au lieu d'un caddie).", s: "error" },
+            { t: "H5 - Prévention des erreurs", d: "Le formulaire laisse valider sans email valide.", s: "error" },
+            { t: "H6 - Reconnaissance", d: "Menu de navigation clair et toujours visible.", s: "success" },
+            { t: "H7 - Flexibilité & Efficacité", d: "Pas de mode 'Achat Invité', login obligatoire.", s: "error" },
+            { t: "H8 - Esthétique minimaliste", d: "Présence de bannières publicitaires intrusives.", s: "error" },
+            { t: "H9 - Aide au diagnostic", d: "Message d'erreur technique 'SQL Error 504'.", s: "error" },
+            { t: "H10 - Aide & Documentation", d: "Aucune rubrique d'aide ou FAQ accessible.", s: "error" }
           ]
         },
         bastien: {
           img: "../assets/bastien_lab.png",
           steps: [
-            { t: "Guidage - Feedback", d: "Une action de sauvegarde prend 5s sans barre de progression. L'utilisateur pense que le logiciel a planté." },
-            { t: "Charge de travail", d: "Le tableau affiche 50 colonnes par défaut. L'utilisateur est submergé par la densité informationnelle." },
-            { t: "Gestion des erreurs", d: "Message 'Error #409' affiché. L'utilisateur ne comprend pas comment résoudre le conflit de données." }
+            { t: "1. Guidage", d: "Manque d'incitation visuelle pour les actions prioritaires.", s: "error" },
+            { t: "2. Charge de travail", d: "Tableau de 50 colonnes sans filtres par défaut (Surcharge).", s: "error" },
+            { t: "3. Contrôle explicite", d: "Sauvegarde automatique sans confirmation de l'utilisateur.", s: "error" },
+            { t: "4. Adaptabilité", d: "Interface non personnalisable pour les experts.", s: "error" },
+            { t: "5. Gestion des erreurs", d: "Absence de détection des doublons lors de la saisie.", s: "error" },
+            { t: "6. Homogénéité", d: "Boutons 'Save' et 'Delete' de la même couleur (Gris).", s: "error" },
+            { t: "7. Signifiance des codes", d: "Codes couleurs standard (Vert/Rouge) bien respectés.", s: "success" },
+            { t: "8. Compatibilité", d: "L'interface se casse sur les petits écrans d'ordinateurs.", s: "error" }
           ]
         }
       };
@@ -496,7 +508,17 @@
         const data = labs[method];
         document.getElementById("lab-img").src = data.img;
         const body = document.getElementById("lab-steps");
-        body.innerHTML = data.steps.map(s => `<div class="audit-step"><h5>${s.t}</h5><p>${s.d}</p></div>`).join('');
+        body.innerHTML = data.steps.map(s => `
+          <div class="audit-step ${s.s === 'success' ? 'solved' : ''}">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <h5>${s.t}</h5>
+              <iconify-icon icon="${s.s === 'success' ? 'mdi:check-circle' : 'mdi:alert-circle'}" 
+                            style="color: ${s.s === 'success' ? '#8bc34a' : '#e74c3c'}; font-size: 18px;">
+              </iconify-icon>
+            </div>
+            <p>${s.d}</p>
+          </div>
+        `).join('');
         document.getElementById("lab-modal").style.display = "flex";
       }
 
