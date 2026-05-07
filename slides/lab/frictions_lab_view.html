@@ -7,11 +7,12 @@
       rel="stylesheet"
     />
     <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
       body {
         font-family: 'Poppins', sans-serif;
         background: #f8f9fa;
-        padding: 30px;
+        padding: 20px;
         margin: 0;
         overflow-x: hidden;
       }
@@ -19,105 +20,112 @@
       .lab-header {
         background: #1e3a44;
         color: white;
-        padding: 20px 30px;
+        padding: 15px 25px;
         border-radius: 20px;
-        margin-bottom: 30px;
+        margin-bottom: 20px;
         display: flex;
         justify-content: space-between;
         align-items: center;
         box-shadow: 0 10px 20px rgba(30, 58, 68, 0.1);
       }
 
-      .game-instruction { font-size: 14px; font-weight: 400; max-width: 70%; }
-      .btn-verify {
-        background: #8bc34a;
-        color: white;
-        border: none;
-        padding: 10px 25px;
+      .header-actions { display: flex; gap: 10px; }
+      .btn {
+        padding: 8px 20px;
         border-radius: 50px;
-        font-weight: 800;
+        font-weight: 700;
+        font-size: 12px;
         cursor: pointer;
-        transition: 0.3s;
+        border: none;
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 8px;
+        transition: all 0.3s;
       }
-      .btn-verify:hover { background: #7eb344; transform: translateY(-2px); }
+      .btn-verify { background: #8bc34a; color: white; }
+      .btn-answer { background: #3498db; color: white; }
+      .btn-reset { background: #7f8c8d; color: white; }
+      .btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
+      .btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
       .game-board {
         display: grid;
-        grid-template-columns: 280px 1fr;
-        gap: 30px;
-        align-items: start;
+        grid-template-columns: 260px 1fr;
+        gap: 25px;
+        height: calc(100vh - 120px);
       }
 
-      /* Friction Pool */
       .pool-container {
         background: white;
         padding: 20px;
         border-radius: 20px;
         border: 2px dashed #cbd5e0;
-        min-height: 500px;
+        overflow-y: auto;
       }
-      .pool-title { font-size: 13px; font-weight: 800; color: #718096; text-transform: uppercase; margin-bottom: 20px; text-align: center; }
+      .pool-title { font-size: 12px; font-weight: 800; color: #718096; text-transform: uppercase; margin-bottom: 15px; text-align: center; }
 
       .friction-card {
         background: white;
-        padding: 15px;
+        padding: 12px;
         border-radius: 12px;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
         cursor: grab;
-        margin-bottom: 12px;
+        margin-bottom: 10px;
         font-weight: 700;
-        font-size: 12px;
+        font-size: 11px;
         color: #444;
-        border: 1px solid #e2e8f0;
-        transition: transform 0.2s, box-shadow 0.2s;
+        border: 2px solid #e2e8f0;
+        transition: all 0.2s;
         user-select: none;
       }
-      .friction-card:active { cursor: grabbing; }
-      .friction-card.dragging { opacity: 0.5; }
+      .friction-card.dragging { opacity: 0.4; transform: scale(0.9); }
+      .friction-card.correct { border-color: #48bb78 !important; background: #f0fff4; cursor: pointer; }
+      .friction-card.wrong { border-color: #f56565 !important; background: #fff5f5; }
+      .friction-card.locked { cursor: default; pointer-events: none; }
+      .friction-card.revealed { cursor: pointer; pointer-events: auto; }
 
-      /* Drop Zones */
-      .zones-container { display: flex; flex-direction: column; gap: 20px; }
+      .zones-container { display: flex; flex-direction: column; gap: 15px; overflow-y: auto; }
       .drop-zone {
         border-radius: 20px;
-        padding: 20px;
-        min-height: 120px;
+        padding: 15px;
+        min-height: 100px;
         border: 2px dashed transparent;
         transition: all 0.3s;
-        position: relative;
       }
       .drop-zone.over { border-color: #1e3a44; background: rgba(30, 58, 68, 0.05); }
 
-      .zone-header { font-size: 12px; font-weight: 800; text-transform: uppercase; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
-      .zone-items { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+      .zone-header { font-size: 11px; font-weight: 800; text-transform: uppercase; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+      .zone-items { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
 
       .major-zone { background: #fff5f5; border-color: #feb2b2; }
       .major-zone .zone-header { color: #c53030; }
-      
       .moderate-zone { background: #fffaf0; border-color: #fbd38d; }
       .moderate-zone .zone-header { color: #c05621; }
-      
       .minor-zone { background: #f0fff4; border-color: #9ae6b4; }
       .minor-zone .zone-header { color: #2f855a; }
 
-      /* Correct/Wrong indicators */
-      .friction-card.correct { border-color: #48bb78 !important; background: #f0fff4; }
-      .friction-card.wrong { border-color: #f56565 !important; background: #fff5f5; }
+      /* Custom Toast */
+      #toast {
+        position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+        padding: 12px 30px; border-radius: 50px; color: white; font-weight: 700;
+        font-size: 14px; z-index: 5000; display: none; box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        animation: slideUp 0.3s ease;
+      }
+      @keyframes slideUp { from { transform: translate(-50%, 50px); opacity: 0; } to { transform: translate(-50%, 0); opacity: 1; } }
 
       /* Reveal Modal */
       .reveal-overlay {
         position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(30, 58, 68, 0.95); backdrop-filter: blur(8px);
+        background: rgba(30, 58, 68, 0.9); backdrop-filter: blur(8px);
         display: none; justify-content: center; align-items: center; z-index: 4000;
       }
       .reveal-content {
-        background: white; width: 400px; padding: 40px; border-radius: 30px;
+        background: white; width: 380px; padding: 30px; border-radius: 25px;
         text-align: center; position: relative; animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       }
-      .emoji-display { font-size: 80px; margin-bottom: 20px; display: block; }
-      .severity-tag { display: inline-block; padding: 5px 15px; border-radius: 50px; font-weight: 800; font-size: 12px; text-transform: uppercase; margin-bottom: 15px; }
+      @keyframes popIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
+      .emoji-display { font-size: 60px; margin-bottom: 15px; display: block; }
+      .severity-tag { display: inline-block; padding: 4px 12px; border-radius: 50px; font-weight: 800; font-size: 10px; text-transform: uppercase; margin-bottom: 10px; }
       .tag-4 { background: #000; color: #ffeb3b; }
       .tag-3 { background: #c53030; color: white; }
       .tag-2 { background: #f6ad55; color: white; }
@@ -126,17 +134,17 @@
   </head>
   <body>
     <div class="lab-header">
-      <div class="game-instruction">
-        <strong>Défi Priorisation :</strong> Glissez les frictions ci-dessous dans la bonne catégorie de sévérité (Majeure, Modérée, Mineure) pour tester vos connaissances d'auditeur.
+      <div style="font-size: 14px; font-weight: 600;">Défi Priorisation GUCE</div>
+      <div class="header-actions">
+        <button class="btn btn-reset" onclick="resetGame()"><iconify-icon icon="mdi:refresh"></iconify-icon> Réinitialiser</button>
+        <button class="btn btn-answer" onclick="showAnswers()"><iconify-icon icon="mdi:eye"></iconify-icon> Voir la réponse</button>
+        <button class="btn btn-verify" onclick="verifyChoices()"><iconify-icon icon="mdi:check-all"></iconify-icon> Vérifier mes choix</button>
       </div>
-      <button class="btn-verify" onclick="verifyChoices()">
-        <iconify-icon icon="mdi:check-all"></iconify-icon> Vérifier mes choix
-      </button>
     </div>
 
     <div class="game-board">
       <div class="pool-container">
-        <div class="pool-title">Frictions à classer</div>
+        <div class="pool-title">Frictions mélangées</div>
         <div id="pool" class="zone-items" style="grid-template-columns: 1fr;"></div>
       </div>
 
@@ -156,33 +164,36 @@
       </div>
     </div>
 
-    <!-- Feedback Modal -->
+    <div id="toast"></div>
+
     <div id="reveal-modal" class="reveal-overlay">
        <div class="reveal-content">
           <span class="emoji-display" id="rev-emoji"></span>
           <div class="severity-tag" id="rev-tag"></div>
-          <h3 id="rev-title" style="font-size: 18px; font-weight: 800; color: #1e3a44; margin-bottom: 10px;"></h3>
-          <p id="rev-desc" style="font-size: 14px; color: #666; line-height: 1.5; margin-bottom: 20px;"></p>
-          <button style="background: #f0f0f0; border: none; padding: 10px 25px; border-radius: 50px; font-weight: 700; cursor: pointer;" onclick="closeReveal()">Continuer</button>
+          <h3 id="rev-title" style="font-size: 16px; font-weight: 800; color: #1e3a44; margin-bottom: 10px;"></h3>
+          <p id="rev-desc" style="font-size: 13px; color: #666; line-height: 1.5; margin-bottom: 20px;"></p>
+          <button style="background: #f0f0f0; border: none; padding: 8px 20px; border-radius: 50px; font-weight: 700; cursor: pointer;" onclick="closeReveal()">Continuer</button>
        </div>
     </div>
 
     <script>
       const frictions = [
-        { id: 1, cat: "major", t: "Authentification : parcours bloquant", d: "C'est une catastrophe (Niveau 4). L'utilisateur ne peut même pas accéder au service. Action : Bloquer la prod.", e: "🤬", g: 4, l: "Catastrophe" },
-        { id: 2, cat: "major", t: "Upload documents : tailles limitées", d: "Problème Majeur (Niveau 3). Empêche la finalisation du dossier. Action : Priorité haute.", e: "😡", g: 3, l: "Majeur" },
-        { id: 3, cat: "major", t: "Documents officiels non ré-éditables", d: "Problème Majeur (Niveau 3). Crucial pour la conformité GUCE. Action : Priorité haute.", e: "😡", g: 3, l: "Majeur" },
-        { id: 4, cat: "moderate", t: "Navigation complexe / perte repères", d: "Problème Modéré (Niveau 2). Augmente la charge mentale. Action : Prochain sprint.", e: "😠", g: 2, l: "Modéré" },
-        { id: 5, cat: "moderate", t: "Messages d'erreur non actionnables", d: "Problème Modéré (Niveau 2). Laisse l'utilisateur dans l'impasse. Action : Prochain sprint.", e: "😠", g: 2, l: "Modéré" },
-        { id: 6, cat: "moderate", t: "Délais de traitement opaques", d: "Problème Modéré (Niveau 2). Manque de visibilité (H1). Action : Prochain sprint.", e: "😠", g: 2, l: "Modéré" },
-        { id: 7, cat: "minor", t: "Re-saisie (pas de sauvegarde auto)", d: "Problème Mineur (Niveau 1). Agaçant mais n'empêche pas la réussite. Action : Si possible.", e: "😕", g: 1, l: "Mineur" },
-        { id: 8, cat: "minor", t: "Absence d'estimation des délais", d: "Problème Mineur (Niveau 1). Confort utilisateur réduit. Action : Si possible.", e: "😕", g: 1, l: "Mineur" },
-        { id: 9, cat: "minor", t: "Format unique (PDF) non flexible", d: "Problème Cosmétique/Mineur (Niveau 1). Contrainte externe mineure. Action : Si possible.", e: "😕", g: 1, l: "Mineur" }
+        { id: 1, cat: "major", t: "Authentification : parcours bloquant", d: "Catastrophe (Niveau 4). L'utilisateur ne peut pas entrer. Action : Bloquer la prod.", e: "🤬", g: 4, l: "Catastrophe" },
+        { id: 2, cat: "major", t: "Upload documents : tailles limitées", d: "Majeur (Niveau 3). Empêche la validation finale. Action : Priorité haute.", e: "😡", g: 3, l: "Majeur" },
+        { id: 3, cat: "major", t: "Documents officiels non ré-éditables", d: "Majeur (Niveau 3). Crucial pour la conformité. Action : Priorité haute.", e: "😡", g: 3, l: "Majeur" },
+        { id: 4, cat: "moderate", t: "Navigation complexe / perte repères", d: "Modéré (Niveau 2). Augmente la charge mentale. Action : Prochain sprint.", e: "😠", g: 2, l: "Modéré" },
+        { id: 5, cat: "moderate", t: "Messages d'erreur non actionnables", d: "Modéré (Niveau 2). Laisse l'utilisateur dans l'impasse. Action : Prochain sprint.", e: "😠", g: 2, l: "Modéré" },
+        { id: 6, cat: "moderate", t: "Délais de traitement opaques", d: "Modéré (Niveau 2). Manque de visibilité. Action : Prochain sprint.", e: "😠", g: 2, l: "Modéré" },
+        { id: 7, cat: "minor", t: "Re-saisie (pas de sauvegarde auto)", d: "Mineur (Niveau 1). Action répétitive agaçante. Action : Si possible.", e: "😕", g: 1, l: "Mineur" },
+        { id: 8, cat: "minor", t: "Absence d'estimation des délais", d: "Mineur (Niveau 1). Confort utilisateur réduit. Action : Si possible.", e: "😕", g: 1, l: "Mineur" },
+        { id: 9, cat: "minor", t: "Format unique (PDF) non flexible", d: "Mineur (Niveau 1). Contrainte externe faible. Action : Si possible.", e: "😕", g: 1, l: "Mineur" }
       ];
 
       function init() {
         const pool = document.getElementById('pool');
-        // Shuffle pool
+        pool.innerHTML = '';
+        document.querySelectorAll('.zone-items').forEach(z => z.innerHTML = '');
+        
         const shuffled = [...frictions].sort(() => Math.random() - 0.5);
         shuffled.forEach(f => {
           const card = document.createElement('div');
@@ -205,20 +216,18 @@
       }
 
       let draggedItem = null;
-
       function dragStart() { draggedItem = this; setTimeout(() => this.classList.add('dragging'), 0); }
       function dragEnd() { this.classList.remove('dragging'); draggedItem = null; }
       function dragOver(e) { e.preventDefault(); }
       function dragEnter(e) { e.preventDefault(); this.classList.add('over'); }
       function dragLeave() { this.classList.remove('over'); }
-      function drop() {
-        this.classList.remove('over');
-        this.querySelector('.zone-items').appendChild(draggedItem);
-      }
+      function drop() { this.classList.remove('over'); this.querySelector('.zone-items').appendChild(draggedItem); }
 
       function verifyChoices() {
-        let allCorrect = true;
+        let correctCount = 0;
+        let totalCount = 0;
         document.querySelectorAll('.friction-card').forEach(card => {
+          totalCount++;
           const fId = card.getAttribute('data-id');
           const f = frictions.find(item => item.id == fId);
           const zone = card.parentElement.parentElement.getAttribute('data-zone');
@@ -226,20 +235,45 @@
           if (zone === f.cat) {
             card.classList.add('correct');
             card.classList.remove('wrong');
-          } else {
+            card.draggable = false; // Lock correct cards
+            card.onclick = () => showDetail(f);
+            correctCount++;
+          } else if (zone) {
             card.classList.add('wrong');
-            allCorrect = false;
+            card.classList.remove('correct');
+            card.onclick = () => showDetail(f);
           }
-          
-          // Make clickable for detail after verify
-          card.onclick = () => showDetail(f);
         });
 
-        if (allCorrect) {
-          alert("Bravo ! Vous avez parfaitement priorisé toutes les frictions.");
+        if (correctCount === frictions.length) {
+          showToast("Succès total ! Toutes les frictions sont bien priorisées.", "#2ecc71");
+          confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
         } else {
-          alert("Certaines frictions sont mal classées. Cliquez sur les cartes pour voir les explications.");
+          showToast(`Vous avez ${correctCount} bonnes réponses. Réajustez les autres !`, "#e67e22");
         }
+      }
+
+      function showAnswers() {
+        frictions.forEach(f => {
+          const card = document.getElementById('f-' + f.id);
+          const zoneItems = document.querySelector(`.drop-zone[data-zone="${f.cat}"] .zone-items`);
+          zoneItems.appendChild(card);
+          card.classList.add('correct');
+          card.classList.remove('wrong');
+          card.draggable = false;
+          card.onclick = () => showDetail(f);
+        });
+        showToast("Réponses affichées et verrouillées.", "#3498db");
+      }
+
+      function resetGame() { init(); showToast("Lab réinitialisé.", "#7f8c8d"); }
+
+      function showToast(msg, color) {
+        const t = document.getElementById('toast');
+        t.innerText = msg;
+        t.style.background = color;
+        t.style.display = "block";
+        setTimeout(() => t.style.display = "none", 3000);
       }
 
       function showDetail(f) {
