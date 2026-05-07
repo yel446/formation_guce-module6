@@ -12,158 +12,210 @@
       .slide-content {
         background-image: none !important;
         background-color: #ffffff;
-        padding: 50px 80px;
-      }
-      .comparison-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 25px;
-        margin-top: 20px;
-      }
-      .comparison-card {
-        background: white;
-        border-radius: 24px;
-        padding: 30px;
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.03);
-        border: 1px solid #f2f2f2;
+        padding: 40px 60px;
         display: flex;
         flex-direction: column;
-        transition: all 0.4s ease;
+        height: 100vh;
+        overflow: hidden;
       }
-      .comparison-card:hover {
-        transform: translateY(-5px);
-        border-color: #8bc34a;
-        box-shadow: 0 20px 60px rgba(139, 195, 74, 0.08);
-      }
-      .comparison-card h3 {
-        font-size: 18px;
-        text-align: center;
-        margin-bottom: 20px;
-        padding-bottom: 15px;
-        border-bottom: 1px solid #eee;
-        color: var(--primary);
-        font-weight: 800;
-        min-height: 55px;
+
+      /* Sub-navigation Switch */
+      .sub-nav {
         display: flex;
-        align-items: center;
         justify-content: center;
-      }
-      .card-meta {
-        font-size: 11px;
-        text-transform: uppercase;
-        color: #8bc34a;
-        font-weight: 800;
-        margin-bottom: 15px;
-        text-align: center;
-        letter-spacing: 1px;
-      }
-      .card-item {
-        background: #f8faff;
-        border: 1px solid #e1e5eb;
-        padding: 12px;
-        margin-bottom: 12px;
-        border-radius: 12px;
-        text-align: center;
-        font-size: 13px;
-        font-weight: 600;
-        color: #555;
-        line-height: 1.4;
-      }
-      .card-item strong {
-        color: var(--primary);
-        display: block;
-        font-size: 11px;
-        text-transform: uppercase;
-        margin-bottom: 2px;
-      }
-      .btn-detail {
-        margin-top: auto;
-        background: #f0f7f4;
-        border: none;
-        padding: 10px;
+        gap: 15px;
+        margin-bottom: 25px;
+        background: #f0f4f8;
+        padding: 8px;
         border-radius: 50px;
-        font-size: 11px;
+        width: fit-content;
+        margin-left: auto;
+        margin-right: auto;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        border: 1px solid rgba(0,0,0,0.05);
+      }
+
+      .nav-item {
+        padding: 10px 25px;
+        border-radius: 40px;
+        font-size: 13px;
         font-weight: 700;
-        color: #8bc34a;
+        color: #555;
         cursor: pointer;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        border: none;
+        background: transparent;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .nav-item.active {
+        background: var(--primary);
+        color: white;
+        box-shadow: 0 8px 20px rgba(30, 58, 68, 0.2);
+      }
+
+      /* View Container */
+      .view-container {
+        flex-grow: 1;
+        position: relative;
+        width: 100%;
+      }
+
+      .method-view {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 50px;
+        opacity: 0;
+        transform: translateX(30px);
+        visibility: hidden;
+        transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .method-view.active {
+        opacity: 1;
+        transform: translateX(0);
+        visibility: visible;
+      }
+
+      /* Illustration Area */
+      .illustration-box {
+        background: #f8faff;
+        border-radius: 30px;
+        overflow: hidden;
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 8px;
-        transition: all 0.3s;
+        box-shadow: 0 15px 45px rgba(0, 0, 0, 0.05);
+        border: 1px solid #edf2f7;
+        position: relative;
+        height: 100%;
       }
-      .btn-detail:hover {
+
+      .illustration-box img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .badge-type {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(5px);
+        padding: 8px 15px;
+        border-radius: 12px;
+        font-size: 11px;
+        font-weight: 800;
+        color: var(--primary);
+        text-transform: uppercase;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        z-index: 10;
+      }
+
+      /* Content Area */
+      .content-box {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding-right: 20px;
+      }
+
+      .method-title {
+        font-size: 34px;
+        font-weight: 800;
+        color: var(--primary);
+        margin-bottom: 5px;
+      }
+
+      .method-subtitle {
+        font-size: 16px;
+        font-weight: 600;
+        color: #8bc34a;
+        margin-bottom: 20px;
+        letter-spacing: 0.5px;
+      }
+
+      .btn-group {
+        display: flex;
+        gap: 15px;
+        margin-top: 25px;
+      }
+
+      .btn-action {
+        padding: 12px 25px;
+        border-radius: 50px;
+        font-size: 13px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border: none;
+      }
+
+      .btn-primary {
+        background: var(--primary);
+        color: white;
+      }
+
+      .btn-primary:hover {
+        background: #2c5361;
+        transform: translateY(-2px);
+      }
+
+      .btn-lab {
         background: #8bc34a;
         color: white;
       }
-      .decision-box {
-        margin-top: 40px;
-        background: white;
-        border-left: 8px solid var(--primary);
-        border-radius: 20px;
-        padding: 25px 35px;
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.03);
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-      }
-      .decision-title {
-        font-size: 16px;
-        font-weight: 800;
-        color: var(--primary);
-        text-transform: uppercase;
-        letter-spacing: 1px;
-      }
-      .decision-items {
-        display: flex;
-        gap: 15px;
-      }
-      .decision-item {
-        font-size: 12px;
-        font-weight: 700;
-        background: #f0f4f8;
-        padding: 10px 20px;
-        border-radius: 50px;
-        color: #555;
-      }
-      .decision-item strong {
-        color: #8bc34a;
+
+      .btn-lab:hover {
+        background: #7cb342;
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(139, 195, 74, 0.2);
       }
 
-      /* Modal Styles */
+      /* Modals */
       .modal-overlay {
         position: fixed;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
-        background: rgba(30, 58, 68, 0.8);
-        backdrop-filter: blur(5px);
+        background: rgba(30, 58, 68, 0.9);
+        backdrop-filter: blur(8px);
         display: none;
         justify-content: center;
         align-items: center;
-        z-index: 2000;
+        z-index: 3000;
       }
+
       .modal-content {
         background: white;
         width: 90%;
-        max-width: 650px;
+        max-width: 1000px;
+        height: 85vh;
         border-radius: 30px;
-        padding: 45px;
+        padding: 40px;
         position: relative;
-        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
-        animation: modalIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        display: flex;
+        flex-direction: column;
+        animation: modalIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
       }
+
       @keyframes modalIn {
-        from {
-          opacity: 0;
-          transform: scale(0.9) translateY(20px);
-        }
-        to {
-          opacity: 1;
-          transform: scale(1) translateY(0);
-        }
+        from { opacity: 0; transform: scale(0.95) translateY(30px); }
+        to { opacity: 1; transform: scale(1) translateY(0); }
       }
+
       .modal-close {
         position: absolute;
         top: 25px;
@@ -174,206 +226,283 @@
         height: 40px;
         border-radius: 50%;
         cursor: pointer;
-        font-size: 22px;
         display: flex;
         align-items: center;
         justify-content: center;
+        font-size: 24px;
         transition: all 0.3s;
       }
-      .modal-close:hover {
-        background: #e74c3c;
-        color: white;
+
+      .modal-close:hover { background: #e74c3c; color: white; }
+
+      /* Lab Layout */
+      .lab-container {
+        display: grid;
+        grid-template-columns: 1fr 1.2fr;
+        gap: 30px;
+        flex-grow: 1;
+        overflow: hidden;
+        margin-top: 20px;
       }
-      .method-tag {
-        display: inline-block;
-        padding: 4px 12px;
-        background: #e8f5e9;
-        color: #2e7d32;
-        border-radius: 6px;
-        font-size: 11px;
-        font-weight: 700;
-        margin-bottom: 10px;
+
+      .lab-interface {
+        background: #f0f4f8;
+        border-radius: 20px;
+        overflow: hidden;
+        border: 2px solid #e2e8f0;
+      }
+
+      .lab-interface img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+
+      .lab-audit {
+        background: #fff;
+        border-radius: 20px;
+        padding: 25px;
+        overflow-y: auto;
+        border: 1px solid #edf2f7;
+      }
+
+      .audit-step {
+        margin-bottom: 20px;
+        padding: 15px;
+        background: #f8faff;
+        border-radius: 15px;
+        border-left: 5px solid var(--primary);
+      }
+
+      .audit-step.solved { border-left-color: #8bc34a; }
+
+      .audit-step h5 {
+        margin-bottom: 8px;
+        font-size: 15px;
+        color: var(--primary);
+      }
+
+      .audit-step p {
+        font-size: 13px;
+        color: #666;
+        line-height: 1.5;
+      }
+
+      /* Criteria List */
+      .criteria-list {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+        overflow-y: auto;
+        padding-right: 10px;
+      }
+
+      .criteria-item {
+        background: #f8faff;
+        padding: 15px;
+        border-radius: 15px;
+        border: 1px solid #edf2f7;
+      }
+
+      .criteria-item h5 {
+        color: var(--primary);
+        margin-bottom: 5px;
+        font-size: 14px;
+      }
+
+      .criteria-item p {
+        font-size: 12px;
+        color: #666;
+        line-height: 1.4;
       }
     </style>
   </head>
   <body class="slide-content">
     <div class="slide-header-rubric">
-      <h1>Méthodes comparées : Nielsen vs Bastien & Scapin</h1>
+      <h1>Analyse Heuristique : Méthodes & Pratique Lab</h1>
     </div>
 
-    <div class="comparison-grid">
-      <!-- Nielsen -->
-      <div class="comparison-card" style="border-top: 4px solid #a5d6a7">
-        <div class="card-meta">Le Couteau Suisse UX</div>
-        <h3>Jacob Nielsen (10 Heuristiques)</h3>
-        <div class="card-content">
-          <div class="card-item">
-            <strong>Philosophie</strong>
-            Simplicité & Rapidité d'exécution
-          </div>
-          <div class="card-item">
-            <strong>Structure</strong>
-            10 règles universelles et globales
-          </div>
-          <div class="card-item">
-            <strong>Cas d'usage idéal</strong>
-            Startups, MVPs, Sites vitrines, Mobile
+    <!-- Sub-Navigation -->
+    <div class="sub-nav">
+      <button class="nav-item active" onclick="switchView(0)">
+        <iconify-icon icon="mdi:flash"></iconify-icon>
+        Jacob Nielsen
+      </button>
+      <button class="nav-item" onclick="switchView(1)">
+        <iconify-icon icon="mdi:microscope"></iconify-icon>
+        Bastien & Scapin
+      </button>
+      <button class="nav-item" onclick="switchView(2)">
+        <iconify-icon icon="mdi:compare"></iconify-icon>
+        Verdict Terrain
+      </button>
+    </div>
+
+    <div class="view-container">
+      <!-- Nielsen View -->
+      <div class="method-view active" id="view-0">
+        <div class="illustration-box">
+          <div class="badge-type">Approche Agile</div>
+          <img src="../assets/nielsen.png" alt="Nielsen Audit" />
+        </div>
+        <div class="content-box">
+          <h2 class="method-title">Jacob Nielsen</h2>
+          <p class="method-subtitle">Les 10 commandements de l'UX rapide</p>
+          <p style="font-size: 14px; color: #666; margin-bottom: 20px;">
+            Une méthode universelle basée sur 10 règles d'or pour identifier 80% des problèmes d'utilisabilité en un temps record.
+          </p>
+          <div class="btn-group">
+            <button class="btn-action btn-primary" onclick="openFullList('nielsen')">
+              <iconify-icon icon="mdi:format-list-bulleted"></iconify-icon>
+              Voir les 10 Heuristiques
+            </button>
+            <button class="btn-action btn-lab" onclick="openLab('nielsen')">
+              <iconify-icon icon="mdi:flask"></iconify-icon>
+              Lancer le Mini-Lab
+            </button>
           </div>
         </div>
-        <button class="btn-detail" onclick="openModal('nielsen')">
-          Voir les 10 heuristiques
-          <iconify-icon icon="mdi:list-status"></iconify-icon>
-        </button>
       </div>
 
-      <!-- Bastien & Scapin -->
-      <div class="comparison-card" style="border-top: 4px solid #4db6ac">
-        <div class="card-meta">Le Scanner IRM UX</div>
-        <h3>Bastien & Scapin (8 Critères)</h3>
-        <div class="card-content">
-          <div class="card-item">
-            <strong>Philosophie</strong>
-            Précision & Rigueur Scientifique
-          </div>
-          <div class="card-item">
-            <strong>Structure</strong>
-            8 critères majeurs / 18 sous-critères
-          </div>
-          <div class="card-item">
-            <strong>Cas d'usage idéal</strong>
-            Logiciels métiers (ERP), Santé, Finance
+      <!-- Bastien & Scapin View -->
+      <div class="method-view" id="view-1">
+        <div class="illustration-box">
+          <div class="badge-type">Approche Scientifique</div>
+          <img src="../assets/bastien.png" alt="Bastien & Scapin" />
+        </div>
+        <div class="content-box">
+          <h2 class="method-title">Bastien & Scapin</h2>
+          <p class="method-subtitle">La rigueur au service de la précision</p>
+          <p style="font-size: 14px; color: #666; margin-bottom: 20px;">
+            La référence scientifique francophone. 8 critères majeurs pour une analyse sans faille des systèmes complexes.
+          </p>
+          <div class="btn-group">
+            <button class="btn-action btn-primary" onclick="openFullList('bastien')">
+              <iconify-icon icon="mdi:format-list-bulleted"></iconify-icon>
+              Voir les 8 Critères
+            </button>
+            <button class="btn-action btn-lab" onclick="openLab('bastien')">
+              <iconify-icon icon="mdi:flask"></iconify-icon>
+              Lancer le Mini-Lab
+            </button>
           </div>
         </div>
-        <button class="btn-detail" onclick="openModal('bastien')">
-          Voir les 18 sous-critères
-          <iconify-icon icon="mdi:microscope"></iconify-icon>
-        </button>
       </div>
 
-      <!-- Verdict -->
-      <div class="comparison-card" style="border-top: 4px solid #1e3a44">
-        <div class="card-meta">La Vision Terrain</div>
-        <h3>Lequel choisir pour votre projet ?</h3>
-        <div class="card-content">
-          <div class="card-item">
-            <strong>Vitesse</strong>
-            Nielsen permet de trouver 80% des bugs en 2h
-          </div>
-          <div class="card-item">
-            <strong>Crédibilité</strong>
-            B&S apporte une preuve scientifique indiscutable
-          </div>
-          <div class="card-item">
-            <strong>Hybridation</strong>
-            Le duo gagnant pour un audit de haut niveau
+      <!-- Verdict View -->
+      <div class="method-view" id="view-2">
+        <div class="illustration-box">
+          <img src="../assets/verdict.png" alt="Verdict" />
+        </div>
+        <div class="content-box">
+          <h2 class="method-title">Réalité Terrain</h2>
+          <p class="method-subtitle">Stratégie d'audit en entreprise</p>
+          <div style="background: #f8faff; padding: 25px; border-radius: 20px; border-left: 6px solid #8bc34a;">
+             <h4 style="margin-bottom: 10px; color: var(--primary);">Le combo gagnant :</h4>
+             <p style="font-size: 14px; color: #555; line-height: 1.6;">
+                1. <strong>Nielsen</strong> pour dégrossir le projet et sensibiliser les décideurs.<br>
+                2. <strong>B&S</strong> pour blinder techniquement les zones à fort enjeu (paiement, gestion de données).
+             </p>
           </div>
         </div>
-        <button class="btn-detail" onclick="openModal('verdict')">
-          Conseils de l'expert
-          <iconify-icon icon="mdi:lightbulb-outline"></iconify-icon>
-        </button>
       </div>
     </div>
 
-    <div class="decision-box">
-      <div class="decision-title">Verdict en 1 seconde :</div>
-      <div class="decision-items">
-        <div class="decision-item">Agile / Rapide → <strong>Nielsen</strong></div>
-        <div class="decision-item">Complexe / Scientifique → <strong>Bastien & Scapin</strong></div>
-        <div class="decision-item">Standard Pro → <strong>Mixer les deux</strong></div>
-      </div>
-    </div>
-
-    <!-- Modal Structure -->
-    <div id="info-modal" class="modal-overlay">
+    <!-- Generic Modal for Lists -->
+    <div id="list-modal" class="modal-overlay">
       <div class="modal-content">
-        <button class="modal-close" onclick="closeModal()">×</button>
-        <h2
-          id="modal-title"
-          style="margin-bottom: 25px; color: var(--primary); font-weight: 800"
-        >
-          Détails de la méthode
+        <button class="modal-close" onclick="closeModal('list-modal')">×</button>
+        <h2 id="list-title" style="margin-bottom: 25px; color: var(--primary);"></h2>
+        <div class="criteria-list" id="list-body"></div>
+      </div>
+    </div>
+
+    <!-- Mini-Lab Modal -->
+    <div id="lab-modal" class="modal-overlay">
+      <div class="modal-content">
+        <button class="modal-close" onclick="closeModal('lab-modal')">×</button>
+        <h2 id="lab-title" style="color: var(--primary); display: flex; align-items: center; gap: 15px;">
+           <iconify-icon icon="mdi:flask" style="color: #8bc34a;"></iconify-icon>
+           Mini-Lab : Audit Interactif
         </h2>
-        <div
-          id="modal-body"
-          style="font-size: 14px; line-height: 1.6; color: #555; max-height: 400px; overflow-y: auto; padding-right: 15px;"
-        >
-          <!-- Content injected by JS -->
+        <div class="lab-container">
+          <div class="lab-interface">
+            <img id="lab-img" src="" alt="Lab Interface" />
+          </div>
+          <div class="lab-audit" id="lab-steps"></div>
         </div>
       </div>
     </div>
 
     <script>
-      const toolDetails = {
+      const nielsenHeuristics = [
+        { t: "1. Visibilité de l'état", d: "L'utilisateur doit toujours savoir ce qui se passe via un feedback approprié." },
+        { t: "2. Correspondance monde réel", d: "Le système doit parler le langage de l'utilisateur (mots, concepts familiers)." },
+        { t: "3. Contrôle et liberté", d: "Permettre de sortir d'une action par erreur (Undo/Redo, bouton Quitter)." },
+        { t: "4. Cohérence et standards", d: "Suivre les conventions de la plateforme pour ne pas désorienter." },
+        { t: "5. Prévention des erreurs", d: "Mieux vaut prévenir l'erreur que de l'expliquer après coup." },
+        { t: "6. Reconnaissance > Rappel", d: "Rendre les objets et actions visibles. Ne pas faire mémoriser d'infos." },
+        { t: "7. Flexibilité & Efficacité", d: "Proposer des raccourcis pour les experts tout en restant simple pour les novices." },
+        { t: "8. Esthétique minimaliste", d: "Ne pas afficher d'infos non pertinentes qui diluent l'essentiel." },
+        { t: "9. Aide au diagnostic", d: "Messages d'erreur clairs, sans code technique, proposant une solution." },
+        { t: "10. Aide & Documentation", d: "Facile à consulter et axée sur les tâches concrètes de l'utilisateur." }
+      ];
+
+      const bastienCriteria = [
+        { t: "1. Guidage", d: "Ensemble des moyens pour conseiller, orienter, informer l'utilisateur." },
+        { t: "2. Charge de travail", d: "Réduire l'effort mémoriel et perceptif (brièveté, densité)." },
+        { t: "3. Contrôle explicite", d: "Le système doit répondre aux actions et permettre le contrôle utilisateur." },
+        { t: "4. Adaptabilité", d: "Capacité à s'adapter selon l'expérience de l'utilisateur." },
+        { t: "5. Gestion des erreurs", d: "Mécanismes pour éviter, détecter et corriger les erreurs." },
+        { t: "6. Homogénéité", d: "Cohérence des choix d'interface (couleurs, boutons, termes)." },
+        { t: "7. Signifiance des codes", d: "Adéquation entre les codes utilisés et ce qu'ils représentent." },
+        { t: "8. Compatibilité", d: "Accord entre les besoins de l'utilisateur et les caractéristiques de l'interface." }
+      ];
+
+      const labs = {
         nielsen: {
-          title: "Les 10 Heuristiques de Nielsen",
-          body: `
-                        <p style="margin-bottom: 15px;">Créées en 1994, elles restent la base absolue de l'audit UX dans le monde entier.</p>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                            <div class="card-item" style="text-align:left; font-size: 12px;">1. Visibilité de l'état du système</div>
-                            <div class="card-item" style="text-align:left; font-size: 12px;">2. Correspondance système/monde réel</div>
-                            <div class="card-item" style="text-align:left; font-size: 12px;">3. Contrôle et liberté de l'utilisateur</div>
-                            <div class="card-item" style="text-align:left; font-size: 12px;">4. Cohérence et standards</div>
-                            <div class="card-item" style="text-align:left; font-size: 12px;">5. Prévention des erreurs</div>
-                            <div class="card-item" style="text-align:left; font-size: 12px;">6. Reconnaissance plutôt que rappel</div>
-                            <div class="card-item" style="text-align:left; font-size: 12px;">7. Souplesse et efficacité d'utilisation</div>
-                            <div class="card-item" style="text-align:left; font-size: 12px;">8. Esthétique et design minimaliste</div>
-                            <div class="card-item" style="text-align:left; font-size: 12px;">9. Aide au diagnostic des erreurs</div>
-                            <div class="card-item" style="text-align:left; font-size: 12px;">10. Aide et documentation</div>
-                        </div>
-                    `,
+          img: "../assets/nielsen_lab.png",
+          steps: [
+            { t: "H1 - Visibilité", d: "L'utilisateur clique sur 'Submit' mais aucun indicateur de chargement n'apparaît. Il reclique 10 fois." },
+            { t: "H4 - Standards", d: "Le bouton 'Annuler' est rouge et à droite, alors que sur iOS il est normalement à gauche et gris." },
+            { t: "H8 - Minimalisme", d: "La page d'accueil affiche 12 bannières promotionnelles animées. L'utilisateur ne trouve plus le bouton de recherche." }
+          ]
         },
         bastien: {
-          title: "Les 8 Critères de Bastien & Scapin",
-          body: `
-                        <p style="margin-bottom: 15px;">Développés à l'INRIA, ces critères sont beaucoup plus détaillés et permettent de justifier scientifiquement vos choix.</p>
-                        <ul style="padding-left: 20px;">
-                            <li style="margin-bottom: 8px;"><strong>Guidage :</strong> Incitation, Groupement, Feedback, Lisibilité.</li>
-                            <li style="margin-bottom: 8px;"><strong>Charge de travail :</strong> Brièveté, Densité informationnelle.</li>
-                            <li style="margin-bottom: 8px;"><strong>Contrôle explicite :</strong> Actions explicites, Contrôle utilisateur.</li>
-                            <li style="margin-bottom: 8px;"><strong>Adaptabilité :</strong> Flexibilité, Prise en compte de l'expérience.</li>
-                            <li style="margin-bottom: 8px;"><strong>Gestion des erreurs :</strong> Protection, Correction, Qualité des messages.</li>
-                            <li style="margin-bottom: 8px;"><strong>Homogénéité :</strong> Cohérence interne de l'interface.</li>
-                            <li style="margin-bottom: 8px;"><strong>Signifiance des codes :</strong> Adéquation entre codes et objets.</li>
-                            <li><strong>Compatibilité :</strong> Accord avec les attentes de l'utilisateur.</li>
-                        </ul>
-                    `,
-        },
-        verdict: {
-          title: "Conseils de l'expert : Comment choisir ?",
-          body: `
-                        <p>Il n'y a pas de "meilleure" méthode dans l'absolu, il y a une méthode adaptée à votre contexte :</p>
-                        <div style="margin-top: 20px;">
-                            <div style="background: #fff8e1; border-left: 4px solid #ffc107; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
-                                <h4 style="margin-bottom: 5px; color: #795548;">Utilisez NIELSEN si :</h4>
-                                <p style="font-size: 13px;">Vous avez peu de temps, le projet est simple, ou vous devez sensibiliser des clients qui ne connaissent pas l'UX.</p>
-                            </div>
-                            <div style="background: #e3f2fd; border-left: 4px solid #2196f3; padding: 15px; border-radius: 8px;">
-                                <h4 style="margin-bottom: 5px; color: #0d47a1;">Utilisez BASTIEN & SCAPIN si :</h4>
-                                <p style="font-size: 13px;">Vous auditez un outil professionnel (logiciel de gestion), un système critique, ou si vous devez rendre un rapport d'audit expert très formel.</p>
-                            </div>
-                        </div>
-                    `,
-        },
+          img: "../assets/bastien_lab.png",
+          steps: [
+            { t: "Guidage - Feedback", d: "Une action de sauvegarde prend 5s sans barre de progression. L'utilisateur pense que le logiciel a planté." },
+            { t: "Charge de travail", d: "Le tableau affiche 50 colonnes par défaut. L'utilisateur est submergé par la densité informationnelle." },
+            { t: "Gestion des erreurs", d: "Message 'Error #409' affiché. L'utilisateur ne comprend pas comment résoudre le conflit de données." }
+          ]
+        }
       };
 
-      function openModal(id) {
-        const data = toolDetails[id];
-        document.getElementById("modal-title").textContent = data.title;
-        document.getElementById("modal-body").innerHTML = data.body;
-        document.getElementById("info-modal").style.display = "flex";
+      function switchView(index) {
+        document.querySelectorAll(".nav-item").forEach((item, i) => i === index ? item.classList.add("active") : item.classList.remove("active"));
+        document.querySelectorAll(".method-view").forEach((view, i) => i === index ? view.classList.add("active") : view.classList.remove("active"));
       }
 
-      function closeModal() {
-        document.getElementById("info-modal").style.display = "none";
+      function openFullList(method) {
+        const title = method === 'nielsen' ? "Les 10 Heuristiques de Nielsen" : "Les 8 Critères de Bastien & Scapin";
+        const list = method === 'nielsen' ? nielsenHeuristics : bastienCriteria;
+        document.getElementById("list-title").textContent = title;
+        const body = document.getElementById("list-body");
+        body.innerHTML = list.map(i => `<div class="criteria-item"><h5>${i.t}</h5><p>${i.d}</p></div>`).join('');
+        document.getElementById("list-modal").style.display = "flex";
       }
 
-      window.onclick = function(event) {
-        const modal = document.getElementById("info-modal");
-        if (event.target == modal) {
-            closeModal();
-        }
+      function openLab(method) {
+        const data = labs[method];
+        document.getElementById("lab-img").src = data.img;
+        const body = document.getElementById("lab-steps");
+        body.innerHTML = data.steps.map(s => `<div class="audit-step"><h5>${s.t}</h5><p>${s.d}</p></div>`).join('');
+        document.getElementById("lab-modal").style.display = "flex";
       }
+
+      function closeModal(id) { document.getElementById(id).style.display = "none"; }
+
+      window.onclick = function(e) { if(e.target.classList.contains('modal-overlay')) e.target.style.display = "none"; }
     </script>
   </body>
 </html>
