@@ -278,27 +278,65 @@
 
       .audit-point {
         background: #f8faff;
-        padding: 15px;
+        padding: 12px;
         border-radius: 12px;
         margin-bottom: 12px;
-        border-left: 5px solid var(--primary);
+        border: 2px solid transparent;
+        cursor: pointer;
+        transition: all 0.3s;
       }
 
-      .audit-point.error { border-left-color: #e74c3c; }
-      .audit-point.success { border-left-color: #8bc34a; }
+      .audit-point:hover {
+        background: #edf2f7;
+        transform: translateY(-2px);
+      }
+
+      .audit-point.active {
+        border-color: var(--primary);
+        background: white;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+      }
 
       .audit-point h5 {
-        font-size: 14px;
+        font-size: 13px;
         color: var(--primary);
-        margin-bottom: 5px;
+        margin: 0;
         display: flex;
         justify-content: space-between;
+        align-items: center;
       }
 
-      .audit-point p {
-        font-size: 13px;
+      .audit-point .point-detail {
+        margin-top: 10px;
+        font-size: 12px;
         color: #555;
         line-height: 1.4;
+        display: none;
+        padding-top: 8px;
+        border-top: 1px dashed #ddd;
+      }
+
+      .audit-point.active .point-detail {
+        display: block;
+      }
+
+      .gravity-badge {
+        font-size: 10px;
+        font-weight: 800;
+        padding: 2px 8px;
+        border-radius: 50px;
+        text-transform: uppercase;
+      }
+      .g-0 { background: #e8f5e9; color: #2e7d32; } /* Respecté */
+      .g-1 { background: #fff3e0; color: #ef6c00; } /* Mineur */
+      .g-2 { background: #ffebee; color: #c62828; } /* Majeur */
+      .g-3 { background: #c62828; color: white; }    /* Critique */
+      .g-4 { background: #000; color: #ffeb3b; }    /* Bloquant */
+
+      .point-status {
+        display: flex;
+        align-items: center;
+        gap: 10px;
       }
 
       .modal-close {
@@ -462,23 +500,33 @@
 
       const labs = {
         nielsen: {
-          title: "Mini-Lab : Audit Nielsen",
+          title: "Lab Interactif : Jacob Nielsen",
           src: "lab/nielsen_lab_view.html",
           points: [
-            { t: "H1 - Visibilité de l'état", d: "Violation : Aucun indicateur lors de la validation du formulaire.", s: "error" },
-            { t: "H2 - Monde Réel", d: "Violation : Libellés techniques 'COD_IMPORT_REF' indéchiffrables.", s: "error" },
-            { t: "H9 - Aide au diagnostic", d: "Violation : Message 'FK_VAL_INVALID' incompréhensible.", s: "error" },
-            { t: "H4 - Standards", d: "Violation : Bouton 'Gray' pour une action principale de validation.", s: "error" }
+            { t: "H1 - Visibilité de l'état", d: "Bloquant : Aucun feedback visuel après avoir cliqué sur 'Valider'. L'utilisateur doute de l'action.", s: "error", g: 4, tid: "btn-submit" },
+            { t: "H2 - Monde Réel", d: "Majeur : Libellés techniques 'COD_IMPORT_REF' au lieu de termes métier compréhensibles.", s: "error", g: 3, tid: "field-ref" },
+            { t: "H3 - Contrôle utilisateur", d: "Correct : Bouton Annuler bien visible permettant de quitter la saisie.", s: "success", g: 0, tid: "action-btns" },
+            { t: "H4 - Standards & Cohérence", d: "Majeur : Le bouton principal est gris, brisant les standards de validation.", s: "error", g: 2, tid: "btn-submit" },
+            { t: "H5 - Prévention d'erreurs", d: "Critique : Le champ 'Valeur FOB' accepte n'importe quel texte sans contrôle.", s: "error", g: 3, tid: "field-val" },
+            { t: "H6 - Reconnaissance", d: "Correct : Header constant permettant de se repérer dans l'application.", s: "success", g: 0, tid: "sys-header" },
+            { t: "H7 - Flexibilité & Efficacité", d: "Mineur : Manque de raccourcis pour passer d'un champ à l'autre.", s: "error", g: 1, tid: "lab-frame" },
+            { t: "H8 - Esthétique & Minimalisme", d: "Majeur : Message d'erreur technique polluant l'interface inutilement.", s: "error", g: 2, tid: "error-msg" },
+            { t: "H9 - Aide au diagnostic", d: "Critique : Message cryptique 'Error 0x80...' sans action corrective proposée.", s: "error", g: 3, tid: "error-msg" },
+            { t: "H10 - Aide & Documentation", d: "Majeur : Aucun accès à une aide en ligne ou FAQ sur cet écran.", s: "error", g: 2, tid: "lab-frame" }
           ]
         },
         bastien: {
-          title: "Mini-Lab : Audit Bastien & Scapin",
+          title: "Lab Interactif : Bastien & Scapin",
           src: "lab/bastien_lab_view.html",
           points: [
-            { t: "Charge de Travail", d: "Violation : Trop de colonnes (10+) obligent à un scroll horizontal excessif.", s: "error" },
-            { t: "Contrôle Explicite", d: "Violation : Absence de confirmation lors de la suppression.", s: "error" },
-            { t: "Guidage", d: "Violation : Libellés de boutons tous en majuscules sans hiérarchie.", s: "error" },
-            { t: "Homogénéité", d: "Violation : Incohérence dans le style des boutons d'action.", s: "error" }
+            { t: "1. Guidage", d: "Critique : Titre technique 'TABLEAU_DE_BORD' sans instructions sur la marche à suivre.", s: "error", g: 3, tid: "dashboard-title" },
+            { t: "2. Charge de travail", d: "Bloquant : Tableau avec 200% de largeur forçant un scroll horizontal punitif.", s: "error", g: 4, tid: "data-table" },
+            { t: "3. Contrôle explicite", d: "Majeur : Suppression d'une ligne immédiate sans dialogue de confirmation.", s: "error", g: 3, tid: "action-bar" },
+            { t: "4. Adaptabilité", d: "Majeur : Pas de possibilité de filtrer ou masquer des colonnes inutiles.", s: "error", g: 2, tid: "data-table" },
+            { t: "5. Gestion des erreurs", d: "Correct : Utilisation de couleurs distinctes pour les statuts (Vert/Gris).", s: "success", g: 0, tid: "data-table" },
+            { t: "6. Homogénéité", d: "Mineur : Les boutons de l'action bar ont des espacements irréguliers.", s: "error", g: 1, tid: "action-bar" },
+            { t: "7. Signifiance des codes", d: "Correct : Utilisation de libellés standards pour les boutons (Relire, Archiver).", s: "success", g: 0, tid: "action-bar" },
+            { t: "8. Compatibilité", d: "Majeur : Police 10px illisible sur des résolutions standards.", s: "error", g: 3, tid: "lab-frame" }
           ]
         }
       };
@@ -515,19 +563,49 @@
       function openLab(method) {
         const data = labs[method];
         document.getElementById('lab-title').innerText = data.title;
-        document.getElementById('lab-iframe').src = data.src;
+        const iframe = document.getElementById('lab-iframe');
+        iframe.src = data.src;
+        
         const auditList = document.getElementById('lab-audit-list');
         auditList.innerHTML = `
            <div style="background: #1e3a44; color: white; padding: 15px; border-radius: 12px; margin-bottom: 20px; font-size: 13px;">
-             <strong>Mission :</strong> Analysez l'interface à gauche et notez les points de non-conformité.
+             <strong>Mode Lab :</strong> Cliquez sur une heuristique pour révéler l'analyse et voir l'impact visuel à gauche.
            </div>
-        ` + data.points.map(p => `
-          <div class="audit-point ${p.s}">
-            <h5>${p.t} <iconify-icon icon="${p.s === 'error' ? 'mdi:alert-circle' : 'mdi:check-circle'}"></iconify-icon></h5>
-            <p>${p.d}</p>
+        ` + data.points.map((p, i) => `
+          <div class="audit-point" onclick="inspectPoint('${method}', ${i}, this)">
+            <h5>
+              ${p.t}
+              <div class="point-status">
+                <span class="gravity-badge g-${p.g}">${getGravityLabel(p.g)}</span>
+                <iconify-icon icon="${p.s === 'error' ? 'mdi:alert-circle' : 'mdi:check-circle'}" 
+                              style="color: ${p.s === 'error' ? '#e74c3c' : '#2ecc71'}"></iconify-icon>
+              </div>
+            </h5>
+            <div class="point-detail">${p.d}</div>
           </div>
         `).join('');
         document.getElementById('lab-modal').style.display = "flex";
+      }
+
+      function inspectPoint(method, index, el) {
+        const point = labs[method].points[index];
+        
+        // UI feedback
+        document.querySelectorAll('.audit-point').forEach(p => p.classList.remove('active'));
+        el.classList.add('active');
+
+        // Message to iframe
+        const iframe = document.getElementById('lab-iframe');
+        iframe.contentWindow.postMessage({
+          action: 'highlight',
+          targetId: point.tid,
+          status: point.s
+        }, '*');
+      }
+
+      function getGravityLabel(g) {
+        const labels = ["Respecté", "Mineur", "Majeur", "Critique", "Bloquant"];
+        return labels[g];
       }
 
       function closeLab() {

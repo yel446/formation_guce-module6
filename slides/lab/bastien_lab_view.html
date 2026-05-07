@@ -14,6 +14,8 @@
     grid-template-columns: repeat(6, 1fr);
     gap: 10px;
     margin-bottom: 20px;
+    border: 2px solid transparent;
+    transition: all 0.3s;
   }
   .stat-card {
     border: 1px solid #000;
@@ -23,9 +25,11 @@
   .table-box {
     border: 1px solid #333;
     overflow-x: auto;
+    transition: all 0.3s;
+    border: 2px solid transparent;
   }
   table {
-    width: 200%; /* Violation: horizontal scroll necessary */
+    width: 150%;
     border-collapse: collapse;
     font-size: 10px;
   }
@@ -39,6 +43,8 @@
     margin-top: 15px;
     display: flex;
     gap: 5px;
+    border: 2px solid transparent;
+    transition: all 0.3s;
   }
   .btn {
     padding: 5px 10px;
@@ -46,12 +52,29 @@
     border: 1px solid #333;
     cursor: pointer;
   }
+
+  /* Highlighting Classes */
+  .highlight-error {
+    border: 3px solid #e74c3c !important;
+    animation: shake 0.5s;
+    background: rgba(231, 76, 60, 0.1);
+  }
+  .highlight-success {
+    border: 3px solid #2ecc71 !important;
+    background: rgba(46, 204, 113, 0.1);
+  }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+  }
 </style>
 </head>
 <body class="lab-frame">
-  <div style="font-weight: bold; margin-bottom: 10px;">TABLEAU DE BORD EXÉCUTIF - TOUS LES INDICATEURS (542)</div>
+  <div style="font-weight: bold; margin-bottom: 10px;" id="dashboard-title">TABLEAU DE BORD EXÉCUTIF - TOUS LES INDICATEURS (542)</div>
   
-  <div class="grid">
+  <div class="grid" id="stats-grid">
     <div class="stat-card">Dossiers: 1,442</div>
     <div class="stat-card">Erreurs: 12</div>
     <div class="stat-card">Temps moy: 4.2s</div>
@@ -60,25 +83,22 @@
     <div class="stat-card">DB: Connectée</div>
   </div>
 
-  <div class="table-box">
+  <div class="table-box" id="data-table">
     <table>
       <thead>
         <tr>
-          <th>ID_TRANS</th><th>DATE_CREAT</th><th>REF_USER</th><th>COD_CAT</th><th>VAL_CURR</th><th>STAT_FLG</th><th>REF_EXT</th><th>DAT_UPD</th><th>USR_UPD</th><th>COMMENT_LOG_SYSTEM_V2</th>
+          <th>ID_TRANS</th><th>DATE_CREAT</th><th>REF_USER</th><th>COD_CAT</th><th>VAL_CURR</th><th>STAT_FLG</th><th>REF_EXT</th><th>DAT_UPD</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td>#9921</td><td>01/01/2024</td><td>USR_001</td><td>C44</td><td>1,000</td><td>1</td><td>EXT_99</td><td>02/01/2024</td><td>SYS</td><td>LOG_OK_SYSTEM_STABLE</td>
-        </tr>
-        <tr>
-          <td>#9922</td><td>01/01/2024</td><td>USR_002</td><td>C45</td><td>2,400</td><td>0</td><td>EXT_101</td><td>02/01/2024</td><td>SYS</td><td>LOG_ERR_TIMEOUT_RETRY</td>
+          <td>#9921</td><td>01/01/2024</td><td>USR_001</td><td>C44</td><td>1,000</td><td>1</td><td>EXT_99</td><td>02/01/2024</td>
         </tr>
       </tbody>
     </table>
   </div>
 
-  <div class="action-bar">
+  <div class="action-bar" id="action-bar">
     <button class="btn">RELIRE</button>
     <button class="btn">RAFRAICHIR</button>
     <button class="btn">ARCHIVER</button>
@@ -86,5 +106,22 @@
     <button class="btn">MODIFIER</button>
     <button class="btn">DÉPLOYER</button>
   </div>
+
+  <script>
+    window.addEventListener('message', (e) => {
+      const { action, targetId, status } = e.data;
+      if (action === 'highlight') {
+        document.querySelectorAll('.highlight-error, .highlight-success').forEach(el => {
+          el.classList.remove('highlight-error', 'highlight-success');
+        });
+        
+        const el = document.getElementById(targetId);
+        if (el) {
+          el.classList.add(status === 'error' ? 'highlight-error' : 'highlight-success');
+          el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }
+    });
+  </script>
 </body>
 </html>

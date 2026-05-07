@@ -8,6 +8,7 @@
     padding: 20px;
     border-radius: 15px;
     color: #333;
+    transition: all 0.3s;
   }
   .header {
     background: #003366;
@@ -22,6 +23,7 @@
     margin-top: 20px;
     padding: 20px;
     border: 1px solid #ddd;
+    position: relative;
   }
   .form-title {
     font-size: 16px;
@@ -32,6 +34,9 @@
   }
   .field {
     margin-bottom: 15px;
+    transition: all 0.3s;
+    padding: 5px;
+    border: 2px solid transparent;
   }
   .field label {
     display: block;
@@ -53,55 +58,95 @@
     font-size: 11px;
     font-family: monospace;
     margin-bottom: 15px;
+    transition: all 0.3s;
+    border: 2px solid transparent;
   }
   .btns {
     display: flex;
     gap: 10px;
     justify-content: flex-end;
+    margin-top: 20px;
   }
   .btn {
-    padding: 8px 20px;
+    padding: 10px 25px;
     font-size: 13px;
     cursor: pointer;
     border: none;
+    transition: all 0.3s;
   }
   .btn-gray { background: #eee; color: #333; }
   .btn-blue { background: #003366; color: white; }
+
+  /* Highlighting Classes */
+  .highlight-error {
+    border: 3px solid #e74c3c !important;
+    animation: shake 0.5s;
+    background: rgba(231, 76, 60, 0.1);
+  }
+  .highlight-success {
+    border: 3px solid #2ecc71 !important;
+    background: rgba(46, 204, 113, 0.1);
+  }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+  }
 </style>
 </head>
 <body class="lab-frame">
-  <div class="header">
+  <div class="header" id="sys-header">
     <span>SYSTÈME DE GESTION v1.0</span>
     <span>Connecté: USER_99</span>
   </div>
   
   <div class="form-box">
-    <div class="form-title">ENREGISTREMENT_DOSSIER_EXP_44</div>
+    <div class="form-title" id="form-title">ENREGISTREMENT_DOSSIER_EXP_44</div>
     
-    <div class="error-msg">
+    <div class="error-msg" id="error-msg">
       EXCEPTION_CRITICAL: FK_NMENCL_ERR at row 12. 
       Constraint PK_001 violated. Please contact SYSADMIN.
     </div>
 
-    <div class="field">
+    <div class="field" id="field-ref">
       <label>COD_IMPORT_REF</label>
       <input type="text" placeholder="Entrez le code technique">
     </div>
     
-    <div class="field">
+    <div class="field" id="field-nature">
       <label>NATURE_MARCHANDISE</label>
       <input type="text">
     </div>
 
-    <div class="field">
+    <div class="field" id="field-val">
       <label>VALEUR_FOB</label>
-      <input type="text" style="border-color: #c00;">
+      <input type="text">
     </div>
 
-    <div class="btns">
+    <div class="btns" id="action-btns">
       <button class="btn btn-gray">ANNULER</button>
-      <button class="btn btn-blue">VALIDER</button>
+      <button class="btn btn-blue" id="btn-submit">VALIDER</button>
     </div>
   </div>
+
+  <script>
+    // Listen for messages from parent to highlight elements
+    window.addEventListener('message', (e) => {
+      const { action, targetId, status } = e.data;
+      if (action === 'highlight') {
+        // Clear previous highlights
+        document.querySelectorAll('.highlight-error, .highlight-success').forEach(el => {
+          el.classList.remove('highlight-error', 'highlight-success');
+        });
+        
+        const el = document.getElementById(targetId);
+        if (el) {
+          el.classList.add(status === 'error' ? 'highlight-error' : 'highlight-success');
+          el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }
+    });
+  </script>
 </body>
 </html>
