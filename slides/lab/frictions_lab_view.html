@@ -10,187 +10,245 @@
     <style>
       body {
         font-family: 'Poppins', sans-serif;
-        background: #ffffff;
+        background: #f8f9fa;
         padding: 30px;
         margin: 0;
         overflow-x: hidden;
       }
 
-      .lab-intro {
+      .lab-header {
         background: #1e3a44;
         color: white;
-        padding: 15px 25px;
-        border-radius: 15px;
+        padding: 20px 30px;
+        border-radius: 20px;
         margin-bottom: 30px;
-        font-size: 14px;
         display: flex;
+        justify-content: space-between;
         align-items: center;
-        gap: 15px;
         box-shadow: 0 10px 20px rgba(30, 58, 68, 0.1);
       }
 
-      .friction-board {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 20px;
-      }
-
-      .friction-row {
-        border-radius: 20px;
-        padding: 20px;
-        border: 2px solid transparent;
-        transition: all 0.3s;
-      }
-
-      .row-header {
-        font-size: 13px;
+      .game-instruction { font-size: 14px; font-weight: 400; max-width: 70%; }
+      .btn-verify {
+        background: #8bc34a;
+        color: white;
+        border: none;
+        padding: 10px 25px;
+        border-radius: 50px;
         font-weight: 800;
-        text-transform: uppercase;
-        margin-bottom: 15px;
+        cursor: pointer;
+        transition: 0.3s;
         display: flex;
         align-items: center;
         gap: 10px;
       }
+      .btn-verify:hover { background: #7eb344; transform: translateY(-2px); }
 
-      .row-items {
+      .game-board {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 15px;
+        grid-template-columns: 280px 1fr;
+        gap: 30px;
+        align-items: start;
       }
+
+      /* Friction Pool */
+      .pool-container {
+        background: white;
+        padding: 20px;
+        border-radius: 20px;
+        border: 2px dashed #cbd5e0;
+        min-height: 500px;
+      }
+      .pool-title { font-size: 13px; font-weight: 800; color: #718096; text-transform: uppercase; margin-bottom: 20px; text-align: center; }
 
       .friction-card {
         background: white;
         padding: 15px;
         border-radius: 12px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
-        cursor: pointer;
-        transition: all 0.3s;
-        text-align: center;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        cursor: grab;
+        margin-bottom: 12px;
         font-weight: 700;
-        font-size: 13px;
+        font-size: 12px;
         color: #444;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        min-height: 80px;
-        border: 1px solid #f0f0f0;
+        border: 1px solid #e2e8f0;
+        transition: transform 0.2s, box-shadow 0.2s;
+        user-select: none;
       }
+      .friction-card:active { cursor: grabbing; }
+      .friction-card.dragging { opacity: 0.5; }
 
-      .friction-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-        border-color: #8bc34a;
+      /* Drop Zones */
+      .zones-container { display: flex; flex-direction: column; gap: 20px; }
+      .drop-zone {
+        border-radius: 20px;
+        padding: 20px;
+        min-height: 120px;
+        border: 2px dashed transparent;
+        transition: all 0.3s;
+        position: relative;
       }
+      .drop-zone.over { border-color: #1e3a44; background: rgba(30, 58, 68, 0.05); }
 
-      /* Levels Styling */
-      .major-row { background: #fff5f5; border-color: #feb2b2; }
-      .major-row .row-header { color: #c53030; }
-      
-      .moderate-row { background: #fffaf0; border-color: #fbd38d; }
-      .moderate-row .row-header { color: #c05621; }
-      
-      .minor-row { background: #f0fff4; border-color: #9ae6b4; }
-      .minor-row .row-header { color: #2f855a; }
+      .zone-header { font-size: 12px; font-weight: 800; text-transform: uppercase; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+      .zone-items { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
 
-      /* Reveal Overlay */
+      .major-zone { background: #fff5f5; border-color: #feb2b2; }
+      .major-zone .zone-header { color: #c53030; }
+      
+      .moderate-zone { background: #fffaf0; border-color: #fbd38d; }
+      .moderate-zone .zone-header { color: #c05621; }
+      
+      .minor-zone { background: #f0fff4; border-color: #9ae6b4; }
+      .minor-zone .zone-header { color: #2f855a; }
+
+      /* Correct/Wrong indicators */
+      .friction-card.correct { border-color: #48bb78 !important; background: #f0fff4; }
+      .friction-card.wrong { border-color: #f56565 !important; background: #fff5f5; }
+
+      /* Reveal Modal */
       .reveal-overlay {
         position: fixed; top: 0; left: 0; width: 100%; height: 100%;
         background: rgba(30, 58, 68, 0.95); backdrop-filter: blur(8px);
-        display: none; justify-content: center; align-items: center; z-index: 3000;
+        display: none; justify-content: center; align-items: center; z-index: 4000;
       }
       .reveal-content {
         background: white; width: 400px; padding: 40px; border-radius: 30px;
         text-align: center; position: relative; animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       }
-      @keyframes popIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
-
       .emoji-display { font-size: 80px; margin-bottom: 20px; display: block; }
-      .severity-tag {
-        display: inline-block; padding: 5px 15px; border-radius: 50px;
-        font-weight: 800; font-size: 12px; text-transform: uppercase; margin-bottom: 15px;
-      }
+      .severity-tag { display: inline-block; padding: 5px 15px; border-radius: 50px; font-weight: 800; font-size: 12px; text-transform: uppercase; margin-bottom: 15px; }
       .tag-4 { background: #000; color: #ffeb3b; }
       .tag-3 { background: #c53030; color: white; }
       .tag-2 { background: #f6ad55; color: white; }
       .tag-1 { background: #8bc34a; color: white; }
-
-      .reveal-title { font-size: 18px; font-weight: 800; color: #1e3a44; margin-bottom: 10px; }
-      .reveal-desc { font-size: 14px; color: #666; line-height: 1.5; margin-bottom: 20px; }
-      .btn-close {
-        background: #f0f0f0; border: none; padding: 10px 25px; border-radius: 50px;
-        font-weight: 700; cursor: pointer; transition: 0.3s;
-      }
-      .btn-close:hover { background: #1e3a44; color: white; }
     </style>
   </head>
   <body>
-    <div class="lab-intro">
-      <iconify-icon icon="mdi:emoticon-angry" style="font-size: 24px; color: #8bc34a;"></iconify-icon>
-      <div>
-        <strong>Mini-Lab Interactif :</strong> Cliquez sur une friction pour découvrir son niveau de sévérité et le ressenti utilisateur associé.
+    <div class="lab-header">
+      <div class="game-instruction">
+        <strong>Défi Priorisation :</strong> Glissez les frictions ci-dessous dans la bonne catégorie de sévérité (Majeure, Modérée, Mineure) pour tester vos connaissances d'auditeur.
+      </div>
+      <button class="btn-verify" onclick="verifyChoices()">
+        <iconify-icon icon="mdi:check-all"></iconify-icon> Vérifier mes choix
+      </button>
+    </div>
+
+    <div class="game-board">
+      <div class="pool-container">
+        <div class="pool-title">Frictions à classer</div>
+        <div id="pool" class="zone-items" style="grid-template-columns: 1fr;"></div>
+      </div>
+
+      <div class="zones-container">
+        <div class="drop-zone major-zone" data-zone="major">
+          <div class="zone-header"><iconify-icon icon="mdi:alert-decagram"></iconify-icon> 1. Frictions MAJEURES (Critiques)</div>
+          <div class="zone-items"></div>
+        </div>
+        <div class="drop-zone moderate-zone" data-zone="moderate">
+          <div class="zone-header"><iconify-icon icon="mdi:alert-circle"></iconify-icon> 2. Frictions MODÉRÉES (Pénibles)</div>
+          <div class="zone-items"></div>
+        </div>
+        <div class="drop-zone minor-zone" data-zone="minor">
+          <div class="zone-header"><iconify-icon icon="mdi:alert-outline"></iconify-icon> 3. Frictions MINEURES (Irritantes)</div>
+          <div class="zone-items"></div>
+        </div>
       </div>
     </div>
 
-    <div class="friction-board">
-      <div class="friction-row major-row">
-        <div class="row-header"><iconify-icon icon="mdi:alert-decagram"></iconify-icon> 1. Frictions MAJEURES (Critiques)</div>
-        <div class="row-items" id="major-items"></div>
-      </div>
-      <div class="friction-row moderate-row">
-        <div class="row-header"><iconify-icon icon="mdi:alert-circle"></iconify-icon> 2. Frictions MODÉRÉES (Pénibles)</div>
-        <div class="row-items" id="moderate-items"></div>
-      </div>
-      <div class="friction-row minor-row">
-        <div class="row-header"><iconify-icon icon="mdi:alert-outline"></iconify-icon> 3. Frictions MINEURES (Irritantes)</div>
-        <div class="row-items" id="minor-items"></div>
-      </div>
-    </div>
-
+    <!-- Feedback Modal -->
     <div id="reveal-modal" class="reveal-overlay">
        <div class="reveal-content">
           <span class="emoji-display" id="rev-emoji"></span>
           <div class="severity-tag" id="rev-tag"></div>
-          <h3 class="reveal-title" id="rev-title"></h3>
-          <p class="reveal-desc" id="rev-desc"></p>
-          <button class="btn-close" onclick="closeReveal()">J'ai compris</button>
+          <h3 id="rev-title" style="font-size: 18px; font-weight: 800; color: #1e3a44; margin-bottom: 10px;"></h3>
+          <p id="rev-desc" style="font-size: 14px; color: #666; line-height: 1.5; margin-bottom: 20px;"></p>
+          <button style="background: #f0f0f0; border: none; padding: 10px 25px; border-radius: 50px; font-weight: 700; cursor: pointer;" onclick="closeReveal()">Continuer</button>
        </div>
     </div>
 
     <script>
-      const data = {
-        major: [
-          { t: "Authentification : parcours non fluide", d: "Interruption du flux métier dès le début du processus. Impact direct sur l'abandon.", e: "🤬", g: 4, l: "Catastrophe" },
-          { t: "Upload documents : tailles limitées", d: "Empêche la soumission du dossier. Friction bloquante et frustrante.", e: "😡", g: 3, l: "Majeur" },
-          { t: "Documents officiels non ré-éditables", d: "Oblige à recommencer tout le parcours pour une simple faute.", e: "😡", g: 3, l: "Majeur" }
-        ],
-        moderate: [
-          { t: "Navigation complexe / perte repères", d: "L'utilisateur perd le fil de son action. Augmentation de la charge mentale.", e: "😠", g: 2, l: "Modéré" },
-          { t: "Messages d'erreur non actionnables", d: "Signale un problème sans donner la clé pour le résoudre.", e: "😠", g: 2, l: "Modéré" },
-          { t: "Délais de traitement opaques", d: "Incertitude sur l'avancement. Manque de visibilité (H1).", e: "😠", g: 2, l: "Modéré" }
-        ],
-        minor: [
-          { t: "Re-saisie (pas de sauvegarde auto)", d: "Action répétitive agaçante mais n'empêchant pas la tâche.", e: "😕", g: 1, l: "Mineur" },
-          { t: "Absence d'estimation des délais", d: "Incertitude légère sur le moment de finalisation.", e: "😕", g: 1, l: "Mineur" },
-          { t: "Format unique (PDF) non flexible", d: "Contrainte technique mineure demandant un effort externe.", e: "😕", g: 1, l: "Mineur" }
-        ]
-      };
+      const frictions = [
+        { id: 1, cat: "major", t: "Authentification : parcours bloquant", d: "C'est une catastrophe (Niveau 4). L'utilisateur ne peut même pas accéder au service. Action : Bloquer la prod.", e: "🤬", g: 4, l: "Catastrophe" },
+        { id: 2, cat: "major", t: "Upload documents : tailles limitées", d: "Problème Majeur (Niveau 3). Empêche la finalisation du dossier. Action : Priorité haute.", e: "😡", g: 3, l: "Majeur" },
+        { id: 3, cat: "major", t: "Documents officiels non ré-éditables", d: "Problème Majeur (Niveau 3). Crucial pour la conformité GUCE. Action : Priorité haute.", e: "😡", g: 3, l: "Majeur" },
+        { id: 4, cat: "moderate", t: "Navigation complexe / perte repères", d: "Problème Modéré (Niveau 2). Augmente la charge mentale. Action : Prochain sprint.", e: "😠", g: 2, l: "Modéré" },
+        { id: 5, cat: "moderate", t: "Messages d'erreur non actionnables", d: "Problème Modéré (Niveau 2). Laisse l'utilisateur dans l'impasse. Action : Prochain sprint.", e: "😠", g: 2, l: "Modéré" },
+        { id: 6, cat: "moderate", t: "Délais de traitement opaques", d: "Problème Modéré (Niveau 2). Manque de visibilité (H1). Action : Prochain sprint.", e: "😠", g: 2, l: "Modéré" },
+        { id: 7, cat: "minor", t: "Re-saisie (pas de sauvegarde auto)", d: "Problème Mineur (Niveau 1). Agaçant mais n'empêche pas la réussite. Action : Si possible.", e: "😕", g: 1, l: "Mineur" },
+        { id: 8, cat: "minor", t: "Absence d'estimation des délais", d: "Problème Mineur (Niveau 1). Confort utilisateur réduit. Action : Si possible.", e: "😕", g: 1, l: "Mineur" },
+        { id: 9, cat: "minor", t: "Format unique (PDF) non flexible", d: "Problème Cosmétique/Mineur (Niveau 1). Contrainte externe mineure. Action : Si possible.", e: "😕", g: 1, l: "Mineur" }
+      ];
 
       function init() {
-        ['major', 'moderate', 'minor'].forEach(cat => {
-          document.getElementById(cat + '-items').innerHTML = data[cat].map((item, i) => `
-            <div class="friction-card" onclick="openReveal('${cat}', ${i})">${item.t}</div>
-          `).join('');
+        const pool = document.getElementById('pool');
+        // Shuffle pool
+        const shuffled = [...frictions].sort(() => Math.random() - 0.5);
+        shuffled.forEach(f => {
+          const card = document.createElement('div');
+          card.className = 'friction-card';
+          card.draggable = true;
+          card.id = 'f-' + f.id;
+          card.innerText = f.t;
+          card.setAttribute('data-id', f.id);
+          card.addEventListener('dragstart', dragStart);
+          card.addEventListener('dragend', dragEnd);
+          pool.appendChild(card);
+        });
+
+        document.querySelectorAll('.drop-zone').forEach(zone => {
+          zone.addEventListener('dragover', dragOver);
+          zone.addEventListener('dragenter', dragEnter);
+          zone.addEventListener('dragleave', dragLeave);
+          zone.addEventListener('drop', drop);
         });
       }
 
-      function openReveal(cat, index) {
-        const item = data[cat][index];
-        document.getElementById('rev-emoji').innerText = item.e;
-        document.getElementById('rev-title').innerText = item.t;
-        document.getElementById('rev-desc').innerText = item.d;
+      let draggedItem = null;
+
+      function dragStart() { draggedItem = this; setTimeout(() => this.classList.add('dragging'), 0); }
+      function dragEnd() { this.classList.remove('dragging'); draggedItem = null; }
+      function dragOver(e) { e.preventDefault(); }
+      function dragEnter(e) { e.preventDefault(); this.classList.add('over'); }
+      function dragLeave() { this.classList.remove('over'); }
+      function drop() {
+        this.classList.remove('over');
+        this.querySelector('.zone-items').appendChild(draggedItem);
+      }
+
+      function verifyChoices() {
+        let allCorrect = true;
+        document.querySelectorAll('.friction-card').forEach(card => {
+          const fId = card.getAttribute('data-id');
+          const f = frictions.find(item => item.id == fId);
+          const zone = card.parentElement.parentElement.getAttribute('data-zone');
+          
+          if (zone === f.cat) {
+            card.classList.add('correct');
+            card.classList.remove('wrong');
+          } else {
+            card.classList.add('wrong');
+            allCorrect = false;
+          }
+          
+          // Make clickable for detail after verify
+          card.onclick = () => showDetail(f);
+        });
+
+        if (allCorrect) {
+          alert("Bravo ! Vous avez parfaitement priorisé toutes les frictions.");
+        } else {
+          alert("Certaines frictions sont mal classées. Cliquez sur les cartes pour voir les explications.");
+        }
+      }
+
+      function showDetail(f) {
+        document.getElementById('rev-emoji').innerText = f.e;
+        document.getElementById('rev-title').innerText = f.t;
+        document.getElementById('rev-desc').innerText = f.d;
         const tag = document.getElementById('rev-tag');
-        tag.innerText = "Niveau " + item.g + " : " + item.l;
-        tag.className = "severity-tag tag-" + item.g;
+        tag.innerText = "Niveau " + f.g + " : " + f.l;
+        tag.className = "severity-tag tag-" + f.g;
         document.getElementById('reveal-modal').style.display = "flex";
       }
 
