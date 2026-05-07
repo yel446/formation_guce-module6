@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<style>
+  .lab-frame {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f0f2f5;
+    padding: 20px;
+    border-radius: 15px;
+    color: #333;
+  }
+  .header {
+    background: #003366;
+    color: white;
+    padding: 10px 15px;
+    font-size: 14px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .form-box {
+    background: white;
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid #ddd;
+  }
+  .form-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #003366;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+  }
+  .field {
+    margin-bottom: 15px;
+  }
+  .field label {
+    display: block;
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 5px;
+  }
+  .field input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    font-size: 13px;
+  }
+  .error-msg {
+    background: #fee;
+    border: 1px solid #fcc;
+    color: #c00;
+    padding: 10px;
+    font-size: 11px;
+    font-family: monospace;
+    margin-bottom: 15px;
+  }
+  .btns {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+  }
+  .btn {
+    padding: 8px 20px;
+    font-size: 13px;
+    cursor: pointer;
+    border: none;
+  }
+  .btn-gray { background: #eee; color: #333; }
+  .btn-blue { background: #003366; color: white; }
+</style>
+</head>
+<body class="lab-frame">
+  <div class="header">
+    <span>SYSTÈME DE GESTION v1.0</span>
+    <span>Connecté: USER_99</span>
+  </div>
+  
+  <div class="form-box">
+    <div class="form-title">ENREGISTREMENT_DOSSIER_EXP_44</div>
+    
+    <div class="error-msg">
+      EXCEPTION_CRITICAL: FK_NMENCL_ERR at row 12. 
+      Constraint PK_001 violated. Please contact SYSADMIN.
+    </div>
+
+    <div class="field">
+      <label>COD_IMPORT_REF</label>
+      <input type="text" placeholder="Entrez le code technique">
+    </div>
+    
+    <div class="field">
+      <label>NATURE_MARCHANDISE</label>
+      <input type="text">
+    </div>
+
+    <div class="field">
+      <label>VALEUR_FOB</label>
+      <input type="text" style="border-color: #c00;">
+    </div>
+
+    <div class="btns">
+      <button class="btn btn-gray">ANNULER</button>
+      <button class="btn btn-blue">VALIDER</button>
+    </div>
+  </div>
+</body>
+</html>

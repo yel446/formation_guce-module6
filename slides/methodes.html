@@ -24,7 +24,7 @@
         display: flex;
         justify-content: center;
         gap: 15px;
-        margin-bottom: 25px;
+        margin-bottom: 20px;
         background: #f0f4f8;
         padding: 8px;
         border-radius: 50px;
@@ -69,128 +69,129 @@
         left: 0;
         width: 100%;
         height: 100%;
-        display: grid;
-        grid-template-columns: 1.1fr 0.9fr;
-        gap: 50px;
+        display: flex;
+        flex-direction: column;
         opacity: 0;
-        transform: translateX(30px);
+        transform: translateY(20px);
         visibility: hidden;
-        transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: all 0.5s ease;
       }
 
       .method-view.active {
         opacity: 1;
-        transform: translateX(0);
+        transform: translateY(0);
         visibility: visible;
       }
 
-      /* Illustration Area */
-      .illustration-box {
-        background: #f8faff;
-        border-radius: 30px;
-        overflow: hidden;
+      /* Header with Lab Button */
+      .method-header {
         display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 15px 45px rgba(0, 0, 0, 0.05);
-        border: 1px solid #edf2f7;
-        position: relative;
-        height: 100%;
+        justify-content: space-between;
+        align-items: flex-end;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #f0f4f8;
       }
 
-      .illustration-box img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
-
-      .badge-type {
-        position: absolute;
-        top: 20px;
-        left: 20px;
-        background: rgba(255, 255, 255, 0.9);
-        backdrop-filter: blur(5px);
-        padding: 8px 15px;
-        border-radius: 12px;
-        font-size: 11px;
+      .title-group h2 {
+        font-size: 32px;
         font-weight: 800;
         color: var(--primary);
-        text-transform: uppercase;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        z-index: 10;
+        margin: 0;
       }
 
-      /* Content Area */
-      .content-box {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        padding-right: 20px;
-      }
-
-      .method-title {
-        font-size: 34px;
-        font-weight: 800;
-        color: var(--primary);
-        margin-bottom: 5px;
-      }
-
-      .method-subtitle {
+      .title-group p {
         font-size: 16px;
         font-weight: 600;
         color: #8bc34a;
-        margin-bottom: 20px;
-        letter-spacing: 0.5px;
-      }
-
-      .btn-group {
-        display: flex;
-        gap: 15px;
-        margin-top: 25px;
-      }
-
-      .btn-action {
-        padding: 12px 25px;
-        border-radius: 50px;
-        font-size: 13px;
-        font-weight: 700;
-        cursor: pointer;
-        transition: all 0.3s;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        border: none;
-      }
-
-      .btn-primary {
-        background: var(--primary);
-        color: white;
-      }
-
-      .btn-primary:hover {
-        background: #2c5361;
-        transform: translateY(-2px);
+        margin: 0;
       }
 
       .btn-lab {
         background: #8bc34a;
         color: white;
+        padding: 10px 20px;
+        border-radius: 50px;
+        font-size: 12px;
+        font-weight: 800;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        border: none;
+        box-shadow: 0 5px 15px rgba(139, 195, 74, 0.2);
       }
 
       .btn-lab:hover {
-        background: #7cb342;
+        background: var(--primary);
         transform: translateY(-2px);
-        box-shadow: 0 10px 20px rgba(139, 195, 74, 0.2);
+        box-shadow: 0 8px 25px rgba(30, 58, 68, 0.2);
       }
 
-      /* Modals */
+      /* 2-Column Grid for Exhaustive List */
+      .exhaustive-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+        flex-grow: 1;
+        overflow-y: auto;
+        padding-right: 10px;
+      }
+
+      .heuristic-card {
+        background: #f8faff;
+        border-left: 5px solid #8bc34a;
+        padding: 12px 15px;
+        border-radius: 12px;
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        transition: all 0.3s;
+        border: 1px solid #edf2f7;
+      }
+
+      .heuristic-card:hover {
+        background: white;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+        transform: translateX(5px);
+      }
+
+      .h-num {
+        background: #1e3a44;
+        color: white;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        font-weight: 800;
+        flex-shrink: 0;
+      }
+
+      .h-content h4 {
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--primary);
+        margin-bottom: 2px;
+      }
+
+      .h-content p {
+        font-size: 11px;
+        color: #666;
+        line-height: 1.4;
+      }
+
+      /* Lab Modal Styles */
       .modal-overlay {
         position: fixed;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
-        background: rgba(30, 58, 68, 0.9);
+        background: rgba(30, 58, 68, 0.95);
         backdrop-filter: blur(8px);
         display: none;
         justify-content: center;
@@ -200,126 +201,94 @@
 
       .modal-content {
         background: white;
-        width: 90%;
-        max-width: 1000px;
-        height: 85vh;
+        width: 95%;
+        max-width: 1200px;
+        height: 90vh;
         border-radius: 30px;
-        padding: 40px;
+        padding: 25px;
         position: relative;
         display: flex;
         flex-direction: column;
-        animation: modalIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
       }
 
-      @keyframes modalIn {
-        from { opacity: 0; transform: scale(0.95) translateY(30px); }
-        to { opacity: 1; transform: scale(1) translateY(0); }
+      .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+      }
+
+      .lab-body {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 25px;
+        flex-grow: 1;
+        overflow: hidden;
+      }
+
+      .interface-viewer {
+        background: #f0f4f8;
+        border-radius: 20px;
+        border: 2px solid #e2e8f0;
+        overflow: hidden;
+      }
+
+      .interface-viewer iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+      }
+
+      .audit-scroller {
+        overflow-y: auto;
+        padding-right: 15px;
+      }
+
+      .audit-point {
+        background: #f8faff;
+        padding: 12px;
+        border-radius: 12px;
+        margin-bottom: 12px;
+        border-left: 5px solid var(--primary);
+      }
+
+      .audit-point.error { border-left-color: #e74c3c; }
+      .audit-point.success { border-left-color: #8bc34a; }
+
+      .audit-point h5 {
+        font-size: 13px;
+        color: var(--primary);
+        margin-bottom: 4px;
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .audit-point p {
+        font-size: 12px;
+        color: #555;
+        line-height: 1.4;
       }
 
       .modal-close {
-        position: absolute;
-        top: 25px;
-        right: 25px;
         background: #f5f5f5;
         border: none;
-        width: 40px;
-        height: 40px;
+        width: 35px;
+        height: 35px;
         border-radius: 50%;
         cursor: pointer;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 24px;
+        font-size: 20px;
         transition: all 0.3s;
       }
 
       .modal-close:hover { background: #e74c3c; color: white; }
-
-      /* Lab Layout */
-      .lab-container {
-        display: grid;
-        grid-template-columns: 1fr 1.2fr;
-        gap: 30px;
-        flex-grow: 1;
-        overflow: hidden;
-        margin-top: 20px;
-      }
-
-      .lab-interface {
-        background: #f0f4f8;
-        border-radius: 20px;
-        overflow: hidden;
-        border: 2px solid #e2e8f0;
-      }
-
-      .lab-interface img {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-      }
-
-      .lab-audit {
-        background: #fff;
-        border-radius: 20px;
-        padding: 25px;
-        overflow-y: auto;
-        border: 1px solid #edf2f7;
-      }
-
-      .audit-step {
-        margin-bottom: 20px;
-        padding: 15px;
-        background: #f8faff;
-        border-radius: 15px;
-        border-left: 5px solid var(--primary);
-      }
-
-      .audit-step.solved { border-left-color: #8bc34a; }
-
-      .audit-step h5 {
-        margin-bottom: 8px;
-        font-size: 15px;
-        color: var(--primary);
-      }
-
-      .audit-step p {
-        font-size: 13px;
-        color: #666;
-        line-height: 1.5;
-      }
-
-      /* Criteria List */
-      .criteria-list {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 15px;
-        overflow-y: auto;
-        padding-right: 10px;
-      }
-
-      .criteria-item {
-        background: #f8faff;
-        padding: 15px;
-        border-radius: 15px;
-        border: 1px solid #edf2f7;
-      }
-
-      .criteria-item h5 {
-        color: var(--primary);
-        margin-bottom: 5px;
-        font-size: 14px;
-      }
-
-      .criteria-item p {
-        font-size: 12px;
-        color: #666;
-        line-height: 1.4;
-      }
     </style>
   </head>
   <body class="slide-content">
     <div class="slide-header-rubric">
-      <h1>Analyse Heuristique : Méthodes & Pratique Lab</h1>
+      <h1>Analyse Heuristique : Exhaustivité & Cas Pratiques</h1>
     </div>
 
     <!-- Sub-Navigation -->
@@ -341,190 +310,179 @@
     <div class="view-container">
       <!-- Nielsen View -->
       <div class="method-view active" id="view-0">
-        <div class="illustration-box">
-          <div class="badge-type">Approche Agile</div>
-          <img src="../assets/nielsen.png" alt="Nielsen Audit" />
-        </div>
-        <div class="content-box">
-          <h2 class="method-title">Jacob Nielsen</h2>
-          <p class="method-subtitle">Les 10 commandements de l'UX rapide</p>
-          <p style="font-size: 14px; color: #666; margin-bottom: 20px;">
-            Une méthode universelle basée sur 10 règles d'or pour identifier 80% des problèmes d'utilisabilité en un temps record.
-          </p>
-          <div class="btn-group">
-            <button class="btn-action btn-primary" onclick="openFullList('nielsen')">
-              <iconify-icon icon="mdi:format-list-bulleted"></iconify-icon>
-              Voir les 10 Heuristiques
-            </button>
-            <button class="btn-action btn-lab" onclick="openLab('nielsen')">
-              <iconify-icon icon="mdi:flask"></iconify-icon>
-              Lancer le Mini-Lab
-            </button>
+        <div class="method-header">
+          <div class="title-group">
+            <h2>Jacob Nielsen</h2>
+            <p>Les 10 Heuristiques de référence</p>
           </div>
+          <button class="btn-lab" onclick="openLab('nielsen')">
+            <iconify-icon icon="mdi:flask"></iconify-icon>
+            Lancer le Mini-Lab Nielsen
+          </button>
+        </div>
+        <div class="exhaustive-grid" id="nielsen-list">
+          <!-- Populated by JS -->
         </div>
       </div>
 
       <!-- Bastien & Scapin View -->
       <div class="method-view" id="view-1">
-        <div class="illustration-box">
-          <div class="badge-type">Approche Scientifique</div>
-          <img src="../assets/bastien.png" alt="Bastien & Scapin" />
-        </div>
-        <div class="content-box">
-          <h2 class="method-title">Bastien & Scapin</h2>
-          <p class="method-subtitle">La rigueur au service de la précision</p>
-          <p style="font-size: 14px; color: #666; margin-bottom: 20px;">
-            La référence scientifique francophone. 8 critères majeurs pour une analyse sans faille des systèmes complexes.
-          </p>
-          <div class="btn-group">
-            <button class="btn-action btn-primary" onclick="openFullList('bastien')">
-              <iconify-icon icon="mdi:format-list-bulleted"></iconify-icon>
-              Voir les 8 Critères
-            </button>
-            <button class="btn-action btn-lab" onclick="openLab('bastien')">
-              <iconify-icon icon="mdi:flask"></iconify-icon>
-              Lancer le Mini-Lab
-            </button>
+        <div class="method-header">
+          <div class="title-group">
+            <h2>Bastien & Scapin</h2>
+            <p>Les 8 Critères ergonomiques majeurs</p>
           </div>
+          <button class="btn-lab" onclick="openLab('bastien')">
+            <iconify-icon icon="mdi:flask"></iconify-icon>
+            Lancer le Mini-Lab B&S
+          </button>
+        </div>
+        <div class="exhaustive-grid" id="bastien-list">
+          <!-- Populated by JS -->
         </div>
       </div>
 
       <!-- Verdict View -->
       <div class="method-view" id="view-2">
-        <div class="illustration-box">
-          <img src="../assets/verdict.png" alt="Verdict" />
-        </div>
-        <div class="content-box">
-          <h2 class="method-title">Réalité Terrain</h2>
-          <p class="method-subtitle">Stratégie d'audit en entreprise</p>
-          <div style="background: #f8faff; padding: 25px; border-radius: 20px; border-left: 6px solid #8bc34a;">
-             <h4 style="margin-bottom: 10px; color: var(--primary);">Le combo gagnant :</h4>
-             <p style="font-size: 14px; color: #555; line-height: 1.6;">
-                1. <strong>Nielsen</strong> pour dégrossir le projet et sensibiliser les décideurs.<br>
-                2. <strong>B&S</strong> pour blinder techniquement les zones à fort enjeu (paiement, gestion de données).
-             </p>
+        <div class="method-header">
+          <div class="title-group">
+            <h2>Verdict Terrain</h2>
+            <p>Stratégie d'audit hybride</p>
           </div>
         </div>
-      </div>
-    </div>
-
-    <!-- Generic Modal for Lists -->
-    <div id="list-modal" class="modal-overlay">
-      <div class="modal-content">
-        <button class="modal-close" onclick="closeModal('list-modal')">×</button>
-        <h2 id="list-title" style="margin-bottom: 25px; color: var(--primary);"></h2>
-        <div class="criteria-list" id="list-body"></div>
+        <div style="background: #f8faff; border-radius: 25px; padding: 30px; flex-grow: 1; display: flex; align-items: center; gap: 40px;">
+           <img src="../assets/verdict.png" alt="Verdict" style="width: 40%; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);" />
+           <div style="flex: 1;">
+              <h3 style="color: var(--primary); margin-bottom: 20px;">L'art de la complémentarité</h3>
+              <p style="font-size: 15px; color: #444; line-height: 1.6; margin-bottom: 20px;">
+                 Sur le terrain, ne choisissez pas l'un au détriment de l'autre. Utilisez Nielsen pour dégrossir rapidement et Bastien & Scapin pour sécuriser les parcours critiques.
+              </p>
+              <div style="background: var(--primary); color: white; padding: 20px; border-radius: 15px; font-size: 14px;">
+                 <strong style="color: #8bc34a">Conseil pro :</strong> Commencez toujours par un audit Nielsen pour identifier 80% des erreurs, puis approfondissez avec B&S sur les formulaires complexes.
+              </div>
+           </div>
+        </div>
       </div>
     </div>
 
     <!-- Mini-Lab Modal -->
     <div id="lab-modal" class="modal-overlay">
       <div class="modal-content">
-        <button class="modal-close" onclick="closeModal('lab-modal')">×</button>
-        <h2 id="lab-title" style="color: var(--primary); display: flex; align-items: center; gap: 15px;">
-           <iconify-icon icon="mdi:flask" style="color: #8bc34a;"></iconify-icon>
-           Mini-Lab : Audit Interactif
-        </h2>
-        <div class="lab-container">
-          <div class="lab-interface">
-            <img id="lab-img" src="" alt="Lab Interface" />
+        <div class="modal-header">
+           <h2 id="lab-title" style="color: var(--primary); margin: 0; display: flex; align-items: center; gap: 15px; font-size: 24px;"></h2>
+           <button class="modal-close" onclick="closeLab()">×</button>
+        </div>
+        <div class="lab-body">
+          <div class="interface-viewer">
+            <iframe id="lab-iframe" src=""></iframe>
           </div>
-          <div class="lab-audit" id="lab-steps"></div>
+          <div class="audit-scroller" id="lab-audit-list">
+             <!-- Populated by JS -->
+          </div>
         </div>
       </div>
     </div>
 
     <script>
       const nielsenHeuristics = [
-        { t: "1. Visibilité de l'état", d: "L'utilisateur doit toujours savoir ce qui se passe via un feedback approprié." },
-        { t: "2. Correspondance monde réel", d: "Le système doit parler le langage de l'utilisateur (mots, concepts familiers)." },
-        { t: "3. Contrôle et liberté", d: "Permettre de sortir d'une action par erreur (Undo/Redo, bouton Quitter)." },
-        { t: "4. Cohérence et standards", d: "Suivre les conventions de la plateforme pour ne pas désorienter." },
-        { t: "5. Prévention des erreurs", d: "Mieux vaut prévenir l'erreur que de l'expliquer après coup." },
-        { t: "6. Reconnaissance > Rappel", d: "Rendre les objets et actions visibles. Ne pas faire mémoriser d'infos." },
-        { t: "7. Flexibilité & Efficacité", d: "Proposer des raccourcis pour les experts tout en restant simple pour les novices." },
-        { t: "8. Esthétique minimaliste", d: "Ne pas afficher d'infos non pertinentes qui diluent l'essentiel." },
-        { t: "9. Aide au diagnostic", d: "Messages d'erreur clairs, sans code technique, proposant une solution." },
-        { t: "10. Aide & Documentation", d: "Facile à consulter et axée sur les tâches concrètes de l'utilisateur." }
+        { t: "1. Visibilité de l'état", d: "Informer l'utilisateur sur ce qui se passe." },
+        { t: "2. Correspondance monde réel", d: "Parler le langage de l'utilisateur." },
+        { t: "3. Contrôle et liberté", d: "Permettre d'annuler/refaire facilement." },
+        { t: "4. Cohérence et standards", d: "Respecter les conventions UX." },
+        { t: "5. Prévention des erreurs", d: "Éviter les erreurs en amont." },
+        { t: "6. Reconnaissance > Rappel", d: "Rendre les objets et actions visibles." },
+        { t: "7. Flexibilité & Efficacité", d: "Accélérateurs pour les experts." },
+        { t: "8. Esthétique minimaliste", d: "Éviter le bruit visuel inutile." },
+        { t: "9. Aide au diagnostic", d: "Messages d'erreur clairs et utiles." },
+        { t: "10. Aide & Documentation", d: "Info facile à trouver et orientée tâche." }
       ];
 
       const bastienCriteria = [
-        { t: "1. Guidage", d: "Ensemble des moyens pour conseiller, orienter, informer l'utilisateur." },
-        { t: "2. Charge de travail", d: "Réduire l'effort mémoriel et perceptif (brièveté, densité)." },
-        { t: "3. Contrôle explicite", d: "Le système doit répondre aux actions et permettre le contrôle utilisateur." },
-        { t: "4. Adaptabilité", d: "Capacité à s'adapter selon l'expérience de l'utilisateur." },
-        { t: "5. Gestion des erreurs", d: "Mécanismes pour éviter, détecter et corriger les erreurs." },
-        { t: "6. Homogénéité", d: "Cohérence des choix d'interface (couleurs, boutons, termes)." },
-        { t: "7. Signifiance des codes", d: "Adéquation entre les codes utilisés et ce qu'ils représentent." },
-        { t: "8. Compatibilité", d: "Accord entre les besoins de l'utilisateur et les caractéristiques de l'interface." }
+        { t: "1. Guidage", d: "Conseiller et orienter l'utilisateur." },
+        { t: "2. Charge de travail", d: "Réduire l'effort mental et mémoriel." },
+        { t: "3. Contrôle explicite", d: "Maîtrise totale des actions système." },
+        { t: "4. Adaptabilité", d: "S'ajuster aux besoins de l'utilisateur." },
+        { t: "5. Gestion des erreurs", d: "Prévenir et corriger les erreurs." },
+        { t: "6. Homogénéité", d: "Cohérence globale de l'interface." },
+        { t: "7. Signifiance des codes", d: "Adéquation codes/objets." },
+        { t: "8. Compatibilité", d: "Accord avec les attentes métier." }
       ];
 
       const labs = {
         nielsen: {
-          img: "../assets/nielsen_lab.png",
-          steps: [
-            { t: "H1 - Visibilité de l'état", d: "AUCUN indicateur de chargement au clic sur 'Submit'.", s: "error" },
-            { t: "H2 - Correspondance monde réel", d: "Utilisation de termes métiers simples et compréhensibles.", s: "success" },
-            { t: "H3 - Contrôle utilisateur", d: "Impossible d'annuler une commande une fois validée.", s: "error" },
-            { t: "H4 - Cohérence & Standards", d: "Icône de panier inhabituelle (une étoile au lieu d'un caddie).", s: "error" },
-            { t: "H5 - Prévention des erreurs", d: "Le formulaire laisse valider sans email valide.", s: "error" },
-            { t: "H6 - Reconnaissance", d: "Menu de navigation clair et toujours visible.", s: "success" },
-            { t: "H7 - Flexibilité & Efficacité", d: "Pas de mode 'Achat Invité', login obligatoire.", s: "error" },
-            { t: "H8 - Esthétique minimaliste", d: "Présence de bannières publicitaires intrusives.", s: "error" },
-            { t: "H9 - Aide au diagnostic", d: "Message d'erreur technique 'SQL Error 504'.", s: "error" },
-            { t: "H10 - Aide & Documentation", d: "Aucune rubrique d'aide ou FAQ accessible.", s: "error" }
+          title: "Mini-Lab : Audit Nielsen",
+          src: "lab/nielsen_lab_view.html",
+          points: [
+            { t: "H1 - Visibilité de l'état", d: "Violation : Aucun indicateur lors de la validation du formulaire.", s: "error" },
+            { t: "H2 - Monde Réel", d: "Violation : Libellés techniques 'COD_IMPORT_REF' indéchiffrables.", s: "error" },
+            { t: "H9 - Aide au diagnostic", d: "Violation : Message 'FK_VAL_INVALID' incompréhensible.", s: "error" },
+            { t: "H4 - Standards", d: "Violation : Bouton 'Gray' pour une action principale de validation.", s: "error" }
           ]
         },
         bastien: {
-          img: "../assets/bastien_lab.png",
-          steps: [
-            { t: "1. Guidage", d: "Manque d'incitation visuelle pour les actions prioritaires.", s: "error" },
-            { t: "2. Charge de travail", d: "Tableau de 50 colonnes sans filtres par défaut (Surcharge).", s: "error" },
-            { t: "3. Contrôle explicite", d: "Sauvegarde automatique sans confirmation de l'utilisateur.", s: "error" },
-            { t: "4. Adaptabilité", d: "Interface non personnalisable pour les experts.", s: "error" },
-            { t: "5. Gestion des erreurs", d: "Absence de détection des doublons lors de la saisie.", s: "error" },
-            { t: "6. Homogénéité", d: "Boutons 'Save' et 'Delete' de la même couleur (Gris).", s: "error" },
-            { t: "7. Signifiance des codes", d: "Codes couleurs standard (Vert/Rouge) bien respectés.", s: "success" },
-            { t: "8. Compatibilité", d: "L'interface se casse sur les petits écrans d'ordinateurs.", s: "error" }
+          title: "Mini-Lab : Audit Bastien & Scapin",
+          src: "lab/bastien_lab_view.html",
+          points: [
+            { t: "Charge de Travail", d: "Violation : Trop de colonnes (10+) obligent à un scroll horizontal excessif.", s: "error" },
+            { t: "Contrôle Explicite", d: "Violation : Absence de confirmation lors de la suppression.", s: "error" },
+            { t: "Guidage", d: "Violation : Libellés de boutons tous en majuscules sans hiérarchie.", s: "error" },
+            { t: "Homogénéité", d: "Violation : Incohérence dans le style des boutons d'action.", s: "error" }
           ]
         }
       };
+
+      function initLists() {
+        const nList = document.getElementById('nielsen-list');
+        nList.innerHTML = nielsenHeuristics.map((h, i) => `
+          <div class="heuristic-card">
+            <div class="h-num">${i+1}</div>
+            <div class="h-content">
+              <h4>${h.t}</h4>
+              <p>${h.d}</p>
+            </div>
+          </div>
+        `).join('');
+
+        const bList = document.getElementById('bastien-list');
+        bList.innerHTML = bastienCriteria.map((h, i) => `
+          <div class="heuristic-card" style="border-left-color: #4db6ac">
+            <div class="h-num" style="background: #4db6ac">${i+1}</div>
+            <div class="h-content">
+              <h4>${h.t}</h4>
+              <p>${h.d}</p>
+            </div>
+          </div>
+        `).join('');
+      }
 
       function switchView(index) {
         document.querySelectorAll(".nav-item").forEach((item, i) => i === index ? item.classList.add("active") : item.classList.remove("active"));
         document.querySelectorAll(".method-view").forEach((view, i) => i === index ? view.classList.add("active") : view.classList.remove("active"));
       }
 
-      function openFullList(method) {
-        const title = method === 'nielsen' ? "Les 10 Heuristiques de Nielsen" : "Les 8 Critères de Bastien & Scapin";
-        const list = method === 'nielsen' ? nielsenHeuristics : bastienCriteria;
-        document.getElementById("list-title").textContent = title;
-        const body = document.getElementById("list-body");
-        body.innerHTML = list.map(i => `<div class="criteria-item"><h5>${i.t}</h5><p>${i.d}</p></div>`).join('');
-        document.getElementById("list-modal").style.display = "flex";
-      }
-
       function openLab(method) {
         const data = labs[method];
-        document.getElementById("lab-img").src = data.img;
-        const body = document.getElementById("lab-steps");
-        body.innerHTML = data.steps.map(s => `
-          <div class="audit-step ${s.s === 'success' ? 'solved' : ''}">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-              <h5>${s.t}</h5>
-              <iconify-icon icon="${s.s === 'success' ? 'mdi:check-circle' : 'mdi:alert-circle'}" 
-                            style="color: ${s.s === 'success' ? '#8bc34a' : '#e74c3c'}; font-size: 18px;">
-              </iconify-icon>
-            </div>
-            <p>${s.d}</p>
+        document.getElementById('lab-title').innerText = data.title;
+        document.getElementById('lab-iframe').src = data.src;
+        const auditList = document.getElementById('lab-audit-list');
+        auditList.innerHTML = `
+           <div style="background: #1e3a44; color: white; padding: 15px; border-radius: 12px; margin-bottom: 20px; font-size: 13px;">
+             <strong>Mission :</strong> Analysez l'interface à gauche et notez les points de non-conformité.
+           </div>
+        ` + data.points.map(p => `
+          <div class="audit-point ${p.s}">
+            <h5>${p.t} <iconify-icon icon="${p.s === 'error' ? 'mdi:alert-circle' : 'mdi:check-circle'}"></iconify-icon></h5>
+            <p>${p.d}</p>
           </div>
         `).join('');
-        document.getElementById("lab-modal").style.display = "flex";
+        document.getElementById('lab-modal').style.display = "flex";
       }
 
-      function closeModal(id) { document.getElementById(id).style.display = "none"; }
+      function closeLab() {
+        document.getElementById('lab-modal').style.display = "none";
+      }
 
-      window.onclick = function(e) { if(e.target.classList.contains('modal-overlay')) e.target.style.display = "none"; }
+      initLists();
     </script>
   </body>
 </html>

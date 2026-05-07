@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<style>
+  .lab-frame {
+    font-family: sans-serif;
+    background: #fff;
+    padding: 15px;
+    height: 100%;
+    color: #000;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .stat-card {
+    border: 1px solid #000;
+    padding: 10px;
+    font-size: 11px;
+  }
+  .table-box {
+    border: 1px solid #333;
+    overflow-x: auto;
+  }
+  table {
+    width: 200%; /* Violation: horizontal scroll necessary */
+    border-collapse: collapse;
+    font-size: 10px;
+  }
+  th, td {
+    border: 1px solid #ddd;
+    padding: 5px;
+    text-align: left;
+  }
+  th { background: #eee; }
+  .action-bar {
+    margin-top: 15px;
+    display: flex;
+    gap: 5px;
+  }
+  .btn {
+    padding: 5px 10px;
+    font-size: 10px;
+    border: 1px solid #333;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body class="lab-frame">
+  <div style="font-weight: bold; margin-bottom: 10px;">TABLEAU DE BORD EXÉCUTIF - TOUS LES INDICATEURS (542)</div>
+  
+  <div class="grid">
+    <div class="stat-card">Dossiers: 1,442</div>
+    <div class="stat-card">Erreurs: 12</div>
+    <div class="stat-card">Temps moy: 4.2s</div>
+    <div class="stat-card">Utilisateurs: 88</div>
+    <div class="stat-card">Serveur: Stable</div>
+    <div class="stat-card">DB: Connectée</div>
+  </div>
+
+  <div class="table-box">
+    <table>
+      <thead>
+        <tr>
+          <th>ID_TRANS</th><th>DATE_CREAT</th><th>REF_USER</th><th>COD_CAT</th><th>VAL_CURR</th><th>STAT_FLG</th><th>REF_EXT</th><th>DAT_UPD</th><th>USR_UPD</th><th>COMMENT_LOG_SYSTEM_V2</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>#9921</td><td>01/01/2024</td><td>USR_001</td><td>C44</td><td>1,000</td><td>1</td><td>EXT_99</td><td>02/01/2024</td><td>SYS</td><td>LOG_OK_SYSTEM_STABLE</td>
+        </tr>
+        <tr>
+          <td>#9922</td><td>01/01/2024</td><td>USR_002</td><td>C45</td><td>2,400</td><td>0</td><td>EXT_101</td><td>02/01/2024</td><td>SYS</td><td>LOG_ERR_TIMEOUT_RETRY</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="action-bar">
+    <button class="btn">RELIRE</button>
+    <button class="btn">RAFRAICHIR</button>
+    <button class="btn">ARCHIVER</button>
+    <button class="btn">SUPPRIMER</button>
+    <button class="btn">MODIFIER</button>
+    <button class="btn">DÉPLOYER</button>
+  </div>
+</body>
+</html>
