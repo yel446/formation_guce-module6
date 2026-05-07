@@ -143,12 +143,68 @@ body {
 }
 
 .footer-logo-left { justify-self: start; }
-.footer-logo-right { justify-self: end; }
+.footer-logo-right { 
+  justify-self: end; 
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
 
 .footer-logo {
   height: 40px;
   width: auto;
   object-fit: contain;
+}
+
+/* QR Code Container */
+.qr-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.qr-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-family: inherit;
+}
+
+.qr-text .url {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--primary);
+}
+
+.qr-text .scan {
+  font-size: 9px;
+  color: #95a5a6;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.qr-code {
+  height: 50px;
+  width: 50px;
+  object-fit: contain;
+}
+
+/* Marabu Brand Layout */
+.marabu-brand {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.marabu-text {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--primary);
+  white-space: nowrap;
+}
+
+.marabu-text span {
+  color: #8bc34a;
 }
 
 .controls-container {
