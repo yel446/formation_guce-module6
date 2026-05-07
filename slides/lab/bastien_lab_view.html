@@ -3,55 +3,86 @@
 <head>
 <style>
   .lab-frame {
-    font-family: sans-serif;
-    background: #fff;
-    padding: 15px;
-    height: 100%;
-    color: #000;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background: #f4f7f9;
+    padding: 0;
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    color: #333;
+  }
+  .sidebar {
+    width: 180px;
+    background: #2c3e50;
+    color: white;
+    padding: 20px 10px;
+    font-size: 11px;
+    flex-shrink: 0;
+  }
+  .main-content {
+    flex-grow: 1;
+    padding: 20px;
+    overflow-y: auto;
   }
   .grid {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 10px;
-    margin-bottom: 20px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-bottom: 25px;
     border: 2px solid transparent;
     transition: all 0.3s;
   }
   .stat-card {
-    border: 1px solid #000;
-    padding: 10px;
-    font-size: 11px;
+    background: white;
+    border: 1px solid #dce4ec;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
   }
+  .stat-card h6 { margin: 0; color: #7f8c8d; font-size: 10px; text-transform: uppercase; }
+  .stat-card .val { font-size: 20px; font-weight: bold; color: #2c3e50; }
+
   .table-box {
-    border: 1px solid #333;
+    background: white;
+    border: 1px solid #dce4ec;
+    border-radius: 8px;
     overflow-x: auto;
     transition: all 0.3s;
     border: 2px solid transparent;
   }
   table {
-    width: 150%;
+    width: 200%; /* Surcharge informationnelle + Scroll horizontal */
     border-collapse: collapse;
-    font-size: 10px;
+    font-size: 11px;
   }
   th, td {
-    border: 1px solid #ddd;
-    padding: 5px;
+    border-bottom: 1px solid #eee;
+    padding: 12px 15px;
     text-align: left;
   }
-  th { background: #eee; }
+  th { background: #f8f9fa; color: #7f8c8d; font-weight: 600; }
+  
   .action-bar {
-    margin-top: 15px;
+    margin-top: 20px;
     display: flex;
-    gap: 5px;
-    border: 2px solid transparent;
+    gap: 10px;
+    padding: 15px;
+    background: #fff;
+    border: 1px solid #dce4ec;
+    border-radius: 8px;
     transition: all 0.3s;
   }
   .btn {
-    padding: 5px 10px;
-    font-size: 10px;
-    border: 1px solid #333;
+    padding: 8px 15px;
+    font-size: 11px;
+    border-radius: 4px;
+    border: 1px solid #bdc3c7;
+    background: white;
     cursor: pointer;
+    transition: all 0.2s;
   }
+  .btn-danger { color: #e74c3c; border-color: #f5b7b1; }
+  .btn-primary { background: #3498db; color: white; border: none; }
 
   /* Highlighting Classes */
   .highlight-error {
@@ -71,40 +102,53 @@
   }
 </style>
 </head>
-<body class="lab-frame">
-  <div style="font-weight: bold; margin-bottom: 10px;" id="dashboard-title">TABLEAU DE BORD EXÉCUTIF - TOUS LES INDICATEURS (542)</div>
-  
-  <div class="grid" id="stats-grid">
-    <div class="stat-card">Dossiers: 1,442</div>
-    <div class="stat-card">Erreurs: 12</div>
-    <div class="stat-card">Temps moy: 4.2s</div>
-    <div class="stat-card">Utilisateurs: 88</div>
-    <div class="stat-card">Serveur: Stable</div>
-    <div class="stat-card">DB: Connectée</div>
+<body class="lab-frame" id="lab-frame">
+  <div class="sidebar">
+    <div style="font-weight: bold; margin-bottom: 30px; font-size: 14px;">GUCE ADMIN</div>
+    <div style="margin-bottom: 15px; opacity: 0.7;">Tableau de bord</div>
+    <div style="margin-bottom: 15px; opacity: 0.7;">Gestion DVT</div>
+    <div style="margin-bottom: 15px; opacity: 0.7;">Logs Système</div>
+    <div style="margin-bottom: 15px; opacity: 0.7;">Paramètres</div>
   </div>
 
-  <div class="table-box" id="data-table">
-    <table>
-      <thead>
-        <tr>
-          <th>ID_TRANS</th><th>DATE_CREAT</th><th>REF_USER</th><th>COD_CAT</th><th>VAL_CURR</th><th>STAT_FLG</th><th>REF_EXT</th><th>DAT_UPD</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>#9921</td><td>01/01/2024</td><td>USR_001</td><td>C44</td><td>1,000</td><td>1</td><td>EXT_99</td><td>02/01/2024</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+  <div class="main-content">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;" id="dashboard-title">
+      <h2 style="margin: 0; font-size: 22px;">Monitoring Global des Flux</h2>
+      <span style="font-size: 12px; color: #7f8c8d;">Dernière mise à jour: 10:42:12</span>
+    </div>
+    
+    <div class="grid" id="stats-grid">
+      <div class="stat-card"><h6>Total Dossiers</h6><div class="val">1,442</div></div>
+      <div class="stat-card"><h6>Erreurs Flux</h6><div class="val" style="color: #e74c3c;">12</div></div>
+      <div class="stat-card"><h6>Délai Moyen</h6><div class="val">4.2s</div></div>
+      <div class="stat-card"><h6>Activité</h6><div class="val">88%</div></div>
+    </div>
 
-  <div class="action-bar" id="action-bar">
-    <button class="btn">RELIRE</button>
-    <button class="btn">RAFRAICHIR</button>
-    <button class="btn">ARCHIVER</button>
-    <button class="btn">SUPPRIMER</button>
-    <button class="btn">MODIFIER</button>
-    <button class="btn">DÉPLOYER</button>
+    <div class="table-box" id="data-table">
+      <table>
+        <thead>
+          <tr>
+            <th>ID_TRANS</th><th>DATE_CREAT</th><th>REF_USER</th><th>COD_CAT</th><th>VAL_CURR</th><th>STAT_FLG</th><th>REF_EXT</th><th>DAT_UPD</th><th>USR_UPD</th><th>ZONE_GEO</th><th>SEC_LEVEL</th><th>FLAG_RETRY</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>#992122</td><td>01/05/2024</td><td>USR_001</td><td>C44</td><td>1,000,000</td><td>1</td><td>EXT_99_A</td><td>02/05/2024</td><td>SYS_AUTO</td><td>ABJ_ZONE_1</td><td>L3</td><td>0</td>
+          </tr>
+          <tr>
+            <td>#992123</td><td>01/05/2024</td><td>USR_002</td><td>C45</td><td>2,400,000</td><td>0</td><td>EXT_101_B</td><td>02/05/2024</td><td>SYS_AUTO</td><td>SDR_ZONE_2</td><td>L1</td><td>1</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="action-bar" id="action-bar">
+      <button class="btn">RAFRAICHIR</button>
+      <button class="btn">EXPORTER CSV</button>
+      <button class="btn">IMPRIMER</button>
+      <button class="btn btn-danger">TOUT SUPPRIMER</button>
+      <button class="btn btn-primary">VALIDER LA SÉLECTION</button>
+    </div>
   </div>
 
   <script>

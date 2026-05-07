@@ -11,7 +11,7 @@
     transition: all 0.3s;
   }
   .header {
-    background: #003366;
+    background: #1a4d8c;
     color: white;
     padding: 10px 15px;
     font-size: 14px;
@@ -28,7 +28,7 @@
   .form-title {
     font-size: 16px;
     font-weight: bold;
-    color: #003366;
+    color: #1a4d8c;
     margin-bottom: 20px;
     text-transform: uppercase;
   }
@@ -74,8 +74,8 @@
     border: none;
     transition: all 0.3s;
   }
-  .btn-gray { background: #eee; color: #333; }
-  .btn-blue { background: #003366; color: white; }
+  .btn-secondary { background: #eee; color: #333; }
+  .btn-grey-bad { background: #95a5a6; color: white; } /* VIOLATION: Main button should be prominent/primary color */
 
   /* Highlighting Classes */
   .highlight-error {
@@ -97,45 +97,43 @@
 </head>
 <body class="lab-frame">
   <div class="header" id="sys-header">
-    <span>SYSTÈME DE GESTION v1.0</span>
-    <span>Connecté: USER_99</span>
+    <span>GUCE-CI — SYSTÈME DVT v3.4</span>
+    <span>Connecté: USR_PROD_99</span>
   </div>
   
   <div class="form-box">
-    <div class="form-title" id="form-title">ENREGISTREMENT_DOSSIER_EXP_44</div>
+    <div class="form-title" id="form-title">ENREGISTREMENT_DVT_TYPE_04</div>
     
     <div class="error-msg" id="error-msg">
-      EXCEPTION_CRITICAL: FK_NMENCL_ERR at row 12. 
-      Constraint PK_001 violated. Please contact SYSADMIN.
+      Error 0x80042 — FK_VAL_INVALID on field REF_HSCODE.
+      Constraint CHK_REGEX failed. Code: SQL_ERR_2147.
     </div>
 
     <div class="field" id="field-ref">
-      <label>COD_IMPORT_REF</label>
+      <label>REF_IMPORTATEUR (ID_SQL)</label>
       <input type="text" placeholder="Entrez le code technique">
     </div>
     
     <div class="field" id="field-nature">
-      <label>NATURE_MARCHANDISE</label>
+      <label>LIBELLE_MARCHANDISE_VAL</label>
       <input type="text">
     </div>
 
     <div class="field" id="field-val">
-      <label>VALEUR_FOB</label>
+      <label>VAL_FOB_DEVISE</label>
       <input type="text">
     </div>
 
     <div class="btns" id="action-btns">
-      <button class="btn btn-gray">ANNULER</button>
-      <button class="btn btn-blue" id="btn-submit">VALIDER</button>
+      <button class="btn btn-secondary">ANNULER</button>
+      <button class="btn btn-grey-bad" id="btn-submit">VALIDER LE DOSSIER</button>
     </div>
   </div>
 
   <script>
-    // Listen for messages from parent to highlight elements
     window.addEventListener('message', (e) => {
       const { action, targetId, status } = e.data;
       if (action === 'highlight') {
-        // Clear previous highlights
         document.querySelectorAll('.highlight-error, .highlight-success').forEach(el => {
           el.classList.remove('highlight-error', 'highlight-success');
         });
