@@ -144,7 +144,10 @@
         gap: 18px;
         transition: all 0.3s;
         border: 1px solid #edf2f7;
+        cursor: pointer;
       }
+      .heuristic-card:hover { transform: scale(1.02); background: white; box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+      
       .h-num {
         background: #1e3a44; color: white; width: 34px; height: 34px; border-radius: 50%;
         display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; flex-shrink: 0;
@@ -152,7 +155,7 @@
       .h-content h4 { font-size: 16px; font-weight: 700; color: var(--primary); margin-bottom: 5px; }
       .h-content p { font-size: 13px; color: #555; line-height: 1.5; }
 
-      /* Modal */
+      /* Modal Base */
       .modal-overlay {
         position: fixed; top: 0; left: 0; width: 100%; height: 100%;
         background: rgba(30, 58, 68, 0.95); backdrop-filter: blur(8px);
@@ -161,8 +164,11 @@
       .modal-content {
         background: white; width: 95%; max-width: 1200px; height: 92vh;
         border-radius: 30px; padding: 25px; position: relative; display: flex; flex-direction: column;
-        overflow-y: auto;
+        overflow: hidden;
       }
+      .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+      
+      /* Lab Modal Styles */
       .lab-body { display: grid; grid-template-columns: 1fr 1.2fr; gap: 25px; flex-grow: 1; overflow: hidden; }
       
       @media (max-width: 1024px) {
@@ -171,24 +177,25 @@
         .modal-content { padding: 15px; }
       }
 
-      .interface-viewer { border-radius: 20px; border: 2px solid #e2e8f0; overflow: hidden; }
+      .interface-viewer { border-radius: 20px; border: 2px solid #e2e8f0; overflow: hidden; background: #333; display: flex; justify-content: center; }
       .interface-viewer iframe { width: 100%; height: 100%; border: none; }
       .audit-scroller { overflow-y: auto; padding-right: 15px; }
 
       .audit-point {
-        background: #f8faff; padding: 12px; border-radius: 12px; margin-bottom: 12px;
+        background: #f8faff; padding: 15px; border-radius: 12px; margin-bottom: 12px;
         border: 2px solid transparent; cursor: pointer; transition: all 0.3s;
       }
-      .audit-point:hover { background: #edf2f7; transform: translateY(-2px); }
+      .audit-point:hover { background: #edf2f7; }
       .audit-point.active { border-color: var(--primary); background: white; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
-      .audit-point h5 { font-size: 13px; color: var(--primary); margin: 0; display: flex; justify-content: space-between; align-items: center; }
-      .audit-point .point-detail { margin-top: 10px; font-size: 12px; color: #555; line-height: 1.4; display: none; padding-top: 8px; border-top: 1px dashed #ddd; }
-      .audit-point.active .point-detail { display: block; }
+      
+      .point-title { font-weight: 800; color: var(--primary); font-size: 14px; margin-bottom: 5px; }
+      .point-desc { font-size: 12px; color: #7f8c8d; font-style: italic; margin-bottom: 10px; }
+      .point-analysis { display: none; padding-top: 10px; border-top: 1px dashed #ddd; margin-top: 10px; }
+      .audit-point.active .point-analysis { display: block; animation: slideDown 0.3s ease; }
+      
+      @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
-      .point-note {
-        font-size: 11px; font-weight: 800; background: #eee; padding: 2px 8px; border-radius: 4px; color: #1e3a44;
-      }
-
+      .point-note { font-size: 11px; font-weight: 800; background: #eee; padding: 2px 8px; border-radius: 4px; color: #1e3a44; }
       .gravity-badge { font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 50px; text-transform: uppercase; }
       .g-0 { background: #e8f5e9; color: #2e7d32; }
       .g-1 { background: #fff3e0; color: #ef6c00; }
@@ -196,21 +203,17 @@
       .g-3 { background: #c62828; color: white; }
       .g-4 { background: #000; color: #ffeb3b; }
 
-      .lab-footer {
-        margin-top: 15px; padding-top: 15px; border-top: 2px solid #f0f4f8;
-        display: flex; justify-content: space-between; align-items: center;
-      }
-      .global-score-box {
-        background: #f8faff; padding: 12px 25px; border-radius: 15px; border: 2px solid var(--primary);
-        display: flex; flex-direction: column; align-items: center; min-width: 150px;
-      }
+      .lab-footer { margin-top: 15px; padding-top: 15px; border-top: 2px solid #f0f4f8; display: flex; justify-content: space-between; align-items: center; }
+      .global-score-box { background: #f8faff; padding: 12px 25px; border-radius: 15px; border: 2px solid var(--primary); display: flex; flex-direction: column; align-items: center; min-width: 150px; }
       .score-val { font-size: 32px; font-weight: 800; color: var(--primary); line-height: 1; }
       .score-calc { font-size: 10px; color: #7f8c8d; font-family: monospace; margin-top: 5px; }
-      .score-label { font-size: 11px; font-weight: 700; color: #555; text-transform: uppercase; letter-spacing: 1px; }
-      
-      .lab-legend { display: flex; gap: 10px; flex-wrap: wrap; }
-      .legend-item { display: flex; align-items: center; gap: 5px; font-size: 10px; font-weight: 700; color: #666; }
-      .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+      /* Detail Modal (Main Grid) */
+      .detail-modal { width: 500px; height: auto; max-height: 80vh; padding: 40px; border-radius: 25px; }
+      .detail-header { margin-bottom: 20px; }
+      .detail-title { font-size: 24px; font-weight: 800; color: var(--primary); }
+      .detail-body { font-size: 15px; color: #444; line-height: 1.6; }
+      .example-box { background: #f0f4f8; padding: 20px; border-radius: 15px; margin-top: 20px; border-left: 5px solid #8bc34a; }
 
       .modal-close { background: #f5f5f5; border: none; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 20px; }
       .modal-close:hover { background: #e74c3c; color: white; }
@@ -218,7 +221,7 @@
   </head>
   <body class="slide-content">
     <div class="slide-header-rubric">
-      <h1>Analyse Heuristique : Scoring Didactique</h1>
+      <h1>Analyse Heuristique : Immersion & Didactique</h1>
     </div>
 
     <!-- Sub-Navigation -->
@@ -256,20 +259,45 @@
       </div>
 
       <div class="method-view" id="view-2">
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; height: 100%;">
+        <div class="illustration-col">
           <div class="illustration-box"><img src="../assets/verdict.png" alt="Verdict" /></div>
+        </div>
+        <div class="content-col">
+          <div class="method-header">
+            <div class="title-group">
+              <h2>Verdict Terrain</h2>
+              <p>L'art de l'hybridation stratégique</p>
+            </div>
+          </div>
           <div class="verdict-content">
-             <h2 style="color: var(--primary); font-weight: 800; font-size: 32px; margin-bottom: 20px;">L'art de l'hybridation</h2>
-             <p style="font-size: 16px; color: #444; line-height: 1.6; margin-bottom: 25px;"> Sur le terrain, utilisez Nielsen pour dégrossir rapidement et Bastien & Scapin pour sécuriser les parcours critiques. </p>
-             <div style="background: var(--primary); color: white; padding: 25px; border-radius: 20px; font-size: 15px;">
-                <strong style="color: #8bc34a; font-size: 18px; display: block; margin-bottom: 10px;">Conseil pro :</strong> Commencez toujours par un audit Nielsen pour identifier 80% des erreurs, puis approfondissez avec B&S sur les systèmes complexes.
+             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px;">
+                <div style="background: #f8faff; padding: 20px; border-radius: 15px; border-top: 4px solid var(--primary);">
+                   <h4 style="color: var(--primary); margin-bottom: 10px;">Usage Idéal : Nielsen</h4>
+                   <ul style="font-size: 13px; color: #555; padding-left: 15px; line-height: 1.6;">
+                      <li>Audits de surface & rapidité.</li>
+                      <li>Interfaces grand public & e-commerce.</li>
+                      <li>Détection des 80% d'erreurs majeures.</li>
+                   </ul>
+                </div>
+                <div style="background: #f8faff; padding: 20px; border-radius: 15px; border-top: 4px solid #8bc34a;">
+                   <h4 style="color: var(--primary); margin-bottom: 10px;">Usage Idéal : B&S</h4>
+                   <ul style="font-size: 13px; color: #555; padding-left: 15px; line-height: 1.6;">
+                      <li>Systèmes experts & métiers (GUCE).</li>
+                      <li>Optimisation de la charge cognitive.</li>
+                      <li>Critères de fiabilité et de saisie.</li>
+                   </ul>
+                </div>
+             </div>
+             <div style="background: var(--primary); color: white; padding: 25px; border-radius: 20px; font-size: 15px; box-shadow: 0 10px 30px rgba(30, 58, 68, 0.2);">
+                <strong style="color: #8bc34a; font-size: 18px; display: block; margin-bottom: 10px;">Le Verdict :</strong> 
+                Sur le terrain, utilisez **Nielsen** pour dégrossir rapidement l'aspect visuel et les standards, puis approfondissez avec **Bastien & Scapin** pour sécuriser les parcours critiques et la saisie de données complexes.
              </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Modal -->
+    <!-- Lab Modal -->
     <div id="lab-modal" class="modal-overlay">
       <div class="modal-content">
         <div class="modal-header">
@@ -297,29 +325,47 @@
       </div>
     </div>
 
+    <!-- Detail Modal (for main grid) -->
+    <div id="detail-modal" class="modal-overlay">
+       <div class="modal-content detail-modal">
+          <button class="modal-close" onclick="closeDetail()" style="position: absolute; top: 20px; right: 20px;">×</button>
+          <div class="detail-header">
+             <div id="detail-type" style="color: #8bc34a; font-weight: 800; font-size: 12px; text-transform: uppercase; margin-bottom: 5px;"></div>
+             <h2 id="detail-title" class="detail-title"></h2>
+          </div>
+          <div class="detail-body">
+             <p id="detail-text"></p>
+             <div class="example-box">
+                <strong style="color: var(--primary); display: block; margin-bottom: 5px;">Exemple concret :</strong>
+                <span id="detail-example"></span>
+             </div>
+          </div>
+       </div>
+    </div>
+
     <script>
       const nielsenHeuristics = [
-        { t: "1. Visibilité de l'état", d: "Informer l'utilisateur sur ce qui se passe." },
-        { t: "2. Correspondance monde réel", d: "Parler le langage de l'utilisateur." },
-        { t: "3. Contrôle et liberté", d: "Permettre d'annuler/refaire facilement." },
-        { t: "4. Cohérence et standards", d: "Respecter les conventions UX." },
-        { t: "5. Prévention des erreurs", d: "Éviter les erreurs en amont." },
-        { t: "6. Reconnaissance > Rappel", d: "Rendre les objets et actions visibles." },
-        { t: "7. Flexibilité & Efficacité", d: "Accélérateurs pour les experts." },
-        { t: "8. Esthétique minimaliste", d: "Éviter le bruit visuel inutile." },
-        { t: "9. Aide au diagnostic", d: "Messages d'erreur clairs." },
-        { t: "10. Aide & Documentation", d: "Info facile à trouver." }
+        { t: "1. Visibilité de l'état", d: "Informer l'utilisateur sur ce qui se passe.", ex: "Barre de progression lors d'un chargement de dossier.", long: "Le système doit toujours tenir les utilisateurs informés de ce qui se passe, grâce à un retour d'information approprié dans un délai raisonnable." },
+        { t: "2. Correspondance monde réel", d: "Parler le langage de l'utilisateur.", ex: "Utiliser 'Supprimer' au lieu de 'TRUNCATE_TABLE'.", long: "Le système doit parler le langage des utilisateurs, avec des mots, des phrases et des concepts qui leur sont familiers, plutôt qu'en termes orientés système." },
+        { t: "3. Contrôle et liberté", d: "Permettre d'annuler/refaire facilement.", ex: "Un bouton 'Annuler' ou une croix de fermeture claire.", long: "Les utilisateurs choisissent souvent des fonctions du système par erreur et ont besoin d'une 'issue de secours' clairement marquée pour quitter l'état indésirable." },
+        { t: "4. Cohérence et standards", d: "Respecter les conventions UX.", ex: "Le logo cliquable renvoie toujours à l'accueil.", long: "Les utilisateurs ne devraient pas avoir à se demander si des mots, des situations ou des actions différentes signifient la même chose." },
+        { t: "5. Prévention des erreurs", d: "Éviter les erreurs en amont.", ex: "Confirmation avant de valider un paiement.", long: "Mieux encore qu'un bon message d'erreur, une conception soignée qui empêche un problème de se produire en premier lieu." },
+        { t: "6. Reconnaissance > Rappel", d: "Rendre les objets et actions visibles.", ex: "Menu de navigation constant plutôt que caché.", long: "Minimisez la charge de mémoire de l'utilisateur en rendant les objets, les actions et les options visibles." },
+        { t: "7. Flexibilité & Efficacité", d: "Accélérateurs pour les experts.", ex: "Raccourcis clavier (Alt+S pour Sauver).", long: "Les accélérateurs — invisibles pour l'utilisateur novice — peuvent souvent accélérer l'interaction pour l'utilisateur expert." },
+        { t: "8. Esthétique minimaliste", d: "Éviter le bruit visuel inutile.", ex: "Épuré l'interface des champs non obligatoires.", long: "Les dialogues ne doivent pas contenir d'informations non pertinentes ou rarement nécessaires." },
+        { t: "9. Aide au diagnostic", d: "Messages d'erreur clairs.", ex: "'Email invalide (@ manquant)' vs 'Error 500'.", long: "Les messages d'erreur doivent être exprimés en langage clair (pas de codes), indiquer précisément le problème et suggérer une solution." },
+        { t: "10. Aide & Documentation", d: "Info facile à trouver.", ex: "Tooltips d'aide sur les champs complexes du GUCE.", long: "Même s'il est préférable que le système puisse être utilisé sans documentation, il peut être nécessaire de fournir une aide." }
       ];
 
       const bastienCriteria = [
-        { t: "1. Guidage", d: "Orienter et informer l'utilisateur." },
-        { t: "2. Charge de travail", d: "Réduire l'effort mental." },
-        { t: "3. Contrôle explicite", d: "Maîtrise totale des actions." },
-        { t: "4. Adaptabilité", d: "S'ajuster au contexte utilisateur." },
-        { t: "5. Gestion des erreurs", d: "Prévenir et corriger les erreurs." },
-        { t: "6. Homogénéité", d: "Cohérence interne de l'interface." },
-        { t: "7. Signifiance des codes", d: "Adéquation codes et objets." },
-        { t: "8. Compatibilité", d: "Accord avec les attentes métier." }
+        { t: "1. Guidage", d: "Orienter et informer l'utilisateur.", ex: "Labels clairs et retours d'état immédiats.", long: "Moyens mis en œuvre pour conseiller, orienter, informer et conduire l'utilisateur lors de ses interactions." },
+        { t: "2. Charge de travail", d: "Réduire l'effort mental.", ex: "Saisie automatique des codes douaniers.", long: "Ensemble des éléments de l'interface qui sollicitent l'attention, la mémoire et l'effort de l'utilisateur." },
+        { t: "3. Contrôle explicite", d: "Maîtrise totale des actions.", ex: "L'utilisateur valide chaque étape de sa saisie.", long: "Le système doit donner à l'utilisateur le sentiment qu'il contrôle les actions système." },
+        { t: "4. Adaptabilité", d: "S'ajuster au contexte utilisateur.", ex: "Menu personnalisable selon le métier (Transitaire vs Douane).", long: "Capacité de l'interface à réagir selon le contexte d'utilisation et les besoins de l'utilisateur." },
+        { t: "5. Gestion des erreurs", d: "Prévenir et corriger les erreurs.", ex: "Messages correctifs précis et constructifs.", long: "Moyens permettant d'éviter les erreurs ou de les corriger simplement lorsqu'elles surviennent." },
+        { t: "6. Homogénéité", d: "Cohérence interne de l'interface.", ex: "Même style de boutons sur tout le portail GUCE.", long: "Les mêmes choix de conception (codes, libellés, mise en page) pour des contextes identiques." },
+        { t: "7. Signifiance des codes", d: "Adéquation codes et objets.", ex: "Icône 'Camion' pour le transport routier.", long: "Rapport entre les codes (icônes, couleurs, abréviations) et les objets ou actions qu'ils représentent." },
+        { t: "8. Compatibilité", d: "Accord avec les attentes métier.", ex: "Le flux logiciel suit le flux physique de la marchandise.", long: "Accord entre les caractéristiques de l'utilisateur (mémoire, attentes) et les tâches réelles qu'il effectue." }
       ];
 
       const labs = {
@@ -327,37 +373,49 @@
           title: "Audit Nielsen Interactif (Desktop)",
           src: "lab/nielsen_lab_view.html",
           points: [
-            { t: "H1 - Visibilité de l'état", d: "Bloquant : Aucun feedback visuel après 'Valider'.", s: "error", g: 4, tid: "btn-submit" },
-            { t: "H2 - Monde Réel", d: "Critique : Libellés techniques 'COD_IMPORT_REF' indéchiffrables.", s: "error", g: 3, tid: "field-ref" },
-            { t: "H3 - Contrôle utilisateur", d: "Respecté : Bouton Annuler bien visible.", s: "success", g: 0, tid: "action-btns" },
-            { t: "H4 - Standards & Cohérence", d: "Majeur : Bouton principal GRIS (Violation visuelle).", s: "error", g: 2, tid: "btn-submit" },
-            { t: "H5 - Prévention d'erreurs", d: "Critique : Accepte n'importe quoi sans contrôle.", s: "error", g: 3, tid: "field-val" },
-            { t: "H6 - Reconnaissance", d: "Respecté : Header constant pour le repérage.", s: "success", g: 0, tid: "sys-header" },
-            { t: "H7 - Flexibilité", d: "Mineur : Manque de raccourcis clavier.", s: "error", g: 1, tid: "lab-frame" },
-            { t: "H8 - Minimalisme", d: "Majeur : Message technique cryptique polluant.", s: "error", g: 2, tid: "error-msg" },
-            { t: "H9 - Diagnostic", d: "Critique : Pas de suggestion de correction d'erreur.", s: "error", g: 3, tid: "error-msg" },
-            { t: "H10 - Aide", d: "Majeur : Pas d'aide contextuelle sur cet écran.", s: "error", g: 2, tid: "lab-frame" }
+            { t: "H1 - Visibilité de l'état", d: "Informer sur l'état système.", a: "Bloquant : Aucun feedback visuel après 'Valider'.", s: "error", g: 4, tid: "btn-submit" },
+            { t: "H2 - Monde Réel", d: "Utiliser un langage familier.", a: "Critique : Libellés techniques 'COD_IMPORT_REF'.", s: "error", g: 3, tid: "field-ref" },
+            { t: "H3 - Contrôle utilisateur", d: "Liberté de navigation.", a: "Respecté : Bouton Annuler bien visible.", s: "success", g: 0, tid: "action-btns" },
+            { t: "H4 - Standards & Cohérence", d: "Respecter les conventions.", a: "Majeur : Bouton principal GRIS (Défaut visuel).", s: "error", g: 2, tid: "btn-submit" },
+            { t: "H5 - Prévention d'erreurs", d: "Éviter les erreurs de saisie.", a: "Critique : Pas de contrôle de format sur les prix.", s: "error", g: 3, tid: "field-val" },
+            { t: "H6 - Reconnaissance", d: "Réduire la charge mémorielle.", a: "Respecté : Header constant pour le repérage.", s: "success", g: 0, tid: "sys-header" },
+            { t: "H7 - Flexibilité", d: "Accélérateurs experts.", a: "Mineur : Manque de raccourcis clavier.", s: "error", g: 1, tid: "lab-frame" },
+            { t: "H8 - Minimalisme", d: "Éviter le bruit visuel.", a: "Majeur : Message technique cryptique polluant.", s: "error", g: 2, tid: "error-msg" },
+            { t: "H9 - Diagnostic", d: "Aider à corriger l'erreur.", a: "Critique : Pas de suggestion de correction d'erreur.", s: "error", g: 3, tid: "error-msg" },
+            { t: "H10 - Aide", d: "Documentation utile.", a: "Majeur : Pas d'aide contextuelle sur cet écran.", s: "error", g: 2, tid: "lab-frame" }
           ]
         },
         bastien: {
           title: "Audit Bastien & Scapin (Mobile)",
           src: "lab/bastien_mobile_view.html",
           points: [
-            { t: "1. Guidage", d: "Critique : Titre technique 'MENU_PRINCIPAL_DVT' peu clair.", s: "error", g: 3, tid: "main-title" },
-            { t: "2. Charge de travail", d: "Bloquant : Grid 3x3 avec des libellés de 3 lettres indéchiffrables.", s: "error", g: 4, tid: "grid-menu" },
-            { t: "3. Contrôle explicite", d: "Majeur : Bouton Valider gris et petit pour un usage pouce.", s: "error", g: 3, tid: "btn-val" },
-            { t: "4. Adaptabilité", d: "Majeur : Formulaire non optimisé pour la saisie mobile.", s: "error", g: 2, tid: "form-section" },
-            { t: "5. Gestion des erreurs", d: "Critique : Logs d'erreurs SQL rouges affichés en brut.", s: "error", g: 3, tid: "err-log" },
-            { t: "6. Homogénéité", d: "Respecté : Navigation basse (tab bar) respectant les codes mobile.", s: "success", g: 0, tid: "footer-nav" },
-            { t: "7. Signifiance des codes", d: "Respecté : Icones/Libellés de navigation standards.", s: "success", g: 0, tid: "footer-nav" },
-            { t: "8. Compatibilité", d: "Bloquant : Police 8px inutilisable sur smartphone.", s: "error", g: 4, tid: "mobile-shell" }
+            { t: "1. Guidage", d: "Informer et conseiller.", a: "Critique : Titre technique 'MENU_PRINCIPAL_DVT' peu clair.", s: "error", g: 3, tid: "main-title" },
+            { t: "2. Charge de travail", d: "Réduire l'effort mental.", a: "Bloquant : Grid avec libellés de 3 lettres indéchiffrables.", s: "error", g: 4, tid: "grid-menu" },
+            { t: "3. Contrôle explicite", d: "Maîtrise utilisateur.", a: "Majeur : Bouton Valider gris et petit pour le pouce.", s: "error", g: 3, tid: "btn-val" },
+            { t: "4. Adaptabilité", d: "Flexibilité selon l'usage.", a: "Majeur : Formulaire non optimisé pour saisie mobile.", s: "error", g: 2, tid: "form-section" },
+            { t: "5. Gestion des erreurs", d: "Correction et prévention.", a: "Critique : Logs d'erreurs SQL rouges affichés en brut.", s: "error", g: 3, tid: "err-log" },
+            { t: "6. Homogénéité", d: "Cohérence interne.", a: "Respecté : Navigation basse (tab bar) respectant les codes.", s: "success", g: 0, tid: "footer-nav" },
+            { t: "7. Signifiance des codes", d: "Sémantique visuelle.", a: "Respecté : Icônes de navigation standards.", s: "success", g: 0, tid: "footer-nav" },
+            { t: "8. Compatibilité", d: "Respect des capacités.", a: "Bloquant : Police 8px inutilisable sur smartphone.", s: "error", g: 4, tid: "mobile-shell" }
           ]
         }
       };
 
       function initLists() {
-        document.getElementById('nielsen-list').innerHTML = nielsenHeuristics.map((h, i) => `<div class="heuristic-card"><div class="h-num">${i+1}</div><div class="h-content"><h4>${h.t}</h4><p>${h.d}</p></div></div>`).join('');
-        document.getElementById('bastien-list').innerHTML = bastienCriteria.map((h, i) => `<div class="heuristic-card" style="border-left-color: #4db6ac"><div class="h-num" style="background: #4db6ac">${i+1}</div><div class="h-content"><h4>${h.t}</h4><p>${h.d}</p></div></div>`).join('');
+        const nList = document.getElementById('nielsen-list');
+        nList.innerHTML = nielsenHeuristics.map((h, i) => `
+          <div class="heuristic-card" onclick="openDetail('Nielsen', ${i})">
+            <div class="h-num">${i+1}</div>
+            <div class="h-content"><h4>${h.t}</h4><p>${h.d}</p></div>
+          </div>
+        `).join('');
+        const bList = document.getElementById('bastien-list');
+        bList.innerHTML = bastienCriteria.map((h, i) => `
+          <div class="heuristic-card" style="border-left-color: #4db6ac" onclick="openDetail('Bastien', ${i})">
+            <div class="h-num" style="background: #4db6ac">${i+1}</div>
+            <div class="h-content"><h4>${h.t}</h4><p>${h.d}</p></div>
+          </div>
+        `).join('');
       }
 
       function switchView(index) {
@@ -365,12 +423,42 @@
         document.querySelectorAll(".method-view").forEach((view, i) => i === index ? view.classList.add("active") : view.classList.remove("active"));
       }
 
+      function openDetail(type, index) {
+        const data = type === 'Nielsen' ? nielsenHeuristics[index] : bastienCriteria[index];
+        document.getElementById('detail-type').innerText = type + " - Critère #" + (index+1);
+        document.getElementById('detail-title').innerText = data.t;
+        document.getElementById('detail-text').innerText = data.long;
+        document.getElementById('detail-example').innerText = data.ex;
+        document.getElementById('detail-modal').style.display = "flex";
+      }
+
+      function closeDetail() { document.getElementById('detail-modal').style.display = "none"; }
+
       function openLab(method) {
         const data = labs[method];
         document.getElementById('lab-title').innerText = data.title;
         document.getElementById('lab-iframe').src = data.src;
         if (window.parent) window.parent.postMessage({ action: 'toggleFooter', visible: false }, '*');
-        document.getElementById('lab-audit-list').innerHTML = `<div style="background: #1e3a44; color: white; padding: 15px; border-radius: 12px; margin-bottom: 20px; font-size: 13px;"><strong>Mode Lab :</strong> Cliquez sur un critère pour voir sa note et l'impact.</div>` + data.points.map((p, i) => `<div class="audit-point" onclick="inspectPoint('${method}', ${i}, this)"><h5>${p.t}<div class="point-status"><span class="point-note">${4-p.g}/4</span><iconify-icon icon="${p.s === 'error' ? 'mdi:alert-circle' : 'mdi:check-circle'}" style="color: ${p.s === 'error' ? '#e74c3c' : '#2ecc71'}"></iconify-icon></div></h5><div class="point-detail">${p.d}</div></div>`).join('');
+        document.getElementById('lab-audit-list').innerHTML = `
+           <div style="background: #1e3a44; color: white; padding: 15px; border-radius: 12px; margin-bottom: 20px; font-size: 13px;">
+             <strong>Mode Lab :</strong> Cliquez sur un critère pour révéler l'analyse et voir l'impact.
+           </div>
+        ` + data.points.map((p, i) => `
+          <div class="audit-point" onclick="inspectPoint('${method}', ${i}, this)">
+            <div class="point-title">${p.t}</div>
+            <div class="point-desc">${p.d}</div>
+            <div class="point-analysis">
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                 <span class="point-note">${4-p.g}/4</span>
+                 <span class="gravity-badge g-${p.g}">${p.g}: ${getGravityLabel(p.g)}</span>
+              </div>
+              <div style="font-size: 13px; color: #333; font-weight: 600; display: flex; gap: 10px; align-items: flex-start;">
+                 <iconify-icon icon="${p.s === 'error' ? 'mdi:alert-circle' : 'mdi:check-circle'}" style="color: ${p.s === 'error' ? '#e74c3c' : '#2ecc71'}; font-size: 18px;"></iconify-icon>
+                 ${p.a}
+              </div>
+            </div>
+          </div>
+        `).join('');
         calculateUXScore(method);
         document.getElementById('lab-modal').style.display = "flex";
       }
@@ -380,7 +468,7 @@
         const sum = notes.reduce((a, b) => a + b, 0);
         const max = labs[method].points.length * 4;
         document.getElementById('ux-score-val').innerText = Math.round((sum / max) * 100) + "%";
-        document.getElementById('ux-score-calc').innerText = `Somme des points : ${sum} / ${max}`;
+        document.getElementById('ux-score-calc').innerText = `Total : ${sum} / ${max}`;
       }
 
       function inspectPoint(method, index, el) {

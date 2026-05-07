@@ -175,8 +175,11 @@
       // Handle messages from slides (e.g., to hide footer during Labs)
       window.addEventListener("message", (e) => {
         if (e.data.action === "toggleFooter") {
-          mainFooter.style.display = e.data.visible ? "flex" : "none";
-          signature.style.display = e.data.visible ? (currentIndex === 0 ? "flex" : "none") : "none";
+          mainFooter.style.display = e.data.visible ? "grid" : "none";
+          // Restore signature only if it's the home page
+          if (currentIndex === 0) {
+            signature.style.display = e.data.visible ? "flex" : "none";
+          }
         }
       });
 
