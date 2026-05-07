@@ -185,6 +185,10 @@
       .audit-point .point-detail { margin-top: 10px; font-size: 12px; color: #555; line-height: 1.4; display: none; padding-top: 8px; border-top: 1px dashed #ddd; }
       .audit-point.active .point-detail { display: block; }
 
+      .point-note {
+        font-size: 11px; font-weight: 800; background: #eee; padding: 2px 8px; border-radius: 4px; color: #1e3a44;
+      }
+
       .gravity-badge { font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 50px; text-transform: uppercase; }
       .g-0 { background: #e8f5e9; color: #2e7d32; }
       .g-1 { background: #fff3e0; color: #ef6c00; }
@@ -196,12 +200,14 @@
         margin-top: 15px; padding-top: 15px; border-top: 2px solid #f0f4f8;
         display: flex; justify-content: space-between; align-items: center;
       }
-      .global-score {
-        background: #f8faff; padding: 10px 20px; border-radius: 12px; border: 2px solid var(--primary);
-        display: flex; align-items: center; gap: 15px;
+      .global-score-box {
+        background: #f8faff; padding: 12px 25px; border-radius: 15px; border: 2px solid var(--primary);
+        display: flex; flex-direction: column; align-items: center; min-width: 150px;
       }
-      .score-val { font-size: 28px; font-weight: 800; color: var(--primary); }
-      .score-label { font-size: 11px; font-weight: 700; color: #555; line-height: 1.2; }
+      .score-val { font-size: 32px; font-weight: 800; color: var(--primary); line-height: 1; }
+      .score-calc { font-size: 10px; color: #7f8c8d; font-family: monospace; margin-top: 5px; }
+      .score-label { font-size: 11px; font-weight: 700; color: #555; text-transform: uppercase; letter-spacing: 1px; }
+      
       .lab-legend { display: flex; gap: 10px; flex-wrap: wrap; }
       .legend-item { display: flex; align-items: center; gap: 5px; font-size: 10px; font-weight: 700; color: #666; }
       .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
@@ -212,7 +218,7 @@
   </head>
   <body class="slide-content">
     <div class="slide-header-rubric">
-      <h1>Analyse Heuristique : Scoring & Veracité Lab</h1>
+      <h1>Analyse Heuristique : Scoring Didactique</h1>
     </div>
 
     <!-- Sub-Navigation -->
@@ -276,15 +282,16 @@
         </div>
         <div class="lab-footer">
           <div class="lab-legend">
-            <div class="legend-item"><div class="legend-dot g-0"></div> Respecté (0)</div>
-            <div class="legend-item"><div class="legend-dot g-1"></div> Mineur (1)</div>
-            <div class="legend-item"><div class="legend-dot g-2"></div> Majeur (2)</div>
-            <div class="legend-item"><div class="legend-dot g-3"></div> Critique (3)</div>
-            <div class="legend-item"><div class="legend-dot g-4"></div> Bloquant (4)</div>
+            <div class="legend-item"><div class="legend-dot g-0"></div> Respecté (4/4)</div>
+            <div class="legend-item"><div class="legend-dot g-1"></div> Mineur (3/4)</div>
+            <div class="legend-item"><div class="legend-dot g-2"></div> Majeur (2/4)</div>
+            <div class="legend-item"><div class="legend-dot g-3"></div> Critique (1/4)</div>
+            <div class="legend-item"><div class="legend-dot g-4"></div> Bloquant (0/4)</div>
           </div>
-          <div class="global-score">
+          <div class="global-score-box">
+            <div class="score-label">NOTE UX GLOBALE</div>
             <div class="score-val" id="ux-score-val">--</div>
-            <div class="score-label">NOTE UX<br>GLOBALE</div>
+            <div class="score-calc" id="ux-score-calc">--</div>
           </div>
         </div>
       </div>
@@ -300,7 +307,7 @@
         { t: "6. Reconnaissance > Rappel", d: "Rendre les objets et actions visibles." },
         { t: "7. Flexibilité & Efficacité", d: "Accélérateurs pour les experts." },
         { t: "8. Esthétique minimaliste", d: "Éviter le bruit visuel inutile." },
-        { t: "9. Aide au diagnostic", d: "Messages d'erreur clairs et utiles." },
+        { t: "9. Aide au diagnostic", d: "Messages d'erreur clairs." },
         { t: "10. Aide & Documentation", d: "Info facile à trouver." }
       ];
 
@@ -317,14 +324,14 @@
 
       const labs = {
         nielsen: {
-          title: "Audit Nielsen Interactif",
+          title: "Audit Nielsen Interactif (Desktop)",
           src: "lab/nielsen_lab_view.html",
           points: [
             { t: "H1 - Visibilité de l'état", d: "Bloquant : Aucun feedback visuel après 'Valider'.", s: "error", g: 4, tid: "btn-submit" },
-            { t: "H2 - Monde Réel", d: "Majeur : Libellés techniques 'COD_IMPORT_REF' indéchiffrables.", s: "error", g: 3, tid: "field-ref" },
-            { t: "H3 - Contrôle utilisateur", d: "Respecté : Bouton Annuler bien visible (Liberté).", s: "success", g: 0, tid: "action-btns" },
+            { t: "H2 - Monde Réel", d: "Critique : Libellés techniques 'COD_IMPORT_REF' indéchiffrables.", s: "error", g: 3, tid: "field-ref" },
+            { t: "H3 - Contrôle utilisateur", d: "Respecté : Bouton Annuler bien visible.", s: "success", g: 0, tid: "action-btns" },
             { t: "H4 - Standards & Cohérence", d: "Majeur : Bouton principal GRIS (Violation visuelle).", s: "error", g: 2, tid: "btn-submit" },
-            { t: "H5 - Prévention d'erreurs", d: "Critique : Accepte n'importe quoi sans contrôle de format.", s: "error", g: 3, tid: "field-val" },
+            { t: "H5 - Prévention d'erreurs", d: "Critique : Accepte n'importe quoi sans contrôle.", s: "error", g: 3, tid: "field-val" },
             { t: "H6 - Reconnaissance", d: "Respecté : Header constant pour le repérage.", s: "success", g: 0, tid: "sys-header" },
             { t: "H7 - Flexibilité", d: "Mineur : Manque de raccourcis clavier.", s: "error", g: 1, tid: "lab-frame" },
             { t: "H8 - Minimalisme", d: "Majeur : Message technique cryptique polluant.", s: "error", g: 2, tid: "error-msg" },
@@ -333,17 +340,17 @@
           ]
         },
         bastien: {
-          title: "Audit Bastien & Scapin Interactif",
-          src: "lab/bastien_lab_view.html",
+          title: "Audit Bastien & Scapin (Mobile)",
+          src: "lab/bastien_mobile_view.html",
           points: [
-            { t: "1. Guidage", d: "Critique : Titre 'MONITORING_GLOBAL' sans aide contextuelle.", s: "error", g: 3, tid: "dashboard-title" },
-            { t: "2. Charge de travail", d: "Bloquant : Tableau à 200% de largeur (Scroll horizontal).", s: "error", g: 4, tid: "data-table" },
-            { t: "3. Contrôle explicite", d: "Critique : 'Tout Supprimer' sans confirmation préalable.", s: "error", g: 3, tid: "action-bar" },
-            { t: "4. Adaptabilité", d: "Majeur : Pas de filtres ou colonnes personnalisables.", s: "error", g: 2, tid: "data-table" },
-            { t: "5. Gestion des erreurs", d: "Respecté : Codes couleurs distincts pour les erreurs.", s: "success", g: 0, tid: "stats-grid" },
-            { t: "6. Homogénéité", d: "Mineur : Marges incohérentes entre blocs.", s: "error", g: 1, tid: "lab-frame" },
-            { t: "7. Signifiance des codes", d: "Respecté : Boutons avec libellés métier explicites.", s: "success", g: 0, tid: "action-bar" },
-            { t: "8. Compatibilité", d: "Majeur : Interface trop dense pour écran mobile.", s: "error", g: 3, tid: "lab-frame" }
+            { t: "1. Guidage", d: "Critique : Titre technique 'MENU_PRINCIPAL_DVT' peu clair.", s: "error", g: 3, tid: "main-title" },
+            { t: "2. Charge de travail", d: "Bloquant : Grid 3x3 avec des libellés de 3 lettres indéchiffrables.", s: "error", g: 4, tid: "grid-menu" },
+            { t: "3. Contrôle explicite", d: "Majeur : Bouton Valider gris et petit pour un usage pouce.", s: "error", g: 3, tid: "btn-val" },
+            { t: "4. Adaptabilité", d: "Majeur : Formulaire non optimisé pour la saisie mobile.", s: "error", g: 2, tid: "form-section" },
+            { t: "5. Gestion des erreurs", d: "Critique : Logs d'erreurs SQL rouges affichés en brut.", s: "error", g: 3, tid: "err-log" },
+            { t: "6. Homogénéité", d: "Respecté : Navigation basse (tab bar) respectant les codes mobile.", s: "success", g: 0, tid: "footer-nav" },
+            { t: "7. Signifiance des codes", d: "Respecté : Icones/Libellés de navigation standards.", s: "success", g: 0, tid: "footer-nav" },
+            { t: "8. Compatibilité", d: "Bloquant : Police 8px inutilisable sur smartphone.", s: "error", g: 4, tid: "mobile-shell" }
           ]
         }
       };
@@ -362,21 +369,18 @@
         const data = labs[method];
         document.getElementById('lab-title').innerText = data.title;
         document.getElementById('lab-iframe').src = data.src;
-        
-        if (window.parent) {
-          window.parent.postMessage({ action: 'toggleFooter', visible: false }, '*');
-        }
-
-        document.getElementById('lab-audit-list').innerHTML = `<div style="background: #1e3a44; color: white; padding: 15px; border-radius: 12px; margin-bottom: 20px; font-size: 13px;"><strong>Mode Lab :</strong> Cliquez sur une heuristique pour révéler l'analyse.</div>` + data.points.map((p, i) => `<div class="audit-point" onclick="inspectPoint('${method}', ${i}, this)"><h5>${p.t}<div class="point-status"><span class="gravity-badge g-${p.g}">${getGravityLabel(p.g)}</span><iconify-icon icon="${p.s === 'error' ? 'mdi:alert-circle' : 'mdi:check-circle'}" style="color: ${p.s === 'error' ? '#e74c3c' : '#2ecc71'}"></iconify-icon></div></h5><div class="point-detail">${p.d}</div></div>`).join('');
+        if (window.parent) window.parent.postMessage({ action: 'toggleFooter', visible: false }, '*');
+        document.getElementById('lab-audit-list').innerHTML = `<div style="background: #1e3a44; color: white; padding: 15px; border-radius: 12px; margin-bottom: 20px; font-size: 13px;"><strong>Mode Lab :</strong> Cliquez sur un critère pour voir sa note et l'impact.</div>` + data.points.map((p, i) => `<div class="audit-point" onclick="inspectPoint('${method}', ${i}, this)"><h5>${p.t}<div class="point-status"><span class="point-note">${4-p.g}/4</span><iconify-icon icon="${p.s === 'error' ? 'mdi:alert-circle' : 'mdi:check-circle'}" style="color: ${p.s === 'error' ? '#e74c3c' : '#2ecc71'}"></iconify-icon></div></h5><div class="point-detail">${p.d}</div></div>`).join('');
         calculateUXScore(method);
         document.getElementById('lab-modal').style.display = "flex";
       }
 
       function calculateUXScore(method) {
-        const points = labs[method].points;
-        const currentScore = points.reduce((acc, p) => acc + (4 - p.g), 0);
-        const percent = Math.round((currentScore / (points.length * 4)) * 100);
-        document.getElementById('ux-score-val').innerText = percent + "%";
+        const notes = labs[method].points.map(p => 4 - p.g);
+        const sum = notes.reduce((a, b) => a + b, 0);
+        const max = labs[method].points.length * 4;
+        document.getElementById('ux-score-val').innerText = Math.round((sum / max) * 100) + "%";
+        document.getElementById('ux-score-calc').innerText = `Somme des points : ${sum} / ${max}`;
       }
 
       function inspectPoint(method, index, el) {
@@ -387,12 +391,9 @@
       }
 
       function getGravityLabel(g) { return ["Respecté", "Mineur", "Majeur", "Critique", "Bloquant"][g]; }
-      
-      function closeLab() { 
+      function closeLab() {
         document.getElementById('lab-modal').style.display = "none";
-        if (window.parent) {
-          window.parent.postMessage({ action: 'toggleFooter', visible: true }, '*');
-        }
+        if (window.parent) window.parent.postMessage({ action: 'toggleFooter', visible: true }, '*');
       }
       initLists();
     </script>

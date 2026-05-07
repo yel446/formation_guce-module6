@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    background: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  .mobile-container {
+    width: 320px;
+    height: 568px;
+    background: #fff;
+    border: 10px solid #000;
+    border-radius: 30px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .status-bar {
+    height: 20px;
+    background: #eee;
+    font-size: 10px;
+    display: flex;
+    justify-content: space-between;
+    padding: 2px 15px;
+    align-items: center;
+  }
+  .app-header {
+    background: #004a99;
+    color: white;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .app-content {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 15px;
+  }
+  .grid-menu {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+    margin-bottom: 20px;
+  }
+  .menu-item {
+    background: #f8f9fa;
+    border: 1px solid #ddd;
+    height: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 8px;
+    text-align: center;
+    cursor: pointer;
+  }
+  .form-section {
+    background: #fff;
+    border: 1px solid #eee;
+    padding: 10px;
+    margin-bottom: 20px;
+  }
+  .field { margin-bottom: 10px; }
+  .field label { font-size: 9px; color: #666; display: block; }
+  .field input { width: 90%; padding: 5px; font-size: 11px; }
+
+  .footer-nav {
+    height: 50px;
+    background: #f1f1f1;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid #ddd;
+  }
+  .nav-btn { font-size: 9px; color: #555; text-align: center; }
+
+  /* Highlighting */
+  .highlight-error {
+    outline: 3px solid #e74c3c !important;
+    animation: shake 0.5s;
+    background: rgba(231, 76, 60, 0.1) !important;
+  }
+  .highlight-success {
+    outline: 3px solid #2ecc71 !important;
+    background: rgba(46, 204, 113, 0.1) !important;
+  }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+  }
+</style>
+</head>
+<body>
+  <div class="mobile-container" id="mobile-shell">
+    <div class="status-bar">
+      <span>12:45</span>
+      <span>95% [电池]</span>
+    </div>
+    
+    <div class="app-header" id="app-header">
+      <div style="font-size: 14px; font-weight: bold;">GESTION_MOBILE_PRO</div>
+      <div style="font-size: 10px;">USR_88</div>
+    </div>
+
+    <div class="app-content" id="app-content">
+      <div style="font-size: 10px; font-weight: bold; margin-bottom: 10px;" id="main-title">MENU_PRINCIPAL_DVT</div>
+      
+      <div class="grid-menu" id="grid-menu">
+        <div class="menu-item">INV</div>
+        <div class="menu-item">SHP</div>
+        <div class="menu-item">LOG</div>
+        <div class="menu-item">USR</div>
+        <div class="menu-item">SET</div>
+        <div class="menu-item">HLP</div>
+        <div class="menu-item">EXT</div>
+        <div class="menu-item">RPT</div>
+        <div class="menu-item">SYS</div>
+      </div>
+
+      <div class="form-section" id="form-section">
+        <div class="field">
+          <label>ID_TRANSACTION_TECH</label>
+          <input type="text" placeholder="TX_9921_AF_01">
+        </div>
+        <div class="field">
+          <label>NOM_DU_CONDUCTEUR_LONG_TEXT</label>
+          <input type="text">
+        </div>
+        <button style="width: 100%; padding: 10px; font-size: 10px; background: #999; color: #fff; border: none;" id="btn-val">VALIDER</button>
+      </div>
+
+      <div style="font-size: 8px; color: red;" id="err-log">LOG: ERR_SQL_TIMEOUT_21_REF</div>
+    </div>
+
+    <div class="footer-nav" id="footer-nav">
+      <div class="nav-btn">ACCUEIL</div>
+      <div class="nav-btn">RECHERCHE</div>
+      <div class="nav-btn">NOTIFS</div>
+      <div class="nav-btn">PROFIL</div>
+    </div>
+  </div>
+
+  <script>
+    window.addEventListener('message', (e) => {
+      const { action, targetId, status } = e.data;
+      if (action === 'highlight') {
+        document.querySelectorAll('.highlight-error, .highlight-success').forEach(el => {
+          el.classList.remove('highlight-error', 'highlight-success');
+        });
+        const el = document.getElementById(targetId);
+        if (el) {
+          el.classList.add(status === 'error' ? 'highlight-error' : 'highlight-success');
+          // No scrollIntoView for mobile shell as it's small
+        }
+      }
+    });
+  </script>
+</body>
+</html>
