@@ -12,143 +12,215 @@
       .slide-content {
         background-image: none !important;
         background-color: #ffffff;
-        padding: 50px 80px;
-      }
-      .marabu-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 40px;
-        background: #f8f9fa;
-        padding: 20px 30px;
-        border-radius: 20px;
-        border: 1px solid #eee;
-      }
-      .marabu-header img {
-        height: 40px;
-      }
-      .marabu-header .services {
-        font-size: 20px;
-        font-weight: 800;
-        color: var(--primary);
-      }
-      .marabu-header .services span {
-        color: #8bc34a;
-      }
-
-      .friction-container {
+        padding: 40px 60px;
         display: flex;
         flex-direction: column;
-        gap: 25px;
+        height: 100vh;
+        overflow: hidden;
       }
 
-      .friction-group {
-        border-radius: 24px;
-        padding: 25px;
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.03);
+      .lab-intro {
+        background: #1e3a44;
+        color: white;
+        padding: 15px 25px;
+        border-radius: 15px;
+        margin-bottom: 30px;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        box-shadow: 0 10px 20px rgba(30, 58, 68, 0.1);
+      }
+
+      .friction-board {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 20px;
+        flex-grow: 1;
+        overflow-y: auto;
+        padding-bottom: 30px;
+      }
+
+      .friction-row {
+        border-radius: 20px;
+        padding: 20px;
         border: 2px solid transparent;
-        transition: all 0.3s ease;
-      }
-      .friction-group:hover {
-          transform: translateX(10px);
+        transition: all 0.3s;
       }
 
-      .friction-group.major {
-        background: #fff5f5;
-        border-color: #feb2b2;
-      }
-      .friction-group.moderate {
-        background: #fffaf0;
-        border-color: #fbd38d;
-      }
-      .friction-group.minor {
-        background: #f0fff4;
-        border-color: #9ae6b4;
-      }
-
-      .friction-label {
+      .row-header {
         font-size: 13px;
         font-weight: 800;
         text-transform: uppercase;
         margin-bottom: 15px;
-        letter-spacing: 1px;
         display: flex;
         align-items: center;
         gap: 10px;
       }
-      .friction-group.major .friction-label { color: #c53030; }
-      .friction-group.moderate .friction-label { color: #c05621; }
-      .friction-group.minor .friction-label { color: #2f855a; }
 
-      .friction-items {
-        display: flex;
-        gap: 20px;
+      .row-items {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
       }
 
-      .friction-item {
+      .friction-card {
         background: white;
-        padding: 15px 20px;
-        border-radius: 15px;
-        font-size: 14px;
-        font-weight: 700;
+        padding: 15px;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+        cursor: pointer;
+        transition: all 0.3s;
         text-align: center;
-        flex: 1;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
-        color: #555;
+        font-weight: 700;
+        font-size: 13px;
+        color: #444;
         display: flex;
-        align-items: center;
+        flex-direction: column;
         justify-content: center;
-        min-height: 70px;
-        line-height: 1.4;
+        min-height: 80px;
+        border: 1px solid #f0f0f0;
       }
+
+      .friction-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        border-color: #8bc34a;
+      }
+
+      /* Levels Styling */
+      .major-row { background: #fff5f5; border-color: #feb2b2; }
+      .major-row .row-header { color: #c53030; }
+      
+      .moderate-row { background: #fffaf0; border-color: #fbd38d; }
+      .moderate-row .row-header { color: #c05621; }
+      
+      .minor-row { background: #f0fff4; border-color: #9ae6b4; }
+      .minor-row .row-header { color: #2f855a; }
+
+      /* Modal / Reveal */
+      .reveal-overlay {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(30, 58, 68, 0.95); backdrop-filter: blur(8px);
+        display: none; justify-content: center; align-items: center; z-index: 3000;
+      }
+      .reveal-content {
+        background: white; width: 450px; padding: 40px; border-radius: 30px;
+        text-align: center; position: relative; animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+      @keyframes popIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
+
+      .emoji-display { font-size: 80px; margin-bottom: 20px; display: block; }
+      .severity-tag {
+        display: inline-block; padding: 5px 15px; border-radius: 50px;
+        font-weight: 800; font-size: 12px; text-transform: uppercase; margin-bottom: 15px;
+      }
+      .tag-4 { background: #000; color: #ffeb3b; }
+      .tag-3 { background: #c53030; color: white; }
+      .tag-2 { background: #f6ad55; color: white; }
+      .tag-1 { background: #8bc34a; color: white; }
+
+      .reveal-title { font-size: 18px; font-weight: 800; color: var(--primary); margin-bottom: 10px; }
+      .reveal-desc { font-size: 14px; color: #666; line-height: 1.5; margin-bottom: 20px; }
+      .btn-close {
+        background: #f0f0f0; border: none; padding: 10px 25px; border-radius: 50px;
+        font-weight: 700; cursor: pointer; transition: 0.3s;
+      }
+      .btn-close:hover { background: var(--primary); color: white; }
     </style>
   </head>
   <body class="slide-content">
     <div class="slide-header-rubric">
-      <h1>Frictions typiques sur plateformes GUCE</h1>
+      <h1>Analyse des Frictions : Lab d'Impact</h1>
     </div>
 
-    <div class="marabu-header">
-      <img src="../assets/marabou logo.png" alt="MARABU" />
-      <div class="services">Conseils — <span>Services</span> — Intermédiations</div>
+    <div class="lab-intro">
+      <iconify-icon icon="mdi:emoticon-angry" style="font-size: 24px; color: #8bc34a;"></iconify-icon>
+      <div>
+        <strong>Mini-Lab Interactif :</strong> Cliquez sur une friction pour découvrir son niveau de sévérité, son analyse et le ressenti utilisateur associé.
+      </div>
     </div>
 
-    <div class="friction-container">
+    <div class="friction-board">
       <!-- Major -->
-      <div class="friction-group major">
-        <div class="friction-label">
-            <iconify-icon icon="mdi:alert-decagram"></iconify-icon> 1. Frictions MAJEURES (Critiques)
+      <div class="friction-row major-row">
+        <div class="row-header">
+           <iconify-icon icon="mdi:alert-decagram"></iconify-icon> 1. Frictions MAJEURES (Critiques)
         </div>
-        <div class="friction-items">
-          <div class="friction-item">Authentification :<br />parcours bloquant</div>
-          <div class="friction-item">Upload documents :<br />tailles limitées</div>
-          <div class="friction-item">Documents officiels<br />non modifiables</div>
-        </div>
+        <div class="row-items" id="major-items"></div>
       </div>
 
       <!-- Moderate -->
-      <div class="friction-group moderate">
-        <div class="friction-label">
-            <iconify-icon icon="mdi:alert-circle"></iconify-icon> 2. Frictions MODÉRÉES (Pénibles)
+      <div class="friction-row moderate-row">
+        <div class="row-header">
+           <iconify-icon icon="mdi:alert-circle"></iconify-icon> 2. Frictions MODÉRÉES (Pénibles)
         </div>
-        <div class="friction-items">
-          <div class="friction-item">Navigation complexe<br />perte de repères</div>
-          <div class="friction-item">Messages d'erreur<br />non actionnables</div>
-          <div class="friction-item">Délais de traitement<br />opaques</div>
-        </div>
+        <div class="row-items" id="moderate-items"></div>
       </div>
 
       <!-- Minor -->
-      <div class="friction-group minor">
-        <div class="friction-label">
-            <iconify-icon icon="mdi:alert-outline"></iconify-icon> 3. Frictions MINEURES (Irritantes)
+      <div class="friction-row minor-row">
+        <div class="row-header">
+           <iconify-icon icon="mdi:alert-outline"></iconify-icon> 3. Frictions MINEURES (Irritantes)
         </div>
-        <div class="friction-items">
-          <div class="friction-item">Re-saisie de données<br />(pas de sauvegarde)</div>
-          <div class="friction-item">Absence de suivi<br />temps réel</div>
-          <div class="friction-item">Format unique (PDF)<br />non flexible</div>
-        </div>
+        <div class="row-items" id="minor-items"></div>
       </div>
     </div>
+
+    <!-- Reveal Modal -->
+    <div id="reveal-modal" class="reveal-overlay">
+       <div class="reveal-content">
+          <span class="emoji-display" id="rev-emoji"></span>
+          <div class="severity-tag" id="rev-tag"></div>
+          <h3 class="reveal-title" id="rev-title"></h3>
+          <p class="reveal-desc" id="rev-desc"></p>
+          <button class="btn-close" onclick="closeReveal()">J'ai compris</button>
+       </div>
+    </div>
+
+    <script>
+      const data = {
+        major: [
+          { t: "Authentification : parcours bloquant", d: "L'utilisateur est stoppé dès l'entrée. Impact direct sur le taux d'abandon.", e: "🤬", g: 4, l: "Catastrophe" },
+          { t: "Upload documents : tailles limitées", d: "Empêche la soumission du dossier. Friction bloquante et frustrante.", e: "😡", g: 3, l: "Majeur" },
+          { t: "Documents officiels non ré-éditables", d: "Oblige à recommencer tout le parcours pour une simple faute.", e: "😡", g: 3, l: "Majeur" }
+        ],
+        moderate: [
+          { t: "Navigation complexe / perte de repères", d: "L'utilisateur perd le fil de son action. Augmentation de la charge mentale.", e: "😠", g: 2, l: "Modéré" },
+          { t: "Messages d'erreur non actionnables", d: "Signale un problème sans donner la clé pour le résoudre.", e: "😠", g: 2, l: "Modéré" },
+          { t: "Délais de traitement opaques", d: "Incertitude sur l'avancement. Manque de visibilité (H1).", e: "😠", g: 2, l: "Modéré" }
+        ],
+        minor: [
+          { t: "Re-saisie (pas de sauvegarde auto)", d: "Action répétitive agaçante mais n'empêchant pas la tâche.", e: "😕", g: 1, l: "Mineur" },
+          { t: "Absence de suivi temps réel", d: "L'utilisateur doit rafraîchir manuellement. Confort réduit.", e: "😕", g: 1, l: "Mineur" },
+          { t: "Format unique (PDF) non flexible", d: "Contrainte technique mineure demandant un effort externe.", e: "😕", g: 1, l: "Mineur" }
+        ]
+      };
+
+      function init() {
+        ['major', 'moderate', 'minor'].forEach(cat => {
+          document.getElementById(cat + '-items').innerHTML = data[cat].map((item, i) => `
+            <div class="friction-card" onclick="openReveal('${cat}', ${i})">${item.t}</div>
+          `).join('');
+        });
+      }
+
+      function openReveal(cat, index) {
+        const item = data[cat][index];
+        document.getElementById('rev-emoji').innerText = item.e;
+        document.getElementById('rev-title').innerText = item.t;
+        document.getElementById('rev-desc').innerText = item.d;
+        const tag = document.getElementById('rev-tag');
+        tag.innerText = "Niveau " + item.g + " : " + item.l;
+        tag.className = "severity-tag tag-" + item.g;
+        document.getElementById('reveal-modal').style.display = "flex";
+      }
+
+      function closeReveal() {
+        document.getElementById('reveal-modal').style.display = "none";
+      }
+
+      init();
+    </script>
   </body>
 </html>
