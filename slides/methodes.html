@@ -12,7 +12,7 @@
       .slide-content {
         background-image: none !important;
         background-color: #ffffff;
-        padding: 40px 60px;
+        padding: 30px 50px;
         display: flex;
         flex-direction: column;
         height: 100vh;
@@ -69,8 +69,9 @@
         left: 0;
         width: 100%;
         height: 100%;
-        display: flex;
-        flex-direction: column;
+        display: grid;
+        grid-template-columns: 0.8fr 1.2fr; /* Image left, List right */
+        gap: 40px;
         opacity: 0;
         transform: translateY(20px);
         visibility: hidden;
@@ -83,25 +84,56 @@
         visibility: visible;
       }
 
-      /* Header with Lab Button */
+      /* Left Column: Illustration */
+      .illustration-col {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .illustration-box {
+        background: #f8faff;
+        border-radius: 25px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        border: 1px solid #edf2f7;
+        height: 100%;
+      }
+
+      .illustration-box img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      /* Right Column: Content */
+      .content-col {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+      }
+
       .method-header {
         display: flex;
         justify-content: space-between;
-        align-items: flex-end;
+        align-items: center;
         margin-bottom: 20px;
         padding-bottom: 10px;
         border-bottom: 2px solid #f0f4f8;
       }
 
       .title-group h2 {
-        font-size: 32px;
+        font-size: 28px;
         font-weight: 800;
         color: var(--primary);
         margin: 0;
       }
 
       .title-group p {
-        font-size: 16px;
+        font-size: 15px;
         font-weight: 600;
         color: #8bc34a;
         margin: 0;
@@ -126,7 +158,6 @@
       .btn-lab:hover {
         background: var(--primary);
         transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(30, 58, 68, 0.2);
       }
 
       /* 2-Column Grid for Exhaustive List */
@@ -134,57 +165,58 @@
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 15px;
-        flex-grow: 1;
         overflow-y: auto;
         padding-right: 10px;
       }
 
       .heuristic-card {
         background: #f8faff;
-        border-left: 5px solid #8bc34a;
-        padding: 12px 15px;
-        border-radius: 12px;
+        border-left: 6px solid #8bc34a;
+        padding: 18px 22px;
+        border-radius: 15px;
         display: flex;
         align-items: flex-start;
-        gap: 12px;
+        gap: 18px;
         transition: all 0.3s;
         border: 1px solid #edf2f7;
       }
 
       .heuristic-card:hover {
         background: white;
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
         transform: translateX(5px);
+        border-color: #8bc34a;
       }
 
       .h-num {
         background: #1e3a44;
         color: white;
-        width: 24px;
-        height: 24px;
+        width: 34px;
+        height: 34px;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 11px;
+        font-size: 14px;
         font-weight: 800;
         flex-shrink: 0;
+        box-shadow: 0 4px 10px rgba(30, 58, 68, 0.2);
       }
 
       .h-content h4 {
-        font-size: 13px;
+        font-size: 16px;
         font-weight: 700;
         color: var(--primary);
-        margin-bottom: 2px;
+        margin-bottom: 5px;
       }
 
       .h-content p {
-        font-size: 11px;
-        color: #666;
-        line-height: 1.4;
+        font-size: 13px;
+        color: #555;
+        line-height: 1.5;
       }
 
-      /* Lab Modal Styles */
+      /* Modals */
       .modal-overlay {
         position: fixed;
         top: 0;
@@ -246,7 +278,7 @@
 
       .audit-point {
         background: #f8faff;
-        padding: 12px;
+        padding: 15px;
         border-radius: 12px;
         margin-bottom: 12px;
         border-left: 5px solid var(--primary);
@@ -256,15 +288,15 @@
       .audit-point.success { border-left-color: #8bc34a; }
 
       .audit-point h5 {
-        font-size: 13px;
+        font-size: 14px;
         color: var(--primary);
-        margin-bottom: 4px;
+        margin-bottom: 5px;
         display: flex;
         justify-content: space-between;
       }
 
       .audit-point p {
-        font-size: 12px;
+        font-size: 13px;
         color: #555;
         line-height: 1.4;
       }
@@ -284,6 +316,15 @@
       }
 
       .modal-close:hover { background: #e74c3c; color: white; }
+
+      /* Verdict Page */
+      .verdict-view {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+        align-items: center;
+        height: 100%;
+      }
     </style>
   </head>
   <body class="slide-content">
@@ -310,57 +351,68 @@
     <div class="view-container">
       <!-- Nielsen View -->
       <div class="method-view active" id="view-0">
-        <div class="method-header">
-          <div class="title-group">
-            <h2>Jacob Nielsen</h2>
-            <p>Les 10 Heuristiques de référence</p>
+        <div class="illustration-col">
+          <div class="illustration-box">
+            <img src="../assets/nielsen.png" alt="Nielsen Audit" />
           </div>
-          <button class="btn-lab" onclick="openLab('nielsen')">
-            <iconify-icon icon="mdi:flask"></iconify-icon>
-            Lancer le Mini-Lab Nielsen
-          </button>
         </div>
-        <div class="exhaustive-grid" id="nielsen-list">
-          <!-- Populated by JS -->
+        <div class="content-col">
+          <div class="method-header">
+            <div class="title-group">
+              <h2>Jacob Nielsen</h2>
+              <p>Les 10 Heuristiques de référence</p>
+            </div>
+            <button class="btn-lab" onclick="openLab('nielsen')">
+              <iconify-icon icon="mdi:flask"></iconify-icon>
+              Lancer le Mini-Lab Nielsen
+            </button>
+          </div>
+          <div class="exhaustive-grid" id="nielsen-list">
+            <!-- Populated by JS -->
+          </div>
         </div>
       </div>
 
       <!-- Bastien & Scapin View -->
       <div class="method-view" id="view-1">
-        <div class="method-header">
-          <div class="title-group">
-            <h2>Bastien & Scapin</h2>
-            <p>Les 8 Critères ergonomiques majeurs</p>
+        <div class="illustration-col">
+          <div class="illustration-box">
+            <img src="../assets/bastien.png" alt="Bastien & Scapin" />
           </div>
-          <button class="btn-lab" onclick="openLab('bastien')">
-            <iconify-icon icon="mdi:flask"></iconify-icon>
-            Lancer le Mini-Lab B&S
-          </button>
         </div>
-        <div class="exhaustive-grid" id="bastien-list">
-          <!-- Populated by JS -->
+        <div class="content-col">
+          <div class="method-header">
+            <div class="title-group">
+              <h2>Bastien & Scapin</h2>
+              <p>Les 8 Critères ergonomiques majeurs</p>
+            </div>
+            <button class="btn-lab" onclick="openLab('bastien')">
+              <iconify-icon icon="mdi:flask"></iconify-icon>
+              Lancer le Mini-Lab B&S
+            </button>
+          </div>
+          <div class="exhaustive-grid" id="bastien-list">
+            <!-- Populated by JS -->
+          </div>
         </div>
       </div>
 
       <!-- Verdict View -->
       <div class="method-view" id="view-2">
-        <div class="method-header">
-          <div class="title-group">
-            <h2>Verdict Terrain</h2>
-            <p>Stratégie d'audit hybride</p>
+        <div class="verdict-view">
+          <div class="illustration-box">
+             <img src="../assets/verdict.png" alt="Verdict" />
           </div>
-        </div>
-        <div style="background: #f8faff; border-radius: 25px; padding: 30px; flex-grow: 1; display: flex; align-items: center; gap: 40px;">
-           <img src="../assets/verdict.png" alt="Verdict" style="width: 40%; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);" />
-           <div style="flex: 1;">
-              <h3 style="color: var(--primary); margin-bottom: 20px;">L'art de la complémentarité</h3>
-              <p style="font-size: 15px; color: #444; line-height: 1.6; margin-bottom: 20px;">
-                 Sur le terrain, ne choisissez pas l'un au détriment de l'autre. Utilisez Nielsen pour dégrossir rapidement et Bastien & Scapin pour sécuriser les parcours critiques.
-              </p>
-              <div style="background: var(--primary); color: white; padding: 20px; border-radius: 15px; font-size: 14px;">
-                 <strong style="color: #8bc34a">Conseil pro :</strong> Commencez toujours par un audit Nielsen pour identifier 80% des erreurs, puis approfondissez avec B&S sur les formulaires complexes.
-              </div>
-           </div>
+          <div class="verdict-content">
+             <h2 style="color: var(--primary); font-weight: 800; font-size: 32px; margin-bottom: 20px;">L'art de l'hybridation</h2>
+             <p style="font-size: 16px; color: #444; line-height: 1.6; margin-bottom: 25px;">
+                Sur le terrain, ne choisissez pas l'un au détriment de l'autre. Utilisez Nielsen pour dégrossir rapidement et Bastien & Scapin pour sécuriser les parcours critiques.
+             </p>
+             <div style="background: var(--primary); color: white; padding: 25px; border-radius: 20px; font-size: 15px; box-shadow: 0 10px 30px rgba(30, 58, 68, 0.2);">
+                <strong style="color: #8bc34a; font-size: 18px; display: block; margin-bottom: 10px;">Conseil pro :</strong> 
+                Commencez toujours par un audit Nielsen pour identifier 80% des erreurs visuelles, puis approfondissez avec B&S sur les formulaires et systèmes de gestion complexes.
+             </div>
+          </div>
         </div>
       </div>
     </div>
