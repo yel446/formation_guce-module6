@@ -6,65 +6,148 @@
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
     <link rel="stylesheet" href="../styles.css" />
     <style>
-      .slide-content {
-        justify-content: center;
-        background-image: url('../assets/pattern.png') !important;
+      body {
+        background-image: url('../assets/pattern.png');
         background-size: cover;
         background-position: center;
+        display: flex;
+        flex-direction: column;
+        padding: 60px 80px;
+        height: 100vh;
+        overflow: hidden;
         background-color: white;
       }
-      .module-header {
-        border-left: 8px solid var(--primary);
-        padding-left: 30px;
-        margin-bottom: 50px;
+      .header {
+        display: flex;
+        justify-content: flex-start;
+        margin-bottom: 60px;
       }
-      .module-header h1 {
-        font-size: 48px;
-        font-weight: 800;
-        color: var(--primary);
-        line-height: 1.1;
+      .marabu-logo-container {
+        display: flex;
+        align-items: center;
+        gap: 15px;
       }
-      .pedagogical-objective {
-        background: #f0f7f4;
-        padding: 40px;
-        border-radius: 24px;
-        border: 1px solid #e1e5eb;
-        max-width: 900px;
+      .marabu-logo {
+        height: 70px;
       }
-      .pedagogical-objective h2 {
-        color: #8bc34a;
+      .marabu-text {
         font-size: 24px;
         font-weight: 800;
-        margin-bottom: 20px;
-        text-transform: uppercase;
-        letter-spacing: 1px;
+        color: var(--primary);
+        line-height: 1;
       }
-      .pedagogical-objective p {
+      .marabu-text span {
+        color: #8bc34a;
+      }
+      .main-content {
+        display: flex;
+        align-items: center;
+        position: relative;
+        margin-top: 40px;
+      }
+      .title-box {
+        background: #1e3a44;
+        color: white;
+        padding: 60px 80px 60px 60px;
+        width: 75%;
+        position: relative;
+        z-index: 2;
+      }
+      .title-box h1 {
+        font-size: 42px;
+        font-weight: 800;
+        line-height: 1.2;
+        margin: 0;
+      }
+      .accent-line {
+        position: absolute;
+        bottom: 40px;
+        right: 150px;
+        width: 120px;
+        height: 5px;
+        background: #8bc34a;
+      }
+      .module-group {
+        position: absolute;
+        right: 0;
+        display: flex;
+        align-items: flex-end;
+        gap: 20px;
+        z-index: 1;
+      }
+      .module-label {
+        font-size: 28px;
+        font-weight: 700;
+        color: #1e3a44;
+        margin-bottom: 60px;
+      }
+      .module-number {
+        font-size: 400px;
+        font-weight: 800;
+        color: #1e3a44;
+        line-height: 0.8;
+        letter-spacing: -20px;
+      }
+      .footer {
+        margin-top: auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        width: 100%;
+        padding-bottom: 20px; /* Leave space for navigation capsule */
+      }
+      .guce-logo {
+        height: 80px;
+      }
+      .qr-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+      }
+      .qr-code {
+        height: 70px;
+      }
+      .website-link {
         font-size: 20px;
-        line-height: 1.6;
-        color: #555;
+        font-weight: 700;
+        color: #1e3a44;
+        text-decoration: none;
+      }
+      .website-link span {
+        color: #8bc34a;
       }
     </style>
   </head>
-  <body class="slide-content">
-    <div class="module-header">
-      <h1>MODULE 6 —<br />Analyse Heuristique Avancée</h1>
+  <body>
+    <div class="header">
+      <div class="marabu-logo-container">
+        <img src="../assets/marabou logo.png" alt="Marabu Logo" class="marabu-logo" />
+        <div class="marabu-text">Conseils<br /><span>Services</span><br />Intermédiations</div>
+      </div>
     </div>
 
-    <div class="pedagogical-objective">
-      <h2>Objectif pédagogique</h2>
-      <p>
-        Aller au-delà des 10 heuristiques de Nielsen pour maîtriser des grilles
-        d'audit professionnelles. À l'issue du module, chaque apprenant peut
-        conduire un audit UX complet et livrer un rapport de recommandations.
-      </p>
+    <div class="main-content">
+      <div class="title-box">
+        <h1>Analyse Heuristique Avancée<br />(Standards Professionnels)</h1>
+        <div class="accent-line"></div>
+      </div>
+      <div class="module-group">
+        <span class="module-label">MODULE</span>
+        <span class="module-number">6</span>
+      </div>
     </div>
 
-    <div class="didactic-footer" style="margin-top: 50px; text-align: center; font-size: 14px; color: #7f8c8d; font-style: italic;">
-        Propulsé par MARABU pour GUCE-CI · 2026
+    <div class="footer">
+      <img src="../assets/guce.png" alt="GUCE Logo" class="guce-logo" />
+      <div class="qr-section">
+        <img src="../assets/qr-code-marabou.png" alt="QR Code" class="qr-code" />
+        <a href="https://www.marabu.services" class="website-link"
+          >www.marabu<span>.services</span></a
+        >
+      </div>
     </div>
   </body>
 </html>

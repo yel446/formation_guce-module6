@@ -83,13 +83,6 @@
         </div>
 
         <div class="footer-logo-right" id="footer-logo-right">
-          <div class="qr-container" id="qr-container">
-            <div class="qr-text">
-                <span class="url">formation-guce.vercel.app</span>
-                <span class="scan">Scannez pour suivre</span>
-            </div>
-            <img src="assets/qr-code-marabou.png" alt="QR Code" class="qr-code" />
-          </div>
           <div class="marabu-brand" id="marabu-brand">
             <img src="assets/marabou logo.png" alt="MARABU" class="footer-logo" />
             <div class="marabu-text">Conseils — <span>Services</span> — Intermédiations</div>
@@ -116,8 +109,6 @@
       const logoLeft = document.getElementById("footer-logo-left");
       const logoRight = document.getElementById("footer-logo-right");
       const mainFooter = document.getElementById("main-footer");
-      const qrContainer = document.getElementById("qr-container");
-      const marabuBrand = document.getElementById("marabu-brand");
       const totalSlidesSpan = document.getElementById("total-slides");
 
       // Initialize slide selector and total count
@@ -149,15 +140,11 @@
           mainFooter.style.background = "transparent";
           mainFooter.style.border = "none";
           mainFooter.style.height = "0px";
-          qrContainer.style.display = "flex";
-          marabuBrand.style.display = "none";
         } else {
           mainFooter.style.bottom = "0px";
           mainFooter.style.background = "#fff";
           mainFooter.style.height = "80px";
           mainFooter.style.borderTop = "1px solid rgba(0,0,0,0.05)";
-          qrContainer.style.display = "none";
-          marabuBrand.style.display = "flex";
         }
       }
 
