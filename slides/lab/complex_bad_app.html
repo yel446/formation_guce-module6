@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <style>
+      :root { --primary: #1a4d8c; --error: #c0392b; --warning: #f39c12; }
+      body { font-family: 'Poppins', sans-serif; background: #f4f7f6; margin: 0; padding: 0; }
+      
+      .top-bar { background: var(--primary); color: white; padding: 10px 20px; display: flex; justify-content: space-between; font-size: 11px; font-weight: 800; }
+      
+      .app-content { padding: 30px; max-width: 900px; margin: 0 auto; }
+      
+      .nav-side { background: #eee; width: 60px; height: 100vh; position: fixed; left: 0; top: 0; display: flex; flex-direction: column; align-items: center; padding-top: 20px; gap: 20px; }
+      .nav-icon { font-size: 24px; color: #999; cursor: pointer; }
+      .nav-icon.active { color: var(--primary); }
+
+      .form-section { background: white; border: 1px solid #ddd; padding: 25px; border-radius: 4px; margin-bottom: 20px; position: relative; }
+      .form-title { font-size: 14px; font-weight: 800; color: var(--primary); margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+
+      .grid-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+      .field { margin-bottom: 15px; }
+      .label { font-size: 10px; font-weight: 800; color: #666; margin-bottom: 4px; text-transform: uppercase; }
+      .input { width: 100%; padding: 10px; border: 1px solid #ccc; font-size: 12px; }
+      
+      /* Intentional Errors */
+      .bad-feedback { color: #c0392b; font-size: 9px; font-family: monospace; background: #fee; padding: 5px; margin-top: 5px; display: none; }
+      .btn-bad { background: #95a5a6; color: white; border: none; padding: 12px 30px; font-weight: 800; cursor: pointer; margin-top: 20px; }
+      
+      .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.8); display: none; justify-content: center; align-items: center; z-index: 1000; }
+    </style>
+  </head>
+  <body>
+    <div class="nav-side">
+      <iconify-icon icon="mdi:home" class="nav-icon active"></iconify-icon>
+      <iconify-icon icon="mdi:folder" class="nav-icon"></iconify-icon>
+      <iconify-icon icon="mdi:settings" class="nav-icon"></iconify-icon>
+      <iconify-icon icon="mdi:help-circle" class="nav-icon"></iconify-icon>
+    </div>
+
+    <div style="margin-left: 60px;">
+      <div class="top-bar">
+        <span>GUCE PORTAL - SYS_ADMIN_V2</span>
+        <span>USR: LANDRY_Y_ADMIN | SESSION: 0x8842</span>
+      </div>
+
+      <div class="app-content">
+        <div class="form-section">
+          <div class="form-title">ENREGISTREMENT_IMPORT_MARCHANDISE_DX4</div>
+          
+          <div class="grid-fields">
+             <div class="field">
+                <div class="label">COD_IMPORT_REF_PK</div>
+                <input type="text" class="input" value="IMPT_2026_998273645">
+             </div>
+             <div class="field">
+                <div class="label">NATURE_DVT_VAL_ENUM</div>
+                <input type="text" class="input" placeholder="Saisir code numérique">
+             </div>
+             <div class="field">
+                <div class="label">DAT_ARR_PREV_UTC</div>
+                <input type="text" class="input" placeholder="AAAA-MM-JJTHH:mm:ssZ">
+             </div>
+             <div class="field">
+                <div class="label">VAL_FOB_CURR_ID</div>
+                <input type="text" class="input" placeholder="ID_CURR_88">
+             </div>
+          </div>
+
+          <div style="margin-top: 20px;">
+             <div class="label">DOCUMENTS_ATTACH_BLOB (MAX 2MB)</div>
+             <div style="border: 2px dashed #ccc; padding: 30px; text-align: center; color: #999; font-size: 12px;">
+                Cliquer pour charger (PDF uniquement)
+             </div>
+          </div>
+
+          <button class="btn-bad" onclick="submitSim()">VALIDER_DOSSIER_SYS</button>
+          <div id="error-msg" class="bad-feedback">
+            FATAL_ERROR: Connection timeout on port 8080. SQLState: 08001. No response from remote_srv_99.
+          </div>
+        </div>
+
+        <div class="form-section" style="opacity: 0.5;">
+           <div class="form-title">DETAILS_LOGISTIQUE_SECTION_B</div>
+           <p style="font-size: 10px;">Section verrouillée. Veuillez valider la Section A pour continuer.</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="loader" class="loading-overlay">
+       <div style="text-align: center;">
+          <iconify-icon icon="mdi:loading" style="font-size: 50px; color: var(--primary);" class="iconify-icon-spin"></iconify-icon>
+          <p style="font-weight: 800; color: var(--primary);">Traitement en cours... (60s)</p>
+       </div>
+    </div>
+
+    <script>
+      function submitSim() {
+        document.getElementById('loader').style.display = "flex";
+        setTimeout(() => {
+          document.getElementById('loader').style.display = "none";
+          document.getElementById('error-msg').style.display = "block";
+        }, 3000);
+      }
+    </script>
+    <style>
+      .iconify-icon-spin { animation: spin 1s infinite linear; }
+      @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    </style>
+  </body>
+</html>

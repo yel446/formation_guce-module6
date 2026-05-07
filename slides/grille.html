@@ -12,277 +12,219 @@
       .slide-content {
         background-image: none !important;
         background-color: #ffffff;
-        padding: 50px 80px;
-      }
-      .view-nav {
+        padding: 0 !important;
         display: flex;
-        gap: 15px;
-        margin-bottom: 25px;
-        justify-content: center;
-      }
-      .nav-btn {
-        background: #f0f7f4;
-        border: 2px solid #f0f7f4;
-        padding: 10px 30px;
-        border-radius: 50px;
-        font-weight: 700;
-        color: var(--primary);
-        cursor: pointer;
-        transition: all 0.3s;
-        font-size: 14px;
-      }
-      .nav-btn.active {
-        background: #8bc34a;
-        color: white;
-        border-color: #8bc34a;
-        box-shadow: 0 5px 15px rgba(139, 195, 74, 0.3);
-      }
-      .view {
-        display: none;
-        animation: slideFadeIn 0.5s ease;
-      }
-      .view.active {
-        display: block;
-      }
-
-      .trainer-note {
-        background: #f0f7f4;
-        border-radius: 20px;
-        padding: 25px;
-        margin-bottom: 30px;
-        font-size: 15px;
-        line-height: 1.6;
-        border-left: 8px solid var(--primary);
-        color: #555;
-      }
-      .trainer-note strong {
-        color: var(--primary);
-        font-weight: 800;
-      }
-
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        background: white;
-        border-radius: 20px;
+        flex-direction: column;
+        height: 100vh;
         overflow: hidden;
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.03);
-        border: 1px solid #f2f2f2;
-      }
-      th {
-        background: #f9f9f9;
-        color: var(--primary);
-        padding: 20px;
-        text-align: left;
-        border-bottom: 3px solid #8bc34a;
-        font-weight: 800;
-        font-size: 14px;
-        text-transform: uppercase;
-      }
-      td {
-        padding: 18px 20px;
-        border-bottom: 1px solid #f8f8f8;
-        color: #444;
-        font-size: 15px;
       }
 
-      .level-badge {
-        font-weight: 800;
-        font-size: 18px;
-      }
-      .level-0 {
-        color: #95a5a6;
-      }
-      .level-1 {
-        color: #27ae60;
-      }
-      .level-2 {
-        color: #f39c12;
-      }
-      .level-3 {
-        color: #e67e22;
-      }
-      .level-4 {
-        color: #e74c3c;
-      }
-
-      .action-cell {
-        font-weight: 700;
-        color: var(--primary);
-      }
-
-      .example-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 20px;
-      }
-      .example-card {
-        background: white;
-        border: 1px solid #f2f2f2;
-        padding: 25px;
-        border-radius: 20px;
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.03);
-        transition: all 0.3s ease;
-      }
-      .example-card:hover {
-        transform: translateY(-5px);
-        border-color: #8bc34a;
-      }
-      .example-card h4 {
-        margin-bottom: 12px;
+      .workspace-header {
+        background: var(--primary);
+        color: white;
+        padding: 15px 30px;
         display: flex;
+        justify-content: space-between;
         align-items: center;
-        gap: 10px;
-        font-weight: 800;
-        font-size: 16px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        z-index: 100;
       }
-      .example-card p {
-        font-size: 14px;
-        color: #666;
-        line-height: 1.5;
+      .workspace-header h2 { font-size: 18px; font-weight: 800; margin: 0; display: flex; align-items: center; gap: 10px; }
+
+      .main-layout { display: grid; grid-template-columns: 1.2fr 0.8fr; flex-grow: 1; overflow: hidden; }
+
+      /* Audit Grid Section */
+      .grid-section { padding: 30px; overflow-y: auto; background: white; border-right: 1px solid #e2e8f0; }
+      .audit-table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+      .audit-table th { text-align: left; padding: 12px; border-bottom: 2px solid #8bc34a; color: var(--primary); font-weight: 800; font-size: 12px; text-transform: uppercase; }
+      .audit-table td { padding: 12px; border-bottom: 1px solid #f0f0f0; }
+
+      .input-field { width: 100%; padding: 8px; border: 1px solid #cbd5e0; border-radius: 6px; font-size: 13px; font-family: inherit; }
+      .sev-select { padding: 5px; border-radius: 6px; font-weight: 800; border: 1px solid #cbd5e0; font-size: 12px; }
+      .s-0 { color: #999; } .s-1 { color: #2ecc71; } .s-2 { color: #f1c40f; } .s-3 { color: #e67e22; } .s-4 { color: #e74c3c; }
+
+      /* Backlog Section */
+      .backlog-section { background: #f8faff; padding: 30px; overflow-y: auto; display: flex; flex-direction: column; }
+      .section-title { font-size: 14px; font-weight: 800; color: var(--primary); margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; }
+
+      .backlog-drop-zone {
+        min-height: 400px; border: 2px dashed #cbd5e0; border-radius: 20px; padding: 20px;
+        display: flex; flex-direction: column; gap: 15px; background: white;
       }
+      .backlog-item {
+        background: #f0f4f8; padding: 15px; border-radius: 12px; border-left: 5px solid var(--primary);
+        cursor: grab; font-size: 13px; font-weight: 700;
+      }
+
+      /* Buttons */
+      .btn-action {
+        background: #8bc34a; color: white; border: none; padding: 10px 20px; border-radius: 50px;
+        font-weight: 800; font-size: 12px; cursor: pointer; transition: 0.3s;
+        display: flex; align-items: center; gap: 8px;
+      }
+      .btn-action:hover { transform: scale(1.05); }
+      .btn-ai { background: var(--primary); }
+
+      /* Modals */
+      .modal-overlay {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(30, 58, 68, 0.95); backdrop-filter: blur(8px);
+        display: none; justify-content: center; align-items: center; z-index: 2000;
+      }
+      .modal-content { background: white; width: 95%; height: 92vh; border-radius: 30px; position: relative; overflow: hidden; }
+      .modal-close { position: absolute; top: 20px; right: 20px; width: 40px; height: 40px; border-radius: 50%; background: #eee; border: none; cursor: pointer; z-index: 100; font-size: 20px; }
+
+      /* AI Feedback Reveal */
+      .ai-feedback-box {
+        background: #1e3a44; color: white; padding: 30px; border-radius: 25px; width: 450px; text-align: center;
+        animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+      @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
     </style>
   </head>
   <body class="slide-content">
-    <div class="slide-header-rubric">
-      <h1>Grille d'audit et priorisation</h1>
-    </div>
-
-    <div class="view-nav">
-      <button class="nav-btn active" onclick="switchView('echelle', this)">
-        1. Échelle de Sévérité
-      </button>
-      <button class="nav-btn" onclick="switchView('exemples', this)">
-        2. Exemples d'Application
-      </button>
-    </div>
-
-    <!-- VIEW 1: ECHELLE -->
-    <div id="echelle-view" class="view active">
-      <div class="trainer-note">
-        <strong>Conseil Méthodologique — Audit Professionnel</strong><br />
-        Pour chaque action recommandée dans un rapport d'audit, il est essentiel d'indiquer les numéros des critères violés (ex : "Critères 1, 2, 6"). Cette approche systématique rend vos conclusions indiscutables et professionnelles.
-      </div>
-
-      <table>
-        <thead>
-          <tr>
-            <th style="width: 100px">Niveau</th>
-            <th>Description du problème UX</th>
-            <th>Action recommandée</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="level-badge level-0">0</td>
-            <td>Pas un problème UX</td>
-            <td class="action-cell">Aucune action</td>
-          </tr>
-          <tr>
-            <td class="level-badge level-1">1</td>
-            <td>Problème cosmétique</td>
-            <td class="action-cell">Correction si le temps le permet</td>
-          </tr>
-          <tr style="background: #fffdf5">
-            <td class="level-badge level-2">2</td>
-            <td>Problème mineur</td>
-            <td class="action-cell">Priorité basse — prochain sprint</td>
-          </tr>
-          <tr>
-            <td class="level-badge level-3">3</td>
-            <td>Problème majeur</td>
-            <td class="action-cell">Priorité haute — sprint courant</td>
-          </tr>
-          <tr>
-            <td class="level-badge level-4">4</td>
-            <td>Catastrophe</td>
-            <td class="action-cell" style="color: #e74c3c">
-              Bloquer la prod — correction immédiate
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- VIEW 2: EXEMPLES -->
-    <div id="exemples-view" class="view">
-      <div class="trainer-note" style="border-color: #8bc34a; display: flex; justify-content: space-between; align-items: center;">
-        <div>
-          <strong>Comment prioriser ?</strong><br />
-          La priorité dépend de la <strong>fréquence</strong> de l'erreur et de
-          son <strong>impact</strong> sur la tâche critique (ex: validation
-          finale).
-        </div>
-        <button class="btn-lab" onclick="openLab()" style="background: var(--primary); color: white; padding: 12px 25px; border-radius: 50px; font-weight: 800; cursor: pointer; border: none; display: flex; align-items: center; gap: 10px;">
-          <iconify-icon icon="mdi:flask" style="font-size: 20px; color: #8bc34a;"></iconify-icon>
-          Lancer le Lab Priorisation
+    <div class="workspace-header">
+      <h2><iconify-icon icon="mdi:clipboard-check"></iconify-icon> Workspace : Audit Bastien & Scapin</h2>
+      <div style="display: flex; gap: 15px;">
+        <button class="btn-action btn-ai" onclick="getAIFeedback()">
+           <iconify-icon icon="mdi:robot"></iconify-icon> Évaluer via IA
+        </button>
+        <button class="btn-action" onclick="openApp()">
+           <iconify-icon icon="mdi:open-in-new"></iconify-icon> Lancer l'App à Auditer
         </button>
       </div>
+    </div>
 
-      <div class="example-grid">
-        <div class="example-card">
-          <h4 class="level-1">
-            <iconify-icon icon="mdi:brush"></iconify-icon> Niveau 1 (Cosmétique)
-          </h4>
-          <p>
-            Un décalage de quelques pixels ou une icône de faible résolution.
-          </p>
+    <div class="main-layout">
+      <!-- Grid -->
+      <div class="grid-section">
+        <table class="audit-table">
+          <thead>
+            <tr>
+              <th style="width: 180px;">Critère</th>
+              <th>Problème identifié</th>
+              <th style="width: 110px;">Sévérité</th>
+              <th style="width: 110px;">Friction</th>
+            </tr>
+          </thead>
+          <tbody id="audit-grid-body"></tbody>
+        </table>
+        
+        <div style="background: #f8f9fa; padding: 20px; border-radius: 15px; border-left: 5px solid #8bc34a;">
+           <strong style="color: var(--primary); font-size: 14px;">Didactique :</strong>
+           <p style="font-size: 12px; color: #666; margin: 5px 0 0 0;">Identifiez au moins un problème par critère pour valider l'audit global du module métier.</p>
         </div>
-        <div class="example-card">
-          <h4 class="level-2">
-            <iconify-icon icon="mdi:alert-circle-outline"></iconify-icon> Niveau
-            2 (Mineur)
-          </h4>
-          <p>Une faute d'orthographe ou un feedback visuel trop bref.</p>
+      </div>
+
+      <!-- Backlog -->
+      <div class="backlog-section">
+        <div class="section-title">
+          <span>Backlog UX Priorisé</span>
+          <span style="font-size: 10px; font-weight: 400; opacity: 0.7;">Glissez pour prioriser</span>
         </div>
-        <div class="example-card" style="border-left: 5px solid #e67e22">
-          <h4 class="level-3">
-            <iconify-icon icon="mdi:alert-octagon"></iconify-icon> Niveau 3
-            (Majeur)
-          </h4>
-          <p>Bouton d'action principal caché ou navigation trompeuse.</p>
+        <div class="backlog-drop-zone" id="backlog-list">
+           <!-- Items added dynamically -->
+           <p id="backlog-empty" style="text-align: center; color: #999; margin-top: 50px;">Ajoutez des problèmes dans la grille pour alimenter le backlog.</p>
         </div>
-        <div
-          class="example-card"
-          style="background: #fff5f5; border-color: #feb2b2"
-        >
-          <h4 class="level-4">
-            <iconify-icon icon="mdi:skull-crossbones"></iconify-icon> Niveau 4
-            (Catastrophe)
-          </h4>
-          <p>L'application crash ou les données ne sont pas sauvegardées.</p>
-        </div>
+        <button class="btn-action" style="margin-top: 20px; justify-content: center; background: var(--primary);" onclick="window.print()">
+           <iconify-icon icon="mdi:printer"></iconify-icon> Imprimer le Rapport d'Audit
+        </button>
       </div>
     </div>
 
-    <!-- Lab Modal -->
-    <div id="lab-modal" class="modal-overlay">
-      <div class="modal-content" style="max-width: 1000px; height: 90vh; padding: 20px;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-           <h2 style="color: var(--primary); margin: 0; font-size: 24px;">Lab : Priorisation des Frictions</h2>
-           <button class="modal-close" onclick="closeLab()" style="position: relative; top: 0; right: 0;">×</button>
-        </div>
-        <iframe src="lab/frictions_lab_view.html" style="width: 100%; height: 100%; border: none; border-radius: 15px;"></iframe>
-      </div>
+    <!-- App Modal -->
+    <div id="app-modal" class="modal-overlay">
+       <div class="modal-content">
+          <button class="modal-close" onclick="closeApp()">×</button>
+          <iframe src="lab/complex_bad_app.html" style="width: 100%; height: 100%; border: none;"></iframe>
+       </div>
+    </div>
+
+    <!-- AI Modal -->
+    <div id="ai-modal" class="modal-overlay">
+       <div class="ai-feedback-box">
+          <iconify-icon icon="mdi:robot-confused" style="font-size: 60px; color: #8bc34a; margin-bottom: 20px;"></iconify-icon>
+          <h3 style="margin-bottom: 10px;">Analyse de votre Audit</h3>
+          <div id="ai-score" style="font-size: 48px; font-weight: 800; color: #8bc34a; margin-bottom: 15px;">--%</div>
+          <p id="ai-comment" style="font-size: 14px; opacity: 0.9; line-height: 1.5; margin-bottom: 25px;"></p>
+          <button class="btn-action" style="margin: 0 auto;" onclick="closeAI()">Fermer</button>
+       </div>
     </div>
 
     <script>
-      function switchView(id, btn) {
-        document.querySelectorAll(".view").forEach((v) => v.classList.remove("active"));
-        document.querySelectorAll(".nav-btn").forEach((b) => b.classList.remove("active"));
-        document.getElementById(id + "-view").classList.add("active");
-        btn.classList.add("active");
+      const criteria = ["1. Guidage", "2. Charge de travail", "3. Contrôle explicite", "4. Adaptabilité", "5. Gestion des erreurs", "6. Homogénéité", "7. Signifiance des codes", "8. Compatibilité"];
+      
+      function init() {
+        const body = document.getElementById('audit-grid-body');
+        criteria.forEach((c, i) => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td style="font-weight: 800; color: var(--primary); font-size: 13px;">${c}</td>
+            <td><input type="text" class="input-field" placeholder="..." id="obs-${i}" oninput="syncBacklog()"></td>
+            <td>
+              <select class="sev-select s-0" id="sev-${i}" onchange="this.className='sev-select s-'+this.value; syncBacklog()">
+                <option value="0" class="s-0">0</option><option value="1" class="s-1">1</option><option value="2" class="s-2">2</option><option value="3" class="s-3">3</option><option value="4" class="s-4">4</option>
+              </select>
+            </td>
+            <td>
+              <select class="input-field" id="fric-${i}" onchange="syncBacklog()">
+                <option value="mineure">Mineure</option><option value="modérée">Modérée</option><option value="critique">Critique</option>
+              </select>
+            </td>
+          `;
+          body.appendChild(row);
+        });
       }
 
-      function openLab() {
-        document.getElementById('lab-modal').style.display = "flex";
+      function syncBacklog() {
+        const list = document.getElementById('backlog-list');
+        const empty = document.getElementById('backlog-empty');
+        const items = [];
+        criteria.forEach((c, i) => {
+          const val = document.getElementById('obs-' + i).value;
+          if (val.trim()) {
+            items.push({ crit: c, val: val, sev: document.getElementById('sev-' + i).value });
+          }
+        });
+
+        if (items.length > 0) {
+          empty.style.display = "none";
+          list.innerHTML = items.sort((a,b) => b.sev - a.sev).map(item => `
+            <div class="backlog-item">
+               <span style="color: #8bc34a; margin-right: 10px;">[S${item.sev}]</span> ${item.crit} : ${item.val}
+            </div>
+          `).join('');
+        } else {
+          list.innerHTML = '';
+          list.appendChild(empty);
+          empty.style.display = "block";
+        }
+      }
+
+      function openApp() {
+        document.getElementById('app-modal').style.display = "flex";
         if (window.parent) window.parent.postMessage({ action: 'toggleFooter', visible: false }, '*');
       }
-
-      function closeLab() {
-        document.getElementById('lab-modal').style.display = "none";
+      function closeApp() {
+        document.getElementById('app-modal').style.display = "none";
         if (window.parent) window.parent.postMessage({ action: 'toggleFooter', visible: true }, '*');
       }
+
+      function getAIFeedback() {
+        const filled = criteria.filter((_, i) => document.getElementById('obs-' + i).value.trim()).length;
+        const score = Math.min(100, Math.round((filled / 8) * 100));
+        document.getElementById('ai-score').innerText = score + "%";
+        let comment = "";
+        if (score < 50) comment = "Audit incomplet. N'oubliez pas que l'interface simulée contient au moins une violation majeure par critère Bastien & Scapin.";
+        else if (score < 100) comment = "Bonne analyse ! Vous avez identifié la plupart des points critiques. Poussez plus loin sur la compatibilité métier.";
+        else comment = "Excellent ! Audit exhaustif. Votre backlog est prêt à être transformé en user stories prioritaires.";
+        
+        document.getElementById('ai-comment').innerText = comment;
+        document.getElementById('ai-modal').style.display = "flex";
+      }
+      function closeAI() { document.getElementById('ai-modal').style.display = "none"; }
+
+      init();
     </script>
   </body>
 </html>
