@@ -43,6 +43,19 @@
         border-bottom: 1px solid #eee;
         color: var(--primary);
         font-weight: 800;
+        min-height: 55px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .card-meta {
+        font-size: 11px;
+        text-transform: uppercase;
+        color: #8bc34a;
+        font-weight: 800;
+        margin-bottom: 15px;
+        text-align: center;
+        letter-spacing: 1px;
       }
       .card-item {
         background: #f8faff;
@@ -54,6 +67,14 @@
         font-size: 13px;
         font-weight: 600;
         color: #555;
+        line-height: 1.4;
+      }
+      .card-item strong {
+        color: var(--primary);
+        display: block;
+        font-size: 11px;
+        text-transform: uppercase;
+        margin-bottom: 2px;
       }
       .btn-detail {
         margin-top: auto;
@@ -106,7 +127,7 @@
         color: #555;
       }
       .decision-item strong {
-        color: var(--primary);
+        color: #8bc34a;
       }
 
       /* Modal Styles */
@@ -163,63 +184,103 @@
         background: #e74c3c;
         color: white;
       }
+      .method-tag {
+        display: inline-block;
+        padding: 4px 12px;
+        background: #e8f5e9;
+        color: #2e7d32;
+        border-radius: 6px;
+        font-size: 11px;
+        font-weight: 700;
+        margin-bottom: 10px;
+      }
     </style>
   </head>
   <body class="slide-content">
     <div class="slide-header-rubric">
-      <h1>6.1 — Méthodes comparées : Nielsen vs Bastien & Scapin</h1>
+      <h1>Méthodes comparées : Nielsen vs Bastien & Scapin</h1>
     </div>
 
     <div class="comparison-grid">
-      <!-- Claude Design -->
+      <!-- Nielsen -->
       <div class="comparison-card" style="border-top: 4px solid #a5d6a7">
-        <h3>Claude Design — Anthropic</h3>
+        <div class="card-meta">Le Couteau Suisse UX</div>
+        <h3>Jacob Nielsen (10 Heuristiques)</h3>
         <div class="card-content">
-          <div class="card-item">Intégré dans claude.ai<br />Pro / Max / Team</div>
-          <div class="card-item">Lit ton codebase → Design System natif</div>
-          <div class="card-item">Output : HTML · React · SVG<br />Code réel</div>
+          <div class="card-item">
+            <strong>Philosophie</strong>
+            Simplicité & Rapidité d'exécution
+          </div>
+          <div class="card-item">
+            <strong>Structure</strong>
+            10 règles universelles et globales
+          </div>
+          <div class="card-item">
+            <strong>Cas d'usage idéal</strong>
+            Startups, MVPs, Sites vitrines, Mobile
+          </div>
         </div>
-        <button class="btn-detail" onclick="openModal('claude')">
-          Plus de détails
-          <iconify-icon icon="mdi:information-outline"></iconify-icon>
+        <button class="btn-detail" onclick="openModal('nielsen')">
+          Voir les 10 heuristiques
+          <iconify-icon icon="mdi:list-status"></iconify-icon>
         </button>
       </div>
 
-      <!-- Google Stitch -->
-      <div class="comparison-card" style="border-top: 4px solid #fff59d">
-        <h3>Google Stitch — Google Labs</h3>
+      <!-- Bastien & Scapin -->
+      <div class="comparison-card" style="border-top: 4px solid #4db6ac">
+        <div class="card-meta">Le Scanner IRM UX</div>
+        <h3>Bastien & Scapin (8 Critères)</h3>
         <div class="card-content">
-          <div class="card-item">Prompt → 5 écrans reliés en 90s</div>
-          <div class="card-item">Prototypes interactifs multi-écrans</div>
-          <div class="card-item">Export Figma · HTML/CSS · React · Flutter</div>
+          <div class="card-item">
+            <strong>Philosophie</strong>
+            Précision & Rigueur Scientifique
+          </div>
+          <div class="card-item">
+            <strong>Structure</strong>
+            8 critères majeurs / 18 sous-critères
+          </div>
+          <div class="card-item">
+            <strong>Cas d'usage idéal</strong>
+            Logiciels métiers (ERP), Santé, Finance
+          </div>
         </div>
-        <button class="btn-detail" onclick="openModal('stitch')">
-          Plus de détails
-          <iconify-icon icon="mdi:information-outline"></iconify-icon>
+        <button class="btn-detail" onclick="openModal('bastien')">
+          Voir les 18 sous-critères
+          <iconify-icon icon="mdi:microscope"></iconify-icon>
         </button>
       </div>
 
-      <!-- Figma Make -->
-      <div class="comparison-card" style="border-top: 4px solid #9fa8da">
-        <h3>Figma Make — Figma</h3>
+      <!-- Verdict -->
+      <div class="comparison-card" style="border-top: 4px solid #1e3a44">
+        <div class="card-meta">La Vision Terrain</div>
+        <h3>Lequel choisir pour votre projet ?</h3>
         <div class="card-content">
-          <div class="card-item">Prompt → Prototype natif Figma</div>
-          <div class="card-item">Make Kits : Composants réels</div>
-          <div class="card-item">Voice-to-text · Collaboration native</div>
+          <div class="card-item">
+            <strong>Vitesse</strong>
+            Nielsen permet de trouver 80% des bugs en 2h
+          </div>
+          <div class="card-item">
+            <strong>Crédibilité</strong>
+            B&S apporte une preuve scientifique indiscutable
+          </div>
+          <div class="card-item">
+            <strong>Hybridation</strong>
+            Le duo gagnant pour un audit de haut niveau
+          </div>
         </div>
-        <button class="btn-detail" onclick="openModal('figma')">
-          Plus de détails
-          <iconify-icon icon="mdi:information-outline"></iconify-icon>
+        <button class="btn-detail" onclick="openModal('verdict')">
+          Conseils de l'expert
+          <iconify-icon icon="mdi:lightbulb-outline"></iconify-icon>
         </button>
       </div>
     </div>
 
     <div class="decision-box">
-      <div class="decision-title">Décision terrain :</div>
+      <div class="decision-title">Verdict en 1 seconde :</div>
       <div class="decision-items">
-        <div class="decision-item">Code existant → <strong>Claude</strong></div>
-        <div class="decision-item">Page blanche → <strong>Stitch</strong></div>
-        <div class="decision-item">Figma → <strong>Figma Make</strong></div>
+        <div class="decision-item">Agile / Rapide → <strong>Nielsen</strong></div>
+        <div class="decision-item">Complexe / Scientifique → <strong>Bastien & Scapin</strong></div>
+        <div class="decision-item">Standard Pro → <strong>Mixer les deux</strong></div>
       </div>
     </div>
 
@@ -227,10 +288,16 @@
     <div id="info-modal" class="modal-overlay">
       <div class="modal-content">
         <button class="modal-close" onclick="closeModal()">×</button>
-        <h2 id="modal-title" style="margin-bottom: 25px; color: var(--primary); font-weight: 800;">
-          Titre de l'outil
+        <h2
+          id="modal-title"
+          style="margin-bottom: 25px; color: var(--primary); font-weight: 800"
+        >
+          Détails de la méthode
         </h2>
-        <div id="modal-body" style="font-size: 15px; line-height: 1.7; color: #555;">
+        <div
+          id="modal-body"
+          style="font-size: 14px; line-height: 1.6; color: #555; max-height: 400px; overflow-y: auto; padding-right: 15px;"
+        >
           <!-- Content injected by JS -->
         </div>
       </div>
@@ -238,37 +305,54 @@
 
     <script>
       const toolDetails = {
-        claude: {
-          title: "Claude Design (Anthropic)",
+        nielsen: {
+          title: "Les 10 Heuristiques de Nielsen",
           body: `
-                        <p><strong>Points forts :</strong> Claude Design est capable de lire l'intégralité de votre dépôt de code pour comprendre vos conventions de nommage et vos composants existants.</p>
-                        <ul style="margin-top: 15px; padding-left: 20px;">
-                            <li style="margin-bottom: 10px;">Génération de code React/HTML prêt à l'emploi.</li>
-                            <li style="margin-bottom: 10px;">Compréhension sémantique des maquettes.</li>
-                            <li>Intégration native avec Claude Code pour le déploiement.</li>
+                        <p style="margin-bottom: 15px;">Créées en 1994, elles restent la base absolue de l'audit UX dans le monde entier.</p>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                            <div class="card-item" style="text-align:left; font-size: 12px;">1. Visibilité de l'état du système</div>
+                            <div class="card-item" style="text-align:left; font-size: 12px;">2. Correspondance système/monde réel</div>
+                            <div class="card-item" style="text-align:left; font-size: 12px;">3. Contrôle et liberté de l'utilisateur</div>
+                            <div class="card-item" style="text-align:left; font-size: 12px;">4. Cohérence et standards</div>
+                            <div class="card-item" style="text-align:left; font-size: 12px;">5. Prévention des erreurs</div>
+                            <div class="card-item" style="text-align:left; font-size: 12px;">6. Reconnaissance plutôt que rappel</div>
+                            <div class="card-item" style="text-align:left; font-size: 12px;">7. Souplesse et efficacité d'utilisation</div>
+                            <div class="card-item" style="text-align:left; font-size: 12px;">8. Esthétique et design minimaliste</div>
+                            <div class="card-item" style="text-align:left; font-size: 12px;">9. Aide au diagnostic des erreurs</div>
+                            <div class="card-item" style="text-align:left; font-size: 12px;">10. Aide et documentation</div>
+                        </div>
+                    `,
+        },
+        bastien: {
+          title: "Les 8 Critères de Bastien & Scapin",
+          body: `
+                        <p style="margin-bottom: 15px;">Développés à l'INRIA, ces critères sont beaucoup plus détaillés et permettent de justifier scientifiquement vos choix.</p>
+                        <ul style="padding-left: 20px;">
+                            <li style="margin-bottom: 8px;"><strong>Guidage :</strong> Incitation, Groupement, Feedback, Lisibilité.</li>
+                            <li style="margin-bottom: 8px;"><strong>Charge de travail :</strong> Brièveté, Densité informationnelle.</li>
+                            <li style="margin-bottom: 8px;"><strong>Contrôle explicite :</strong> Actions explicites, Contrôle utilisateur.</li>
+                            <li style="margin-bottom: 8px;"><strong>Adaptabilité :</strong> Flexibilité, Prise en compte de l'expérience.</li>
+                            <li style="margin-bottom: 8px;"><strong>Gestion des erreurs :</strong> Protection, Correction, Qualité des messages.</li>
+                            <li style="margin-bottom: 8px;"><strong>Homogénéité :</strong> Cohérence interne de l'interface.</li>
+                            <li style="margin-bottom: 8px;"><strong>Signifiance des codes :</strong> Adéquation entre codes et objets.</li>
+                            <li><strong>Compatibilité :</strong> Accord avec les attentes de l'utilisateur.</li>
                         </ul>
                     `,
         },
-        stitch: {
-          title: "Google Stitch (Google Labs)",
+        verdict: {
+          title: "Conseils de l'expert : Comment choisir ?",
           body: `
-                        <p><strong>Points forts :</strong> Un outil ultra-rapide pour transformer un concept en flux interactif. Stitch ne génère pas seulement un écran, mais un prototype complet.</p>
-                        <ul style="margin-top: 15px; padding-left: 20px;">
-                            <li style="margin-bottom: 10px;">Interconnexion automatique des écrans.</li>
-                            <li style="margin-bottom: 10px;">Voice Canvas pour piloter le design à la voix.</li>
-                            <li>Export vers 7 frameworks différents dont Flutter.</li>
-                        </ul>
-                    `,
-        },
-        figma: {
-          title: "Figma Make (Figma AI)",
-          body: `
-                        <p><strong>Points forts :</strong> Directement intégré dans l'outil standard des designers. Il utilise vos bibliothèques de composants existantes pour créer de nouveaux écrans.</p>
-                        <ul style="margin-top: 15px; padding-left: 20px;">
-                            <li style="margin-bottom: 10px;">Respect total du Design System en place.</li>
-                            <li style="margin-bottom: 10px;">Génération de prototypes fonctionnels.</li>
-                            <li>Historique de versioning intelligent.</li>
-                        </ul>
+                        <p>Il n'y a pas de "meilleure" méthode dans l'absolu, il y a une méthode adaptée à votre contexte :</p>
+                        <div style="margin-top: 20px;">
+                            <div style="background: #fff8e1; border-left: 4px solid #ffc107; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                                <h4 style="margin-bottom: 5px; color: #795548;">Utilisez NIELSEN si :</h4>
+                                <p style="font-size: 13px;">Vous avez peu de temps, le projet est simple, ou vous devez sensibiliser des clients qui ne connaissent pas l'UX.</p>
+                            </div>
+                            <div style="background: #e3f2fd; border-left: 4px solid #2196f3; padding: 15px; border-radius: 8px;">
+                                <h4 style="margin-bottom: 5px; color: #0d47a1;">Utilisez BASTIEN & SCAPIN si :</h4>
+                                <p style="font-size: 13px;">Vous auditez un outil professionnel (logiciel de gestion), un système critique, ou si vous devez rendre un rapport d'audit expert très formel.</p>
+                            </div>
+                        </div>
                     `,
         },
       };
@@ -282,6 +366,13 @@
 
       function closeModal() {
         document.getElementById("info-modal").style.display = "none";
+      }
+
+      window.onclick = function(event) {
+        const modal = document.getElementById("info-modal");
+        if (event.target == modal) {
+            closeModal();
+        }
       }
     </script>
   </body>
