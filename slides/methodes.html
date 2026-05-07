@@ -161,8 +161,16 @@
       .modal-content {
         background: white; width: 95%; max-width: 1200px; height: 92vh;
         border-radius: 30px; padding: 25px; position: relative; display: flex; flex-direction: column;
+        overflow-y: auto;
       }
       .lab-body { display: grid; grid-template-columns: 1fr 1.2fr; gap: 25px; flex-grow: 1; overflow: hidden; }
+      
+      @media (max-width: 1024px) {
+        .lab-body { grid-template-columns: 1fr; overflow-y: auto; }
+        .interface-viewer { height: 400px; flex-shrink: 0; }
+        .modal-content { padding: 15px; }
+      }
+
       .interface-viewer { border-radius: 20px; border: 2px solid #e2e8f0; overflow: hidden; }
       .interface-viewer iframe { width: 100%; height: 100%; border: none; }
       .audit-scroller { overflow-y: auto; padding-right: 15px; }
@@ -354,6 +362,11 @@
         const data = labs[method];
         document.getElementById('lab-title').innerText = data.title;
         document.getElementById('lab-iframe').src = data.src;
+        
+        if (window.parent) {
+          window.parent.postMessage({ action: 'toggleFooter', visible: false }, '*');
+        }
+
         document.getElementById('lab-audit-list').innerHTML = `<div style="background: #1e3a44; color: white; padding: 15px; border-radius: 12px; margin-bottom: 20px; font-size: 13px;"><strong>Mode Lab :</strong> Cliquez sur une heuristique pour révéler l'analyse.</div>` + data.points.map((p, i) => `<div class="audit-point" onclick="inspectPoint('${method}', ${i}, this)"><h5>${p.t}<div class="point-status"><span class="gravity-badge g-${p.g}">${getGravityLabel(p.g)}</span><iconify-icon icon="${p.s === 'error' ? 'mdi:alert-circle' : 'mdi:check-circle'}" style="color: ${p.s === 'error' ? '#e74c3c' : '#2ecc71'}"></iconify-icon></div></h5><div class="point-detail">${p.d}</div></div>`).join('');
         calculateUXScore(method);
         document.getElementById('lab-modal').style.display = "flex";
@@ -374,7 +387,13 @@
       }
 
       function getGravityLabel(g) { return ["Respecté", "Mineur", "Majeur", "Critique", "Bloquant"][g]; }
-      function closeLab() { document.getElementById('lab-modal').style.display = "none"; }
+      
+      function closeLab() { 
+        document.getElementById('lab-modal').style.display = "none";
+        if (window.parent) {
+          window.parent.postMessage({ action: 'toggleFooter', visible: true }, '*');
+        }
+      }
       initLists();
     </script>
   </body>

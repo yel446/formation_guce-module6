@@ -172,6 +172,14 @@
         if (e.key === "ArrowLeft") prevSlide();
       });
 
+      // Handle messages from slides (e.g., to hide footer during Labs)
+      window.addEventListener("message", (e) => {
+        if (e.data.action === "toggleFooter") {
+          mainFooter.style.display = e.data.visible ? "flex" : "none";
+          signature.style.display = e.data.visible ? (currentIndex === 0 ? "flex" : "none") : "none";
+        }
+      });
+
       // Initialize progress
       updateUI();
     </script>
