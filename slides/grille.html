@@ -1,185 +1,255 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../styles.css">
+  <head>
+    <meta charset="UTF-8" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <link rel="stylesheet" href="../styles.css" />
     <style>
-        .slide-title {
-            color: var(--primary);
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 20px;
-        }
-        .view-nav {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-        .nav-btn {
-            background: #f0f4f8;
-            border: 2px solid #f0f4f8;
-            padding: 8px 25px;
-            border-radius: 50px;
-            font-weight: 700;
-            color: var(--primary);
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 13px;
-        }
-        .nav-btn.active {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-            box-shadow: 0 5px 15px rgba(27, 67, 77, 0.2);
-        }
-        .view {
-            display: none;
-            animation: fadeIn 0.5s ease;
-        }
-        .view.active { display: block; }
+      .slide-content {
+        background-image: none !important;
+        background-color: #ffffff;
+        padding: 50px 80px;
+      }
+      .view-nav {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 25px;
+        justify-content: center;
+      }
+      .nav-btn {
+        background: #f0f7f4;
+        border: 2px solid #f0f7f4;
+        padding: 10px 30px;
+        border-radius: 50px;
+        font-weight: 700;
+        color: var(--primary);
+        cursor: pointer;
+        transition: all 0.3s;
+        font-size: 14px;
+      }
+      .nav-btn.active {
+        background: #8bc34a;
+        color: white;
+        border-color: #8bc34a;
+        box-shadow: 0 5px 15px rgba(139, 195, 74, 0.3);
+      }
+      .view {
+        display: none;
+        animation: slideFadeIn 0.5s ease;
+      }
+      .view.active {
+        display: block;
+      }
 
-        .trainer-note {
-            background: #f8f9fa;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 25px;
-            font-size: 14px;
-            line-height: 1.5;
-            border-left: 5px solid var(--primary);
-        }
-        .trainer-note strong { color: var(--primary); }
-        
-        .level-0 { color: #999; }
-        .level-1 { color: #4caf50; }
-        .level-2 { color: #ff9800; }
-        .level-3 { color: #f44336; }
-        .level-4 { color: #b71c1c; font-weight: 900; }
-        
-        .action-cell { font-weight: 600; }
+      .trainer-note {
+        background: #f0f7f4;
+        border-radius: 20px;
+        padding: 25px;
+        margin-bottom: 30px;
+        font-size: 15px;
+        line-height: 1.6;
+        border-left: 8px solid var(--primary);
+        color: #555;
+      }
+      .trainer-note strong {
+        color: var(--primary);
+        font-weight: 800;
+      }
 
-        .example-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-        }
-        .example-card {
-            background: white;
-            border: 1px solid #eee;
-            padding: 15px;
-            border-radius: 12px;
-            font-size: 13px;
-        }
-        .example-card h4 {
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.03);
+        border: 1px solid #f2f2f2;
+      }
+      th {
+        background: #f9f9f9;
+        color: var(--primary);
+        padding: 20px;
+        text-align: left;
+        border-bottom: 3px solid #8bc34a;
+        font-weight: 800;
+        font-size: 14px;
+        text-transform: uppercase;
+      }
+      td {
+        padding: 18px 20px;
+        border-bottom: 1px solid #f8f8f8;
+        color: #444;
+        font-size: 15px;
+      }
+
+      .level-badge {
+        font-weight: 800;
+        font-size: 18px;
+      }
+      .level-0 { color: #95a5a6; }
+      .level-1 { color: #27ae60; }
+      .level-2 { color: #f39c12; }
+      .level-3 { color: #e67e22; }
+      .level-4 { color: #e74c3c; }
+
+      .action-cell {
+        font-weight: 700;
+        color: var(--primary);
+      }
+
+      .example-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+      }
+      .example-card {
+        background: white;
+        border: 1px solid #f2f2f2;
+        padding: 25px;
+        border-radius: 20px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.03);
+        transition: all 0.3s ease;
+      }
+      .example-card:hover {
+        transform: translateY(-5px);
+        border-color: #8bc34a;
+      }
+      .example-card h4 {
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 800;
+        font-size: 16px;
+      }
+      .example-card p {
+        font-size: 14px;
+        color: #666;
+        line-height: 1.5;
+      }
     </style>
-</head>
-<body>
-    <div class="slide-content">
-        <h1 class="slide-title">6.2 — Grille d'audit & priorisation</h1>
-
-        <div class="view-nav">
-            <button class="nav-btn active" onclick="switchView('echelle', this)">1. Échelle de Sévérité</button>
-            <button class="nav-btn" onclick="switchView('exemples', this)">2. Exemples d'Application</button>
-        </div>
-
-        <!-- VIEW 1: ECHELLE -->
-        <div id="echelle-view" class="view active">
-            <div class="trainer-note">
-                <strong>Note formateur — Méthode professionnelle</strong><br>
-                La grille Bastien & Scapin est le standard académique francophone. Pour chaque action recommandée, on indique les numéros des critères violés. Cette notation rend les audits reproductibles et défendables.
-            </div>
-
-            <p style="font-weight: 700; margin-bottom: 15px; font-size: 14px;">Échelle de sévérité des problèmes UX :</p>
-            <table class="severity-table">
-                <thead>
-                    <tr>
-                        <th style="width: 80px;">Niveau</th>
-                        <th>Description</th>
-                        <th>Action recommandée</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="level-badge level-0">0</td>
-                        <td>Pas un problème UX</td>
-                        <td class="action-cell">Aucune action</td>
-                    </tr>
-                    <tr>
-                        <td class="level-badge level-1">1</td>
-                        <td>Problème cosmétique</td>
-                        <td class="action-cell">Correction si le temps le permet</td>
-                    </tr>
-                    <tr style="background: #fffdf0;">
-                        <td class="level-badge level-2">2</td>
-                        <td>Problème mineur</td>
-                        <td class="action-cell">Priorité basse — prochain sprint</td>
-                    </tr>
-                    <tr>
-                        <td class="level-badge level-3">3</td>
-                        <td>Problème majeur</td>
-                        <td class="action-cell">Priorité haute — sprint courant</td>
-                    </tr>
-                    <tr>
-                        <td class="level-badge level-4">4</td>
-                        <td>Catastrophe</td>
-                        <td class="action-cell" style="color: #b71c1c;">Bloquer la prod — correction immédiate</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <!-- VIEW 2: EXEMPLES -->
-        <div id="exemples-view" class="view">
-            <div class="trainer-note" style="border-color: var(--accent);">
-                <strong>Comment prioriser ?</strong><br>
-                La priorité dépend de la <strong>fréquence</strong> de l'erreur et de son <strong>impact</strong> sur la tâche critique (ex: soumettre un formulaire).
-            </div>
-
-            <div class="example-grid">
-                <div class="example-card">
-                    <h4 class="level-1"><iconify-icon icon="mdi:brush"></iconify-icon> Niveau 1 (Cosmétique)</h4>
-                    <p>Un décalage de 2px sur un bouton ou une icône légèrement floue. N'empêche pas l'utilisation.</p>
-                </div>
-                <div class="example-card">
-                    <h4 class="level-2"><iconify-icon icon="mdi:alert-circle-outline"></iconify-icon> Niveau 2 (Mineur)</h4>
-                    <p>Une faute d'orthographe dans un label ou un message de succès qui disparaît trop vite.</p>
-                </div>
-                <div class="example-card" style="border-left: 4px solid #f44336;">
-                    <h4 class="level-3"><iconify-icon icon="mdi:alert-octagon"></iconify-icon> Niveau 3 (Majeur)</h4>
-                    <p>Le bouton "Suivant" est difficile à trouver car il est en bas de page sans scroll évident.</p>
-                </div>
-                <div class="example-card" style="background: #fff5f5; border-color: #feb2b2;">
-                    <h4 class="level-4"><iconify-icon icon="mdi:skull-crossbones"></iconify-icon> Niveau 4 (Catastrophe)</h4>
-                    <p>Le formulaire de paiement renvoie une erreur 500 systématique. L'utilisateur est bloqué.</p>
-                </div>
-            </div>
-            
-            <div style="margin-top: 25px; padding: 15px; background: #e8f5e9; border-radius: 12px; font-size: 13px; color: #2e7d32;">
-                <strong>💡 Conseil :</strong> Un problème de niveau 4 sur une fonctionnalité secondaire peut parfois être traité après un niveau 3 sur une fonctionnalité vitale.
-            </div>
-        </div>
-
-        <script>
-            function switchView(id, btn) {
-                document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-                document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-                document.getElementById(id + '-view').classList.add('active');
-                btn.classList.add('active');
-            }
-        </script>
-
-        <footer class="slide-footer">
-            <div class="legal-text">MARABU — Formation GUCE-CI · 2026</div>
-            <div class="footer-logos">
-                <img src="../assets/guce.png" alt="GUCE-CI">
-                <img src="../assets/marabou logo-white.png" alt="MARABU">
-            </div>
-        </footer>
+  </head>
+  <body class="slide-content">
+    <div class="slide-header-rubric">
+      <h1>6.2 — Grille d'audit et priorisation</h1>
     </div>
-</body>
+
+    <div class="view-nav">
+      <button class="nav-btn active" onclick="switchView('echelle', this)">
+        1. Échelle de Sévérité
+      </button>
+      <button class="nav-btn" onclick="switchView('exemples', this)">
+        2. Exemples d'Application
+      </button>
+    </div>
+
+    <!-- VIEW 1: ECHELLE -->
+    <div id="echelle-view" class="view active">
+      <div class="trainer-note">
+        <strong>Note formateur — Méthode professionnelle</strong><br />
+        La grille Bastien & Scapin est le standard académique francophone. Pour
+        chaque action recommandée, on indique les numéros des critères violés.
+        Cette notation rend les audits reproductibles et défendables.
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 100px">Niveau</th>
+            <th>Description du problème UX</th>
+            <th>Action recommandée</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="level-badge level-0">0</td>
+            <td>Pas un problème UX</td>
+            <td class="action-cell">Aucune action</td>
+          </tr>
+          <tr>
+            <td class="level-badge level-1">1</td>
+            <td>Problème cosmétique</td>
+            <td class="action-cell">Correction si le temps le permet</td>
+          </tr>
+          <tr style="background: #fffdf5">
+            <td class="level-badge level-2">2</td>
+            <td>Problème mineur</td>
+            <td class="action-cell">Priorité basse — prochain sprint</td>
+          </tr>
+          <tr>
+            <td class="level-badge level-3">3</td>
+            <td>Problème majeur</td>
+            <td class="action-cell">Priorité haute — sprint courant</td>
+          </tr>
+          <tr>
+            <td class="level-badge level-4">4</td>
+            <td>Catastrophe</td>
+            <td class="action-cell" style="color: #e74c3c">
+              Bloquer la prod — correction immédiate
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- VIEW 2: EXEMPLES -->
+    <div id="exemples-view" class="view">
+      <div class="trainer-note" style="border-color: #8bc34a">
+        <strong>Comment prioriser ?</strong><br />
+        La priorité dépend de la <strong>fréquence</strong> de l'erreur et de son
+        <strong>impact</strong> sur la tâche critique (ex: validation finale).
+      </div>
+
+      <div class="example-grid">
+        <div class="example-card">
+          <h4 class="level-1">
+            <iconify-icon icon="mdi:brush"></iconify-icon> Niveau 1 (Cosmétique)
+          </h4>
+          <p>
+            Un décalage de quelques pixels ou une icône de faible résolution.
+          </p>
+        </div>
+        <div class="example-card">
+          <h4 class="level-2">
+            <iconify-icon icon="mdi:alert-circle-outline"></iconify-icon> Niveau
+            2 (Mineur)
+          </h4>
+          <p>Une faute d'orthographe ou un feedback visuel trop bref.</p>
+        </div>
+        <div class="example-card" style="border-left: 5px solid #e67e22">
+          <h4 class="level-3">
+            <iconify-icon icon="mdi:alert-octagon"></iconify-icon> Niveau 3
+            (Majeur)
+          </h4>
+          <p>
+            Bouton d'action principal caché ou navigation trompeuse.
+          </p>
+        </div>
+        <div class="example-card" style="background: #fff5f5; border-color: #feb2b2">
+          <h4 class="level-4">
+            <iconify-icon icon="mdi:skull-crossbones"></iconify-icon> Niveau 4
+            (Catastrophe)
+          </h4>
+          <p>L'application crash ou les données ne sont pas sauvegardées.</p>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function switchView(id, btn) {
+        document
+          .querySelectorAll(".view")
+          .forEach((v) => v.classList.remove("active"));
+        document
+          .querySelectorAll(".nav-btn")
+          .forEach((b) => b.classList.remove("active"));
+        document.getElementById(id + "-view").classList.add("active");
+        btn.classList.add("active");
+      }
+    </script>
+  </body>
 </html>
