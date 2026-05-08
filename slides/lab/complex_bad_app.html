@@ -124,19 +124,28 @@
 
     <script>
       const criteria = [
-        "1. Guidage", "2. Charge de travail", "3. Contrôle explicite", "4. Adaptabilité",
-        "5. Gestion des erreurs", "6. Homogénéité", "7. Signifiance des codes", "8. Compatibilité"
+        { name: "1. Guidage", def: "Orientation, feedback et incitation." },
+        { name: "2. Charge de travail", def: "Réduction de l'effort mémoriel." },
+        { name: "3. Contrôle explicite", def: "Maîtrise de l'utilisateur." },
+        { name: "4. Adaptabilité", def: "Flexibilité selon l'usage." },
+        { name: "5. Gestion des erreurs", def: "Prévention et correction simple." },
+        { name: "6. Homogénéité", def: "Cohérence interne de l'interface." },
+        { name: "7. Signifiance des codes", def: "Adéquation codes/signification." },
+        { name: "8. Compatibilité", def: "Accord tâche réelle/logique système." }
       ];
 
       function initAuditPanel() {
         const container = document.getElementById('audit-list');
-        criteria.forEach((name, i) => {
+        criteria.forEach((c, i) => {
           const item = document.createElement('div');
           item.className = 'mini-crit-item';
           item.innerHTML = `
-            <div onclick="toggleForm(${i})"><h4>${name}</h4></div>
+            <div onclick="toggleForm(${i})">
+               <h4>${c.name}</h4>
+               <p style="font-size: 9px; color: #64748b; margin: 3px 0 0 0; font-style: italic;">${c.def}</p>
+            </div>
             <div class="mini-form" id="form-${i}">
-               <textarea class="mini-input" id="prob-${i}" placeholder="Problème..."></textarea>
+               <textarea class="mini-input" id="prob-${i}" placeholder="Décrire le problème..."></textarea>
                <div class="mini-sev-row" id="sev-row-${i}">
                   <button class="mini-sev-btn active" onclick="setMiniSev(${i}, 0)">0</button>
                   <button class="mini-sev-btn" onclick="setMiniSev(${i}, 1)">1</button>
@@ -144,8 +153,8 @@
                   <button class="mini-sev-btn" onclick="setMiniSev(${i}, 3)">3</button>
                   <button class="mini-sev-btn" onclick="setMiniSev(${i}, 4)">4</button>
                </div>
-               <input type="text" class="mini-input" id="reco-${i}" placeholder="Reco (opt)...">
-               <button class="mini-btn-save" onclick="saveAudit(${i})">Enregistrer</button>
+               <input type="text" class="mini-input" id="reco-${i}" placeholder="Recommandation (opt)...">
+               <button class="mini-btn-save" onclick="saveAudit(${i})">Enregistrer dans l'Audit</button>
             </div>
           `;
           container.appendChild(item);
@@ -159,9 +168,14 @@
         p.style.display = (p.style.display === 'flex') ? 'none' : 'flex';
       }
 
-      function toggleForm(i) {
-        const f = document.getElementById('form-' + i);
-        f.style.display = (f.style.display === 'block') ? 'none' : 'block';
+      function toggleForm(index) {
+        // Accordion behavior: close all others
+        document.querySelectorAll('.mini-form').forEach((f, i) => {
+           if (i !== index) f.style.display = 'none';
+        });
+        
+        const target = document.getElementById('form-' + index);
+        target.style.display = (target.style.display === 'block') ? 'none' : 'block';
       }
 
       function setMiniSev(critIdx, sev) {
