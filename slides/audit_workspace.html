@@ -15,79 +15,93 @@
       .header { background: var(--primary); color: white; padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 20px rgba(0,0,0,0.1); z-index: 100; }
       .header h2 { font-size: 18px; font-weight: 800; margin: 0; display: flex; align-items: center; gap: 12px; }
       
-      .main-container { display: grid; grid-template-columns: 1fr 380px; flex-grow: 1; overflow: hidden; background: var(--bg-gray); }
+      .main-container { display: grid; grid-template-columns: 1fr 400px; flex-grow: 1; overflow: hidden; background: var(--bg-gray); }
 
-      /* Audit Grid Pane */
-      .audit-pane { padding: 30px; overflow-y: auto; background: white; }
-      .pane-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
-      .pane-title { font-size: 16px; font-weight: 800; color: var(--primary); display: flex; align-items: center; gap: 10px; }
+      /* Criteria Gallery */
+      .gallery-pane { padding: 30px; overflow-y: auto; }
+      .gallery-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
       
-      .audit-table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
-      .audit-table th { text-align: left; padding: 12px; border-bottom: 2px solid var(--accent); color: var(--primary); font-weight: 800; font-size: 11px; text-transform: uppercase; }
-      .audit-table td { padding: 15px 12px; border-bottom: 1px solid #f1f5f9; vertical-align: top; }
-
-      .crit-info h4 { margin: 0; font-size: 13px; color: var(--primary); font-weight: 800; }
-      .crit-info p { margin: 4px 0 0 0; font-size: 10px; color: #64748b; line-height: 1.4; font-style: italic; }
-
-      .input-group { margin-bottom: 15px; }
-      .input { width: 100%; padding: 10px; border: 1px solid #e2e8f0; border-radius: 8px; font-family: inherit; font-size: 12px; box-sizing: border-box; }
-      .input:focus { border-color: var(--accent); outline: none; }
+      .crit-card {
+        background: white; border-radius: 20px; padding: 25px;
+        box-shadow: 0 10px 25px rgba(30, 58, 68, 0.05); border: 1px solid #f1f5f9;
+        cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+      }
+      .crit-card:hover { transform: translateY(-5px); border-color: var(--accent); }
+      .crit-card h3 { font-size: 14px; font-weight: 800; color: var(--primary); margin: 0 0 10px 0; display: flex; align-items: center; gap: 10px; }
+      .crit-card p { font-size: 11px; color: #64748b; line-height: 1.5; margin: 0; }
       
-      .sev-select { padding: 8px; border-radius: 8px; font-weight: 800; border: 2px solid #e2e8f0; font-size: 13px; width: 60px; cursor: pointer; }
-      .s0 { color: #94a3b8; } .s1 { color: #2ecc71; } .s2 { color: #f1c40f; } .s3 { color: #e67e22; } .s4 { color: #e74c3c; }
+      .count-badge {
+        position: absolute; top: 15px; right: 15px; background: var(--accent); color: white;
+        font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 50px; display: none;
+      }
 
-      /* Kanban Pane */
-      .kanban-pane { background: #f1f5f9; border-left: 1px solid #e2e8f0; padding: 25px; overflow-y: auto; }
-      .kanban-header { font-size: 12px; font-weight: 800; color: var(--primary); margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; }
+      /* Kanban Sidebar */
+      .kanban-pane { background: #f1f5f9; border-left: 1px solid #e2e8f0; padding: 25px; display: flex; flex-direction: column; overflow-y: auto; }
+      .kanban-header { font-size: 11px; font-weight: 800; text-transform: uppercase; color: var(--primary); margin-bottom: 20px; letter-spacing: 1px; }
       
-      .kanban-col { background: #e2e8f0; border-radius: 18px; padding: 15px; margin-bottom: 20px; min-height: 120px; }
+      .kanban-col { background: #e2e8f0; border-radius: 18px; padding: 15px; margin-bottom: 20px; min-height: 150px; }
       .col-title { font-size: 10px; font-weight: 800; text-transform: uppercase; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
       .high-col .col-title { color: var(--p-high); }
       .med-col .col-title { color: var(--p-med); }
       .low-col .col-title { color: var(--p-low); }
 
-      .reco-card { background: white; padding: 12px; border-radius: 12px; margin-bottom: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border-left: 4px solid #ccc; animation: slideIn 0.3s ease; }
+      .reco-card { background: white; padding: 12px; border-radius: 12px; margin-bottom: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); border-left: 4px solid #ccc; animation: slideIn 0.3s ease; }
       .reco-card h4 { font-size: 11px; font-weight: 800; margin: 0 0 5px 0; color: var(--primary); }
       .reco-card p { font-size: 10px; color: #475569; margin: 0; line-height: 1.4; border-top: 1px solid #f8f9fa; padding-top: 8px; margin-top: 8px; font-style: italic; }
 
+      /* Form Modal */
+      .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(30, 58, 68, 0.9); backdrop-filter: blur(8px); display: none; justify-content: center; align-items: center; z-index: 2000; }
+      .form-modal { background: white; width: 500px; border-radius: 30px; padding: 40px; box-shadow: 0 25px 50px rgba(0,0,0,0.2); position: relative; }
+      .form-modal h2 { font-size: 18px; font-weight: 800; color: var(--primary); margin-bottom: 5px; }
+      .form-modal p.def { font-size: 12px; color: #64748b; margin-bottom: 30px; font-style: italic; line-height: 1.4; }
+      
+      .label { font-size: 11px; font-weight: 800; color: #475569; margin-bottom: 8px; text-transform: uppercase; display: block; }
+      .input { width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 12px; font-family: inherit; font-size: 13px; margin-bottom: 20px; box-sizing: border-box; }
+      
+      .sev-btn-group { display: flex; gap: 10px; margin-bottom: 30px; }
+      .sev-btn { flex: 1; padding: 10px; border-radius: 10px; border: 2px solid #e2e8f0; font-weight: 800; cursor: pointer; transition: 0.2s; font-size: 14px; }
+      .sev-btn.active.s0 { background: #f1f5f9; border-color: #94a3b8; color: #475569; }
+      .sev-btn.active.s1 { background: #f0fdf4; border-color: #4ade80; color: #166534; }
+      .sev-btn.active.s2 { background: #fffbeb; border-color: #fbbf24; color: #92400e; }
+      .sev-btn.active.s3 { background: #fff7ed; border-color: #fb923c; color: #9a3412; }
+      .sev-btn.active.s4 { background: #fef2f2; border-color: #f87171; color: #991b1b; }
+
+      .btn-validate { background: var(--accent); color: white; width: 100%; padding: 15px; border-radius: 15px; font-weight: 800; border: none; cursor: pointer; font-size: 15px; transition: 0.3s; }
+
       /* App Modal */
       .app-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; display: none; z-index: 10000; }
-      .app-modal-content { width: 100%; height: 100%; position: relative; }
       .close-app { position: absolute; top: 20px; right: 30px; background: #e74c3c; color: white; border: none; width: 50px; height: 50px; border-radius: 50%; font-size: 28px; cursor: pointer; z-index: 11000; }
 
-      .btn-action { background: var(--accent); color: white; border: none; padding: 12px 25px; border-radius: 50px; font-weight: 800; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: 0.3s; }
-      .btn-action:hover { transform: scale(1.05); filter: brightness(1.1); }
+      /* Results Grid View */
+      .results-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; display: none; z-index: 5000; flex-direction: column; padding: 60px; overflow-y: auto; }
+      .res-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--primary); padding-bottom: 20px; margin-bottom: 40px; }
+      .res-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; }
+      .res-block { background: #f8f9fa; padding: 30px; border-radius: 20px; border: 1px solid #eee; }
+      .res-title { font-size: 15px; font-weight: 800; color: var(--primary); margin-bottom: 15px; border-left: 4px solid var(--accent); padding-left: 15px; }
+      .res-item { font-size: 13px; color: #444; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px dashed #ddd; }
     </style>
   </head>
   <body class="slide-content">
     <div class="header">
-      <h2><iconify-icon icon="mdi:clipboard-pulse"></iconify-icon> Workspace : Audit Bastien & Scapin</h2>
-      <button class="btn-action" onclick="openApp()">
-         <iconify-icon icon="mdi:rocket-launch"></iconify-icon> Ouvrir l'App à Auditer (Plein Écran)
-      </button>
+      <h2><iconify-icon icon="mdi:clipboard-pulse"></iconify-icon> Lab d'Audit UX : Bastien & Scapin</h2>
+      <div style="display: flex; gap: 15px;">
+        <button onclick="openResults()" style="background: var(--primary); color: white; padding: 10px 25px; border-radius: 50px; font-weight: 800; border: none; cursor: pointer; display: flex; align-items: center; gap: 10px;">
+           <iconify-icon icon="mdi:file-document-check"></iconify-icon> Voir la Grille Recap
+        </button>
+        <button onclick="openApp()" style="background: var(--accent); color: white; padding: 10px 25px; border-radius: 50px; font-weight: 800; border: none; cursor: pointer; display: flex; align-items: center; gap: 10px;">
+           <iconify-icon icon="mdi:rocket-launch"></iconify-icon> Ouvrir l'App à Auditer
+        </button>
+      </div>
     </div>
 
     <div class="main-container">
-      <!-- Audit Grid -->
-      <div class="audit-pane">
-        <div class="pane-header">
-           <div class="pane-title"><iconify-icon icon="mdi:table-edit"></iconify-icon> Grille d'Audit Détaillée</div>
-           <button class="btn-action" style="background: var(--primary); font-size: 11px; padding: 8px 20px;" onclick="window.print()">Exporter PDF</button>
-        </div>
-        
-        <table class="audit-table">
-          <thead>
-            <tr>
-              <th style="width: 180px;">Critère</th>
-              <th>Problèmes & Recommandations</th>
-              <th style="width: 80px;">Sévérité</th>
-            </tr>
-          </thead>
-          <tbody id="audit-body"></tbody>
-        </table>
+      <!-- Left: Mosaic Gallery -->
+      <div class="gallery-pane">
+        <div class="gallery-grid" id="criteria-grid"></div>
       </div>
 
-      <!-- Kanban -->
+      <!-- Right: Kanban -->
       <div class="kanban-pane">
         <div class="kanban-header">Backlog UX Priorisé</div>
         <div class="kanban-col high-col"><div class="col-title">🔴 Haute Priorité</div><div id="col-high"></div></div>
@@ -96,7 +110,32 @@
       </div>
     </div>
 
-    <!-- Full Screen App Modal -->
+    <!-- Audit Form Modal -->
+    <div id="form-overlay" class="modal-overlay">
+       <div class="form-modal">
+          <h2 id="modal-title"></h2>
+          <p id="modal-def" class="def"></p>
+          
+          <label class="label">Problème identifié (obligatoire)</label>
+          <textarea id="f-prob" class="input" style="height: 80px; resize: none;" placeholder="Décrivez le défaut observé..."></textarea>
+          
+          <label class="label">Sévérité du problème</label>
+          <div class="sev-btn-group">
+             <button class="sev-btn s0" onclick="setSev(0)">0</button>
+             <button class="sev-btn s1" onclick="setSev(1)">1</button>
+             <button class="sev-btn s2" onclick="setSev(2)">2</button>
+             <button class="sev-btn s3" onclick="setSev(3)">3</button>
+             <button class="sev-btn s4" onclick="setSev(4)">4</button>
+          </div>
+
+          <label class="label">Recommandation (facultative)</label>
+          <input type="text" id="f-reco" class="input" placeholder="Quelle solution préconisez-vous ?">
+          
+          <button class="btn-validate" onclick="validateForm()">Valider & Enregistrer</button>
+       </div>
+    </div>
+
+    <!-- Simulation App Modal -->
     <div id="app-overlay" class="app-modal-overlay">
        <div class="app-modal-content">
           <button class="close-app" onclick="closeApp()">×</button>
@@ -104,84 +143,122 @@
        </div>
     </div>
 
+    <!-- Results Overview Modal -->
+    <div id="results-overlay" class="results-overlay">
+       <div class="res-header">
+          <h1 style="margin: 0; color: var(--primary); font-size: 28px; font-weight: 800;">Récapitulatif de l'Audit UX</h1>
+          <button onclick="closeResults()" style="background: var(--accent); color: white; padding: 12px 30px; border-radius: 50px; font-weight: 800; border: none; cursor: pointer;">Retourner au Workspace</button>
+       </div>
+       <div class="res-grid" id="res-grid"></div>
+    </div>
+
     <script>
       const criteria = [
-        { name: "1. Guidage", def: "Moyens pour conseiller et orienter." },
-        { name: "2. Charge de travail", def: "Réduire l'effort mental et mémoriel." },
-        { name: "3. Contrôle explicite", def: "Maîtrise utilisateur sur les actions système." },
-        { name: "4. Adaptabilité", def: "Flexibilité selon l'usage et l'utilisateur." },
-        { name: "5. Gestion des erreurs", def: "Prévenir et corriger simplement." },
-        { name: "6. Homogénéité", def: "Cohérence interne des choix de conception." },
-        { name: "7. Signifiance des codes", def: "Adéquation codes et signification." },
-        { name: "8. Compatibilité", def: "Accord entre tâche réelle et logique système." }
+        { name: "1. Guidage", def: "Moyens pour conseiller, orienter, informer et conduire l'utilisateur lors de ses interactions (labels, messages, retours d'état).", icon: "mdi:near-me" },
+        { name: "2. Charge de travail", def: "Optimisation de l'effort mémoriel et mental requis. Réduire le nombre d'étapes et la densité d'informations.", icon: "mdi:brain" },
+        { name: "3. Contrôle explicite", def: "L'utilisateur doit garder la maîtrise des actions système. Rien ne doit se lancer sans son consentement explicite.", icon: "mdi:gesture-tap" },
+        { name: "4. Adaptabilité", def: "Capacité de l'interface à réagir selon le contexte et les besoins spécifiques de l'utilisateur (expert vs débutant).", icon: "mdi:tune" },
+        { name: "5. Gestion des erreurs", def: "Moyens pour éviter ou corriger simplement les erreurs. Les messages doivent être clairs et aider à la résolution.", icon: "mdi:alert-octagon" },
+        { name: "6. Homogénéité", def: "Cohérence des choix de conception (codes, libellés, emplacements) pour des contextes identiques.", icon: "mdi:layers" },
+        { name: "7. Signifiance des codes", def: "Adéquation entre les codes (icônes, abréviations, couleurs) et les objets ou actions qu'ils représentent.", icon: "mdi:tag-text" },
+        { name: "8. Compatibilité", def: "Accord entre les tâches réelles de l'utilisateur et les procédures imposées par le système.", icon: "mdi:handshake" }
       ];
 
-      let auditData = Array(8).fill(null).map(() => ({ prob: "", reco: "", sev: 0 }));
+      let auditState = Array(8).fill(null).map(() => []);
+      let activeIndex = null;
+      let activeSev = 0;
 
       function init() {
-        const body = document.getElementById('audit-body');
+        const grid = document.getElementById('criteria-grid');
         criteria.forEach((c, i) => {
-          const row = document.createElement('tr');
-          row.innerHTML = `
-            <td>
-               <div class="crit-info">
-                  <h4>${c.name}</h4>
-                  <p>${c.def}</p>
-               </div>
-            </td>
-            <td>
-               <input type="text" class="input" placeholder="Défaut identifié..." id="prob-${i}" oninput="updateState(${i})">
-               <input type="text" class="input" placeholder="Recommandation..." id="reco-${i}" oninput="updateState(${i})" style="margin-top: 8px;">
-            </td>
-            <td>
-               <select class="sev-select s0" id="sev-${i}" onchange="updateState(${i})">
-                  <option value="0" class="s0">0</option>
-                  <option value="1" class="s1">1</option>
-                  <option value="2" class="s2">2</option>
-                  <option value="3" class="s3">3</option>
-                  <option value="4" class="s4">4</option>
-               </select>
-            </td>
+          const card = document.createElement('div');
+          card.className = 'crit-card';
+          card.id = 'card-' + i;
+          card.onclick = () => openForm(i);
+          card.innerHTML = `
+            <div class="count-badge" id="count-${i}">0</div>
+            <h3><iconify-icon icon="${c.icon}"></iconify-icon> ${c.name}</h3>
+            <p>${c.def}</p>
           `;
-          body.appendChild(row);
+          grid.appendChild(card);
         });
       }
 
-      function updateState(i) {
-        const prob = document.getElementById('prob-' + i).value;
-        const reco = document.getElementById('reco-' + i).value;
-        const sev = parseInt(document.getElementById('sev-' + i).value);
-        
-        auditData[i] = { prob, reco, sev };
-        const sel = document.getElementById('sev-' + i);
-        sel.className = 'sev-select s' + sev;
-        
-        refreshKanban();
+      function openForm(i) {
+        activeIndex = i;
+        document.getElementById('modal-title').innerText = criteria[i].name;
+        document.getElementById('modal-def').innerText = criteria[i].def;
+        document.getElementById('f-prob').value = '';
+        document.getElementById('f-reco').value = '';
+        setSev(0);
+        document.getElementById('form-overlay').style.display = "flex";
       }
 
-      function refreshKanban() {
+      function setSev(s) {
+        activeSev = s;
+        document.querySelectorAll('.sev-btn').forEach((btn, idx) => {
+          btn.className = 'sev-btn s' + idx;
+          if (idx === s) btn.classList.add('active');
+        });
+      }
+
+      function validateForm() {
+        const prob = document.getElementById('f-prob').value.trim();
+        const reco = document.getElementById('f-reco').value.trim();
+        if (!prob) { alert("Le problème est requis !"); return; }
+        
+        auditState[activeIndex].push({ prob, reco, sev: activeSev });
+        document.getElementById('form-overlay').style.display = "none";
+        updateUI();
+      }
+
+      function updateUI() {
+        auditState.forEach((entries, i) => {
+          const badge = document.getElementById('count-' + i);
+          badge.innerText = entries.length;
+          badge.style.display = entries.length > 0 ? "block" : "none";
+          document.getElementById('card-' + i).style.borderColor = entries.length > 0 ? "var(--accent)" : "#f1f5f9";
+        });
+
+        // Kanban Sync
         document.getElementById('col-high').innerHTML = '';
         document.getElementById('col-med').innerHTML = '';
         document.getElementById('col-low').innerHTML = '';
 
-        auditData.forEach((data, i) => {
-           if (data.reco.trim()) {
-              const card = document.createElement('div');
-              card.className = 'reco-card';
-              card.innerHTML = `<h4>${criteria[i].name}</h4><div style="font-size:10px; font-weight:700;">${data.reco}</div><p>${data.prob}</p>`;
-              
-              if (data.sev >= 3) {
-                 card.style.borderLeftColor = "var(--p-high)";
-                 document.getElementById('col-high').appendChild(card);
-              } else if (data.sev === 2) {
-                 card.style.borderLeftColor = "var(--p-med)";
-                 document.getElementById('col-med').appendChild(card);
-              } else {
-                 card.style.borderLeftColor = "var(--p-low)";
-                 document.getElementById('col-low').appendChild(card);
+        auditState.forEach((entries, i) => {
+           entries.forEach(e => {
+              if (e.reco.trim()) {
+                 const card = document.createElement('div');
+                 card.className = 'reco-card';
+                 card.innerHTML = `<h4>${criteria[i].name}</h4><div style="font-size:10px; font-weight:700;">${e.reco}</div><p>${e.prob}</p>`;
+                 if (e.sev >= 3) document.getElementById('col-high').appendChild(card).style.borderLeftColor = "var(--p-high)";
+                 else if (e.sev === 2) document.getElementById('col-med').appendChild(card).style.borderLeftColor = "var(--p-med)";
+                 else document.getElementById('col-low').appendChild(card).style.borderLeftColor = "var(--p-low)";
               }
+           });
+        });
+      }
+
+      function openResults() {
+        const grid = document.getElementById('res-grid');
+        grid.innerHTML = '';
+        auditState.forEach((entries, i) => {
+           if (entries.length > 0) {
+              const block = document.createElement('div');
+              block.className = 'res-block';
+              block.innerHTML = `<div class="res-title">${criteria[i].name}</div>`;
+              entries.forEach(e => {
+                 block.innerHTML += `
+                    <div class="res-item">
+                       <strong>Sévérité ${e.sev}/4</strong> : ${e.prob} <br>
+                       <span style="color: var(--accent); font-weight:800;">Solution :</span> ${e.reco || '--'}
+                    </div>
+                 `;
+              });
+              grid.appendChild(block);
            }
         });
+        document.getElementById('results-overlay').style.display = "flex";
       }
 
       function openApp() {
@@ -197,12 +274,13 @@
         if (e.data.action === "closeApp") closeApp();
         if (e.data.action === "liveAuditUpdate") {
            const { index, data } = e.data;
-           document.getElementById('prob-' + index).value = data.prob;
-           document.getElementById('reco-' + index).value = data.reco;
-           document.getElementById('sev-' + index).value = data.sev;
-           updateState(index);
+           auditState[index].push(data);
+           updateUI();
         }
       });
+
+      document.getElementById("form-overlay").addEventListener("click", e => { if (e.target === e.currentTarget) e.currentTarget.style.display = "none"; });
+      function closeResults() { document.getElementById('results-overlay').style.display = "none"; }
 
       init();
     </script>
