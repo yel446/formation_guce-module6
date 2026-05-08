@@ -9,6 +9,7 @@
     <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
     <link rel="stylesheet" href="../styles.css" />
     <style>
+      :root { --p-high: #e74c3c; --p-med: #f39c12; --p-low: #27ae60; }
       .slide-content {
         background-image: none !important;
         background-color: #ffffff;
@@ -31,118 +32,127 @@
       }
       .workspace-header h2 { font-size: 18px; font-weight: 800; margin: 0; display: flex; align-items: center; gap: 10px; }
 
-      .main-layout { display: grid; grid-template-columns: 1fr 1fr; flex-grow: 1; overflow: hidden; }
+      .main-layout { display: grid; grid-template-columns: 1fr 1.2fr; flex-grow: 1; overflow: hidden; }
 
-      /* Audit Grid Section */
-      .grid-section { padding: 25px; overflow-y: auto; background: white; border-right: 1px solid #e2e8f0; }
-      .audit-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+      /* Grid Section */
+      .grid-section { padding: 20px; overflow-y: auto; background: white; border-right: 1px solid #e2e8f0; }
+      .audit-table { width: 100%; border-collapse: collapse; margin-bottom: 15px; }
       .audit-table th { text-align: left; padding: 10px; border-bottom: 2px solid #8bc34a; color: var(--primary); font-weight: 800; font-size: 11px; text-transform: uppercase; }
-      .audit-table td { padding: 10px; border-bottom: 1px solid #f0f0f0; vertical-align: middle; }
+      .audit-table td { padding: 12px 10px; border-bottom: 1px solid #f0f0f0; vertical-align: top; }
 
-      .crit-name { font-weight: 800; color: var(--primary); font-size: 12px; cursor: help; border-bottom: 1px dotted #ccc; display: inline-block; }
-      .crit-meaning { font-size: 10px; color: #7f8c8d; display: block; font-weight: 400; margin-top: 3px; font-style: italic; }
+      .crit-header { display: flex; flex-direction: column; gap: 4px; }
+      .crit-name { font-weight: 800; color: var(--primary); font-size: 12px; display: flex; align-items: center; gap: 5px; }
+      .btn-info { background: #f0f7f4; border: none; width: 18px; height: 18px; border-radius: 50%; color: var(--primary); font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+      .btn-info:hover { background: var(--primary); color: white; }
+      .crit-def { font-size: 10px; color: #7f8c8d; font-style: italic; }
 
-      .input-field { width: 100%; padding: 8px; border: 1px solid #cbd5e0; border-radius: 6px; font-size: 12px; font-family: inherit; }
-      .sev-select { padding: 5px; border-radius: 6px; font-weight: 800; border: 1px solid #cbd5e0; font-size: 12px; }
+      .input-field { width: 100%; padding: 8px; border: 1px solid #cbd5e0; border-radius: 6px; font-size: 11px; font-family: inherit; margin-bottom: 5px; }
+      .input-field:focus { border-color: #8bc34a; outline: none; }
+      .sev-select { padding: 5px; border-radius: 6px; font-weight: 800; border: 1px solid #cbd5e0; font-size: 11px; width: 50px; }
       .s-0 { color: #999; } .s-1 { color: #2ecc71; } .s-2 { color: #f1c40f; } .s-3 { color: #e67e22; } .s-4 { color: #e74c3c; }
 
-      /* Backlog Game Section */
-      .backlog-section { background: #f8faff; padding: 25px; overflow-y: auto; display: flex; flex-direction: column; }
-      .section-title { font-size: 13px; font-weight: 800; color: var(--primary); margin-bottom: 15px; display: flex; align-items: center; justify-content: space-between; }
-
-      .pool-area { background: #eee; border-radius: 15px; padding: 15px; min-height: 100px; margin-bottom: 20px; border: 2px dashed #ccc; }
-      .reco-card { background: white; padding: 10px 15px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); cursor: grab; font-size: 12px; font-weight: 700; border-left: 5px solid var(--accent); margin-bottom: 8px; transition: transform 0.2s; }
-      .reco-card:active { cursor: grabbing; }
-
-      .priorities-container { display: flex; flex-direction: column; gap: 12px; }
-      .priority-zone { background: white; border-radius: 15px; padding: 15px; min-height: 80px; border: 2px solid transparent; transition: 0.3s; }
-      .priority-zone.over { background: #f0f7f4; border-color: var(--accent); }
-      .zone-tag { font-size: 10px; font-weight: 800; text-transform: uppercase; margin-bottom: 10px; display: block; }
+      /* Kanban Section */
+      .kanban-section { background: #f8faff; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; }
+      .kanban-title { font-size: 13px; font-weight: 800; color: var(--primary); margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; }
       
-      .high-zone { border-left: 6px solid #e74c3c; }
-      .med-zone { border-left: 6px solid #f39c12; }
-      .low-zone { border-left: 6px solid #27ae60; }
+      .kanban-board { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; flex-grow: 1; }
+      .kanban-col { background: #f1f4f8; border-radius: 15px; padding: 12px; display: flex; flex-direction: column; gap: 10px; min-height: 400px; border: 1px solid #e2e8f0; }
+      .col-header { font-size: 10px; font-weight: 800; text-transform: uppercase; margin-bottom: 8px; display: flex; align-items: center; gap: 5px; }
+      .high-col .col-header { color: var(--p-high); }
+      .med-col .col-header { color: var(--p-med); }
+      .low-col .col-header { color: var(--p-low); }
 
+      .reco-card { background: white; padding: 12px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border-left: 4px solid #ccc; animation: popIn 0.3s ease; }
+      .reco-card h4 { margin: 0 0 5px 0; font-size: 11px; color: var(--primary); font-weight: 800; }
+      .reco-card p { margin: 0; font-size: 10px; color: #555; line-height: 1.4; }
+      @keyframes popIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+
+      /* Buttons */
       .btn-action { background: #8bc34a; color: white; border: none; padding: 10px 20px; border-radius: 50px; font-weight: 800; font-size: 12px; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 8px; }
       .btn-action:hover { transform: scale(1.05); }
       .btn-app { background: var(--primary); }
 
-      .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(30, 58, 68, 0.98); backdrop-filter: blur(10px); display: none; justify-content: center; align-items: center; z-index: 3000; }
-      .modal-content { background: white; width: 98%; height: 96vh; border-radius: 20px; position: relative; overflow: hidden; border: 10px solid #222; }
-      .modal-close { position: absolute; top: 15px; right: 20px; width: 40px; height: 40px; border-radius: 50%; background: #e74c3c; color: white; border: none; cursor: pointer; z-index: 100; font-size: 24px; }
+      /* Modals */
+      .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(30, 58, 68, 0.95); backdrop-filter: blur(8px); display: none; justify-content: center; align-items: center; z-index: 3000; }
+      .modal-content { background: white; border-radius: 30px; position: relative; overflow: hidden; }
+      .modal-close { position: absolute; top: 15px; right: 20px; width: 35px; height: 35px; border-radius: 50%; background: #eee; border: none; cursor: pointer; z-index: 100; font-size: 20px; display: flex; align-items: center; justify-content: center; }
+
+      /* Didactic Info Modal */
+      .didactic-box { background: white; width: 500px; padding: 40px; border-radius: 25px; box-shadow: 0 20px 50px rgba(0,0,0,0.2); }
+      .didactic-box h3 { color: var(--primary); margin-bottom: 15px; font-size: 20px; }
+      .didactic-box p { color: #555; font-size: 14px; line-height: 1.6; margin-bottom: 25px; }
     </style>
   </head>
   <body class="slide-content">
     <div class="workspace-header">
-      <h2><iconify-icon icon="mdi:clipboard-text-search-outline"></iconify-icon> Grand Lab : Audit Bastien & Scapin</h2>
+      <h2><iconify-icon icon="mdi:clipboard-pulse-outline"></iconify-icon> Workspace : Audit Bastien & Scapin</h2>
       <button class="btn-action btn-app" onclick="openApp()">
-         <iconify-icon icon="mdi:rocket-launch"></iconify-icon> Lancer l'App à Auditer (Plein Écran)
+         <iconify-icon icon="mdi:rocket-launch"></iconify-icon> Lancer l'App à Auditer
       </button>
     </div>
 
     <div class="main-layout">
-      <!-- Grid -->
+      <!-- Grid Section -->
       <div class="grid-section">
         <table class="audit-table">
           <thead>
             <tr>
-              <th style="width: 160px;">Critère</th>
+              <th style="width: 150px;">Critère B&S</th>
               <th>Problème & Recommandation</th>
-              <th style="width: 80px;">Sév.</th>
+              <th style="width: 60px;">Sév.</th>
             </tr>
           </thead>
           <tbody id="audit-grid-body"></tbody>
         </table>
-        <div style="background: #f8f9fa; padding: 15px; border-radius: 12px; font-size: 11px; color: #666; border-left: 4px solid #8bc34a;">
-           <strong>Consigne :</strong> Remplissez les 8 critères. La recommandation apparaîtra dans le "Pool" pour le tri final.
-        </div>
       </div>
 
-      <!-- Backlog Sorting Game -->
-      <div class="backlog-section">
-        <div class="section-title">
-          <span>Défi : Priorisation du Backlog UX</span>
-          <button class="btn-action" style="font-size: 10px; padding: 5px 15px;" onclick="verifyBacklog()">Vérifier le Tri</button>
-        </div>
-        
-        <div class="zone-tag" style="margin-bottom: 5px; opacity: 0.6;">Pool de recommandations à classer :</div>
-        <div class="pool-area" id="reco-pool"></div>
-
-        <div class="priorities-container">
-           <div class="priority-zone high-zone" data-target="high">
-              <span class="zone-tag" style="color: #e74c3c;">🔴 Haute Priorité (Sévérité 3-4)</span>
-              <div class="zone-items"></div>
+      <!-- Kanban Section -->
+      <div class="kanban-section">
+        <div class="kanban-title">Backlog UX : Recommandations Priorisées</div>
+        <div class="kanban-board">
+           <div class="kanban-col high-col">
+              <div class="col-header"><iconify-icon icon="mdi:fire"></iconify-icon> Haute Priorité</div>
+              <div id="col-high" class="col-items"></div>
            </div>
-           <div class="priority-zone med-zone" data-target="med">
-              <span class="zone-tag" style="color: #f39c12;">🟠 Priorité Moyenne (Sévérité 2)</span>
-              <div class="zone-items"></div>
+           <div class="kanban-col med-col">
+              <div class="col-header"><iconify-icon icon="mdi:clock-alert-outline"></iconify-icon> Priorité Moyenne</div>
+              <div id="col-med" class="col-items"></div>
            </div>
-           <div class="priority-zone low-zone" data-target="low">
-              <span class="zone-tag" style="color: #27ae60;">🟢 Basse Priorité (Sévérité 0-1)</span>
-              <div class="zone-items"></div>
+           <div class="kanban-col low-col">
+              <div class="col-header"><iconify-icon icon="mdi:check-circle-outline"></iconify-icon> Basse Priorité</div>
+              <div id="col-low" class="col-items"></div>
            </div>
         </div>
       </div>
     </div>
 
-    <!-- Full Screen App Modal -->
+    <!-- App Modal -->
     <div id="app-modal" class="modal-overlay">
-       <div class="modal-content">
+       <div class="modal-content" style="width: 98%; height: 96vh; border: 10px solid #222;">
           <button class="modal-close" onclick="closeApp()">×</button>
           <iframe src="lab/complex_bad_app.html" style="width: 100%; height: 100%; border: none;"></iframe>
        </div>
     </div>
 
+    <!-- Info Modal -->
+    <div id="info-modal" class="modal-overlay">
+       <div class="didactic-box">
+          <h3 id="info-title"></h3>
+          <p id="info-text"></p>
+          <button class="btn-action" style="margin: 0 auto;" onclick="closeInfo()">J'ai compris</button>
+       </div>
+    </div>
+
     <script>
       const criteriaData = [
-        { name: "1. Guidage", def: "Moyens pour conseiller et orienter." },
-        { name: "2. Charge de travail", def: "Réduire l'effort mental et mémoriel." },
-        { name: "3. Contrôle explicite", def: "Maîtrise des actions par l'utilisateur." },
-        { name: "4. Adaptabilité", def: "Ajustement au contexte utilisateur." },
-        { name: "5. Gestion des erreurs", def: "Prévenir et corriger simplement." },
-        { name: "6. Homogénéité", def: "Cohérence des choix de conception." },
-        { name: "7. Signifiance des codes", def: "Adéquation codes et signification." },
-        { name: "8. Compatibilité", def: "Accord entre tâche réelle et système." }
+        { name: "1. Guidage", def: "Orienter et informer.", long: "L'ensemble des moyens mis en œuvre pour conseiller, orienter, informer et conduire l'utilisateur lors de ses interactions (messages, labels, retours d'état)." },
+        { name: "2. Charge de travail", def: "Réduire l'effort mental.", long: "Ensemble des éléments de l'interface qui sollicitent l'attention, la mémoire et l'effort de l'utilisateur. Vise à optimiser le temps de saisie." },
+        { name: "3. Contrôle explicite", def: "Maîtrise utilisateur.", long: "Le système doit donner à l'utilisateur le sentiment qu'il contrôle les actions système. Rien ne doit se passer sans son consentement." },
+        { name: "4. Adaptabilité", def: "Flexibilité selon l'usage.", long: "Capacité de l'interface à réagir selon le contexte d'utilisation et les besoins spécifiques de l'utilisateur (expert vs novice)." },
+        { name: "5. Gestion des erreurs", def: "Prévenir et corriger.", long: "Moyens permettant d'éviter les erreurs ou de les corriger simplement. La qualité des messages d'erreur est ici cruciale." },
+        { name: "6. Homogénéité", def: "Cohérence interne.", long: "Les mêmes choix de conception (codes, libellés, mise en page) pour des contextes identiques sur tout le portail." },
+        { name: "7. Signifiance des codes", def: "Sémantique visuelle.", long: "Rapport entre les codes (icônes, couleurs, abréviations) et les objets ou actions qu'ils représentent. Pas d'ambiguïté." },
+        { name: "8. Compatibilité", def: "Accord métier/système.", long: "Accord entre les caractéristiques de l'utilisateur (mémoire, attentes) et les tâches réelles qu'il effectue au quotidien." }
       ];
 
       function init() {
@@ -151,86 +161,52 @@
           const row = document.createElement('tr');
           row.innerHTML = `
             <td>
-               <span class="crit-name" title="${c.def}">${c.name}</span>
-               <span class="crit-meaning">${c.def}</span>
+               <div class="crit-header">
+                  <div class="crit-name">${c.name} <button class="btn-info" onclick="openInfo(${i})">i</button></div>
+                  <div class="crit-def">${c.def}</div>
+               </div>
             </td>
             <td>
-               <input type="text" class="input-field" placeholder="Problème..." id="prob-${i}" style="margin-bottom: 5px;">
-               <input type="text" class="input-field" placeholder="Recommandation..." id="reco-${i}" oninput="updatePool(${i})">
+               <input type="text" class="input-field" placeholder="Problème identifié..." id="prob-${i}" oninput="refreshKanban()">
+               <input type="text" class="input-field" placeholder="Recommandation (optionnelle)..." id="reco-${i}" oninput="refreshKanban()">
             </td>
             <td>
-              <select class="sev-select s-0" id="sev-${i}" onchange="this.className='sev-select s-'+this.value; updatePool(${i})">
+              <select class="sev-select s-0" id="sev-${i}" onchange="this.className='sev-select s-'+this.value; refreshKanban()">
                 <option value="0" class="s-0">0</option><option value="1" class="s-1">1</option><option value="2" class="s-2">2</option><option value="3" class="s-3">3</option><option value="4" class="s-4">4</option>
               </select>
             </td>
           `;
           body.appendChild(row);
         });
-
-        // Init Drag & Drop
-        document.querySelectorAll('.priority-zone, .pool-area').forEach(zone => {
-          zone.addEventListener('dragover', e => e.preventDefault());
-          zone.addEventListener('dragenter', function() { this.classList.add('over'); });
-          zone.addEventListener('dragleave', function() { this.classList.remove('over'); });
-          zone.addEventListener('drop', function(e) {
-            this.classList.remove('over');
-            const id = e.dataTransfer.getData('text/plain');
-            const card = document.getElementById(id);
-            const container = this.classList.contains('pool-area') ? this : this.querySelector('.zone-items');
-            container.appendChild(card);
-          });
-        });
       }
 
-      function updatePool(index) {
-        const recoVal = document.getElementById('reco-' + index).value;
-        const sevVal = document.getElementById('sev-' + index).value;
-        const cardId = 'reco-card-' + index;
-        let card = document.getElementById(cardId);
+      function refreshKanban() {
+        document.getElementById('col-high').innerHTML = '';
+        document.getElementById('col-med').innerHTML = '';
+        document.getElementById('col-low').innerHTML = '';
 
-        if (recoVal.trim()) {
-           if (!card) {
-              card = document.createElement('div');
+        criteriaData.forEach((c, i) => {
+           const prob = document.getElementById('prob-' + i).value;
+           const reco = document.getElementById('reco-' + i).value;
+           const sev = parseInt(document.getElementById('sev-' + i).value);
+
+           if (reco.trim()) {
+              const card = document.createElement('div');
               card.className = 'reco-card';
-              card.id = cardId;
-              card.draggable = true;
-              card.addEventListener('dragstart', e => {
-                 e.dataTransfer.setData('text/plain', cardId);
-                 card.style.opacity = '0.4';
-              });
-              card.addEventListener('dragend', () => card.style.opacity = '1');
-              document.getElementById('reco-pool').appendChild(card);
+              card.innerHTML = `<h4>${c.name}</h4><p>${reco}</p>`;
+              
+              if (sev >= 3) {
+                 card.style.borderLeftColor = "var(--p-high)";
+                 document.getElementById('col-high').appendChild(card);
+              } else if (sev === 2) {
+                 card.style.borderLeftColor = "var(--p-med)";
+                 document.getElementById('col-med').appendChild(card);
+              } else {
+                 card.style.borderLeftColor = "var(--p-low)";
+                 document.getElementById('col-low').appendChild(card);
+              }
            }
-           card.innerHTML = `<span style="opacity: 0.5; margin-right: 8px;">#${index+1}</span> ${recoVal}`;
-           card.setAttribute('data-sev', sevVal);
-        } else if (card) {
-           card.remove();
-        }
-      }
-
-      function verifyBacklog() {
-        let correctCount = 0;
-        let total = 0;
-        document.querySelectorAll('.reco-card').forEach(card => {
-          total++;
-          const sev = parseInt(card.getAttribute('data-sev'));
-          const zone = card.closest('.priority-zone')?.getAttribute('data-target');
-          let isCorrect = false;
-
-          if (sev >= 3 && zone === 'high') isCorrect = true;
-          else if (sev === 2 && zone === 'med') isCorrect = true;
-          else if (sev <= 1 && zone === 'low') isCorrect = true;
-
-          if (isCorrect) {
-             card.style.borderColor = "#2ecc71";
-             correctCount++;
-          } else {
-             card.style.borderColor = "#e74c3c";
-          }
         });
-
-        if (total === 0) alert("Remplissez la grille pour créer des recommandations !");
-        else alert(`Résultat : ${correctCount}/${total} recommandations bien priorisées.`);
       }
 
       function openApp() {
@@ -241,6 +217,14 @@
         document.getElementById('app-modal').style.display = "none";
         if (window.parent) window.parent.postMessage({ action: 'toggleFooter', visible: true }, '*');
       }
+
+      function openInfo(i) {
+        const c = criteriaData[i];
+        document.getElementById('info-title').innerText = c.name;
+        document.getElementById('info-text').innerText = c.long;
+        document.getElementById('info-modal').style.display = "flex";
+      }
+      function closeInfo() { document.getElementById('info-modal').style.display = "none"; }
 
       init();
     </script>
