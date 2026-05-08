@@ -66,7 +66,7 @@
       .btn-results { background: var(--primary); }
 
       /* App Modal */
-      .app-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(30, 58, 68, 0.85); backdrop-filter: blur(5px); display: none; z-index: 3000; }
+      .app-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(30, 58, 68, 0.85); backdrop-filter: blur(5px); display: none; z-index: 10000; }
       .app-modal-content { position: absolute; top: 100px; left: 100px; right: 100px; bottom: 100px; width: auto; height: auto; background: white; border-radius: 25px; overflow: hidden; box-shadow: 0 50px 100px rgba(0,0,0,0.3); border: 2px solid rgba(255,255,255,0.1); }
       .close-app { position: absolute; top: 20px; right: 20px; background: #e74c3c; color: white; border: none; width: 40px; height: 40px; border-radius: 50%; font-size: 22px; cursor: pointer; z-index: 4000; display: flex; align-items: center; justify-content: center; transition: 0.3s; }
       .close-app:hover { transform: rotate(90deg); background: #c0392b; }
@@ -278,12 +278,32 @@
         document.getElementById('results-overlay').style.display = "flex";
       }
 
+      // Handle messages from iframe
+      window.addEventListener("message", function(e) {
+        if (e.data.action === "closeApp") {
+          closeApp();
+        }
+        if (e.data.action === "liveAuditUpdate") {
+          const { index, data } = e.data;
+          auditState[index].push(data);
+          updateUI();
+        }
+      });
+
+      // Close modals on click outside
+      document.getElementById("form-overlay").addEventListener("click", function(e) {
+        if (e.target === this) this.style.display = "none";
+      });
+      document.getElementById("info-modal").addEventListener("click", function(e) {
+        if (e.target === this) this.style.display = "none";
+      });
+      document.getElementById("app-overlay").addEventListener("click", function(e) {
+        if (e.target === this) closeApp();
+      });
+      
       function closeResults() { document.getElementById('results-overlay').style.display = "none"; }
       function openApp() { document.getElementById('app-overlay').style.display = "block"; }
       function closeApp() { document.getElementById('app-overlay').style.display = "none"; }
-      
-      document.getElementById("form-overlay").addEventListener("click", e => { if (e.target === e.currentTarget) e.currentTarget.style.display = "none"; });
-      window.addEventListener("message", e => { if (e.data.action === "closeApp") closeApp(); });
       
       init();
     </script>

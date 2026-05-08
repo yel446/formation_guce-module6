@@ -8,16 +8,16 @@
     />
     <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
     <style>
-      :root { --primary: #006437; --secondary: #1e3a44; --bg: #f4f7f6; --error: #e74c3c; }
+      :root { --primary: #006437; --secondary: #1e3a44; --bg: #f4f7f6; --error: #e74c3c; --accent: #8bc34a; }
       body { font-family: 'Poppins', sans-serif; background: var(--bg); margin: 0; display: flex; height: 100vh; overflow: hidden; }
       
       /* Sidebar */
       .sidebar { width: 260px; background: var(--secondary); color: white; display: flex; flex-direction: column; flex-shrink: 0; }
-      .brand { padding: 30px; font-weight: 800; font-size: 22px; border-bottom: 1px solid rgba(255,255,255,0.1); color: #8bc34a; }
+      .brand { padding: 30px; font-weight: 800; font-size: 22px; border-bottom: 1px solid rgba(255,255,255,0.1); color: var(--accent); }
       .nav-menu { flex-grow: 1; padding: 20px 0; }
       .nav-item { padding: 15px 30px; display: flex; align-items: center; gap: 15px; font-size: 14px; cursor: pointer; transition: 0.2s; opacity: 0.6; }
       .nav-item:hover { background: rgba(255,255,255,0.05); opacity: 1; }
-      .nav-item.active { background: var(--primary); opacity: 1; border-left: 6px solid #8bc34a; font-weight: 700; }
+      .nav-item.active { background: var(--primary); opacity: 1; border-left: 6px solid var(--accent); font-weight: 700; }
 
       /* Main */
       .main { flex-grow: 1; display: flex; flex-direction: column; overflow: hidden; position: relative; }
@@ -28,36 +28,37 @@
       .content-area.active { display: block; }
       @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-      /* Components */
       .card { background: white; border-radius: 20px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); margin-bottom: 30px; border: 1px solid #f1f5f9; }
       .card-title { font-size: 16px; font-weight: 800; color: var(--secondary); margin-bottom: 25px; display: flex; align-items: center; gap: 10px; }
       
-      /* Dashboard Stats */
-      .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 30px; }
-      .stat-box { background: white; padding: 25px; border-radius: 20px; text-align: center; border: 1px solid #eee; }
-      .stat-val { font-size: 24px; font-weight: 800; color: var(--primary); }
-      .stat-lbl { font-size: 11px; font-weight: 700; color: #94a3b8; text-transform: uppercase; margin-top: 5px; }
-
-      /* Form Elements */
+      /* Input styles */
       .input-group { margin-bottom: 20px; }
       .label { display: block; font-size: 11px; font-weight: 800; color: #64748b; margin-bottom: 8px; text-transform: uppercase; }
       .input { width: 100%; padding: 12px 15px; border: 1px solid #e2e8f0; border-radius: 10px; font-family: inherit; font-size: 14px; box-sizing: border-box; }
-      .input:focus { border-color: var(--primary); outline: none; }
 
-      /* Table */
-      .data-table { width: 100%; border-collapse: collapse; }
-      .data-table th { text-align: left; padding: 15px; border-bottom: 2px solid #f1f5f9; font-size: 12px; color: #64748b; text-transform: uppercase; }
-      .data-table td { padding: 15px; border-bottom: 1px solid #f1f5f9; font-size: 13px; color: var(--secondary); }
+      /* Live Audit Floating Panel */
+      #audit-btn { position: fixed; bottom: 30px; left: 30px; background: var(--secondary); color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; cursor: pointer; box-shadow: 0 10px 30px rgba(0,0,0,0.3); z-index: 2000; transition: 0.3s; border: 4px solid var(--accent); }
+      #audit-btn:hover { transform: scale(1.1); background: var(--primary); }
 
-      .btn { background: var(--primary); color: white; border: none; padding: 15px 35px; border-radius: 12px; font-weight: 800; font-size: 14px; cursor: pointer; transition: 0.3s; }
-      .btn:hover { filter: brightness(1.1); transform: translateY(-2px); }
-
-      /* Floating Return */
-      .return-btn { position: fixed; bottom: 30px; right: 30px; background: #e74c3c; color: white; padding: 12px 25px; border-radius: 50px; font-weight: 800; font-size: 13px; box-shadow: 0 10px 30px rgba(231,76,60,0.3); cursor: pointer; display: flex; align-items: center; gap: 10px; z-index: 1000; }
+      #audit-panel { position: fixed; bottom: 100px; left: 30px; width: 320px; background: white; border-radius: 25px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); z-index: 2000; display: none; flex-direction: column; overflow: hidden; border: 1px solid #e2e8f0; animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+      @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
       
-      /* Intentional Flaws */
-      .tech-jargon { font-family: monospace; font-size: 10px; color: #e74c3c; margin-top: 4px; }
-      .alert-box { background: #fff5f5; border: 1px solid #fed7d7; color: #c53030; padding: 15px; border-radius: 12px; font-size: 12px; margin-bottom: 25px; }
+      .panel-header { background: var(--secondary); color: white; padding: 15px 20px; font-size: 12px; font-weight: 800; display: flex; justify-content: space-between; align-items: center; }
+      .panel-body { padding: 15px; max-height: 400px; overflow-y: auto; }
+      
+      .mini-crit-item { background: #f8faff; border-radius: 12px; padding: 12px; margin-bottom: 10px; cursor: pointer; border: 1px solid #eef2f6; transition: 0.2s; }
+      .mini-crit-item:hover { background: #f0f7f4; border-color: var(--accent); }
+      .mini-crit-item h4 { margin: 0; font-size: 11px; color: var(--secondary); font-weight: 800; }
+      
+      .mini-form { margin-top: 10px; display: none; padding-top: 10px; border-top: 1px solid #e2e8f0; }
+      .mini-input { width: 100%; padding: 8px; border: 1px solid #cbd5e0; border-radius: 8px; font-size: 11px; font-family: inherit; margin-bottom: 10px; }
+      .mini-sev-row { display: flex; gap: 5px; margin-bottom: 10px; }
+      .mini-sev-btn { flex: 1; padding: 5px; border-radius: 6px; border: 1px solid #cbd5e0; font-size: 10px; font-weight: 800; cursor: pointer; }
+      .mini-sev-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
+      .mini-btn-save { background: var(--accent); color: white; border: none; width: 100%; padding: 8px; border-radius: 8px; font-weight: 800; font-size: 11px; cursor: pointer; }
+
+      .close-app-btn { position: fixed; bottom: 30px; right: 30px; background: var(--error); color: white; padding: 12px 25px; border-radius: 50px; font-weight: 800; font-size: 13px; box-shadow: 0 10px 30px rgba(231,76,60,0.3); cursor: pointer; display: flex; align-items: center; gap: 10px; z-index: 1000; transition: 0.3s; }
+      .close-app-btn:hover { background: #c0392b; transform: translateY(-2px); }
     </style>
   </head>
   <body>
@@ -69,133 +70,140 @@
         <div class="nav-item" data-page="arch"><iconify-icon icon="mdi:archive-outline"></iconify-icon> Mes Archives</div>
         <div class="nav-item" data-page="conf"><iconify-icon icon="mdi:cog-outline"></iconify-icon> Configuration</div>
       </div>
-      <div style="padding: 20px; font-size: 10px; opacity: 0.4;">Build: v.4.0.0.1_RC (PROD_CI)</div>
     </div>
 
     <div class="main">
       <div class="top-bar">
-        <div class="search-box"><iconify-icon icon="mdi:magnify"></iconify-icon> Rechercher par ID_TRANS_REF...</div>
-        <div style="display: flex; align-items: center; gap: 15px;">
-           <iconify-icon icon="mdi:bell-outline" style="font-size: 20px; color: #94a3b8;"></iconify-icon>
-           <div style="width: 35px; height: 35px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 800;">AD</div>
-        </div>
+        <div class="search-box"><iconify-icon icon="mdi:magnify"></iconify-icon> Rechercher par ID_REF...</div>
+        <div style="width: 35px; height: 35px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 800;">AD</div>
       </div>
 
-      <!-- Dashboard -->
       <div id="page-dash" class="content-area active">
-        <h1 style="margin: 0 0 30px 0; font-size: 24px; font-weight: 800; color: var(--secondary);">Résumé des Flux Opérationnels</h1>
-        <div class="stats-grid">
-           <div class="stat-box">
-              <div class="stat-val">1,204</div>
-              <div class="stat-lbl">Index_REF_01</div>
-           </div>
-           <div class="stat-box">
-              <div class="stat-val">12%</div>
-              <div class="stat-lbl">Ratio_ERR_LAT</div>
-           </div>
-           <div class="stat-box">
-              <div class="stat-val">4.5s</div>
-              <div class="stat-lbl">Ping_SVR_UTC</div>
-           </div>
-        </div>
-        <div class="card">
-           <div class="card-title"><iconify-icon icon="mdi:alert"></iconify-icon> Alertes Critiques Système</div>
-           <p style="font-size: 13px; color: #64748b;">Aucune alerte flagrante détectée par l'algorithme de surveillance du noyau.</p>
-        </div>
+        <h1 style="margin: 0 0 30px 0; font-size: 22px; font-weight: 800;">Tableau de Bord Technique</h1>
+        <div class="card"><p>Veuillez consulter les index REF_01 pour les mises à jour SQL_TRACE.</p></div>
       </div>
 
-      <!-- Form -->
       <div id="page-form" class="content-area">
-        <h1 style="margin: 0 0 30px 0; font-size: 24px; font-weight: 800; color: var(--secondary);">Création de Dossier Douane</h1>
-        <div class="alert-box">
-           <strong>ATTENTION :</strong> Toute saisie de format non-standard entraînera une erreur fatale SQL_DATA_MISMATCH.
-        </div>
+        <h1 style="margin: 0 0 30px 0; font-size: 22px; font-weight: 800;">Nouvel Enregistrement</h1>
         <div class="card">
-           <div class="card-title">Identification Marchandise</div>
-           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-              <div class="input-group">
-                 <label class="label">ID_OP_REF_SYSTEM</label>
-                 <input type="text" class="input" placeholder="Saisir l'identifiant technique...">
-                 <div class="tech-jargon">Note: Doit correspondre à la table REF_302</div>
-              </div>
-              <div class="input-group">
-                 <label class="label">DATE_IMPORT_ISO</label>
-                 <input type="text" class="input" placeholder="AAAA-MM-JJThh:mm:ssZ">
-              </div>
-              <div class="input-group">
-                 <label class="label">POIDS_TOTAL_NET_KG</label>
-                 <input type="number" class="input" step="0.0001">
-              </div>
-              <div class="input-group">
-                 <label class="label">CATEGORY_ID_CODE</label>
-                 <select class="input">
-                    <option>001_CAT_SEC</option>
-                    <option>002_CAT_LIQ</option>
-                 </select>
-              </div>
+           <div class="input-group">
+              <label class="label">ID_TECH_VAL</label>
+              <input type="text" class="input" placeholder="Saisir...">
            </div>
-           <button class="btn" onclick="alert('Transaction_FAILED: Null_Pointer_Ref')">VALIDER_DANS_SYSTEME</button>
+           <button class="btn" onclick="alert('System_Error: NULL_REF')">VALIDER_SAISIE</button>
         </div>
       </div>
 
-      <!-- Archives -->
       <div id="page-arch" class="content-area">
-        <h1 style="margin: 0 0 30px 0; font-size: 24px; font-weight: 800; color: var(--secondary);">Historique des Transactions</h1>
-        <div class="card" style="padding: 0;">
-           <table class="data-table">
-              <thead>
-                 <tr>
-                    <th>Ref_ID</th>
-                    <th>Date_ISO_8601</th>
-                    <th>Statut_INT</th>
-                    <th>Action</th>
-                 </tr>
-              </thead>
-              <tbody>
-                 <tr><td>#89201</td><td>202604081230</td><td>ST_0</td><td><iconify-icon icon="mdi:eye-off-outline"></iconify-icon></td></tr>
-                 <tr><td>#89202</td><td>202604091420</td><td>ST_1</td><td><iconify-icon icon="mdi:eye-off-outline"></iconify-icon></td></tr>
-                 <tr><td>#89203</td><td>202604100915</td><td>ST_0</td><td><iconify-icon icon="mdi:eye-off-outline"></iconify-icon></td></tr>
-              </tbody>
-           </table>
-        </div>
+        <h1 style="margin: 0 0 30px 0; font-size: 22px; font-weight: 800;">Archives Systèmes</h1>
+        <div class="card"><p>Aucun résultat pour la recherche SQL_GLOB.</p></div>
       </div>
 
-      <!-- Settings -->
       <div id="page-conf" class="content-area">
-        <h1 style="margin: 0 0 30px 0; font-size: 24px; font-weight: 800; color: var(--secondary);">Configuration des Paramètres Noyau</h1>
-        <div class="card">
-           <div style="display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid #eee;">
-              <div style="font-size: 13px; font-weight: 700;">Activer le debug_log_trace_v2</div>
-              <input type="checkbox" checked>
-           </div>
-           <div style="display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid #eee;">
-              <div style="font-size: 13px; font-weight: 700;">Mode SQL_SAFE_UPDATE</div>
-              <input type="checkbox">
-           </div>
-           <div style="display: flex; justify-content: space-between; align-items: center; padding: 15px 0;">
-              <div style="font-size: 13px; font-weight: 700;">Autoriser les requêtes CROSS_ORIGIN_NULL</div>
-              <input type="checkbox" checked>
-           </div>
-        </div>
+        <h1 style="margin: 0 0 30px 0; font-size: 22px; font-weight: 800;">Paramètres Noyau</h1>
+        <div class="card"><p>Mode DEBUG_TRACE activé.</p></div>
       </div>
     </div>
 
-    <div class="return-btn" onclick="window.parent.postMessage({action: 'closeApp'}, '*')">
-       <iconify-icon icon="mdi:arrow-left"></iconify-icon> Retourner à l'Audit
+    <!-- Live Audit UI -->
+    <div id="audit-btn" onclick="toggleAuditPanel()">
+       <iconify-icon icon="mdi:clipboard-edit-outline"></iconify-icon>
+    </div>
+
+    <div id="audit-panel">
+       <div class="panel-header">
+          <span>LIVE AUDIT B&S</span>
+          <iconify-icon icon="mdi:close" onclick="toggleAuditPanel()" style="cursor: pointer;"></iconify-icon>
+       </div>
+       <div class="panel-body" id="audit-list"></div>
+    </div>
+
+    <div class="close-app-btn" onclick="window.parent.postMessage({action: 'closeApp'}, '*')">
+       <iconify-icon icon="mdi:logout"></iconify-icon> Fermer la Démo
     </div>
 
     <script>
-      // SPA Navigation
+      const criteria = [
+        "1. Guidage", "2. Charge de travail", "3. Contrôle explicite", "4. Adaptabilité",
+        "5. Gestion des erreurs", "6. Homogénéité", "7. Signifiance des codes", "8. Compatibilité"
+      ];
+
+      function initAuditPanel() {
+        const container = document.getElementById('audit-list');
+        criteria.forEach((name, i) => {
+          const item = document.createElement('div');
+          item.className = 'mini-crit-item';
+          item.innerHTML = `
+            <div onclick="toggleForm(${i})"><h4>${name}</h4></div>
+            <div class="mini-form" id="form-${i}">
+               <textarea class="mini-input" id="prob-${i}" placeholder="Problème..."></textarea>
+               <div class="mini-sev-row" id="sev-row-${i}">
+                  <button class="mini-sev-btn active" onclick="setMiniSev(${i}, 0)">0</button>
+                  <button class="mini-sev-btn" onclick="setMiniSev(${i}, 1)">1</button>
+                  <button class="mini-sev-btn" onclick="setMiniSev(${i}, 2)">2</button>
+                  <button class="mini-sev-btn" onclick="setMiniSev(${i}, 3)">3</button>
+                  <button class="mini-sev-btn" onclick="setMiniSev(${i}, 4)">4</button>
+               </div>
+               <input type="text" class="mini-input" id="reco-${i}" placeholder="Reco (opt)...">
+               <button class="mini-btn-save" onclick="saveAudit(${i})">Enregistrer</button>
+            </div>
+          `;
+          container.appendChild(item);
+        });
+      }
+
+      let currentSevs = Array(8).fill(0);
+
+      function toggleAuditPanel() {
+        const p = document.getElementById('audit-panel');
+        p.style.display = (p.style.display === 'flex') ? 'none' : 'flex';
+      }
+
+      function toggleForm(i) {
+        const f = document.getElementById('form-' + i);
+        f.style.display = (f.style.display === 'block') ? 'none' : 'block';
+      }
+
+      function setMiniSev(critIdx, sev) {
+        currentSevs[critIdx] = sev;
+        const btns = document.querySelectorAll(`#sev-row-${critIdx} .mini-sev-btn`);
+        btns.forEach((b, idx) => {
+          b.className = 'mini-sev-btn' + (idx === sev ? ' active' : '');
+        });
+      }
+
+      function saveAudit(i) {
+        const prob = document.getElementById('prob-' + i).value;
+        const reco = document.getElementById('reco-' + i).value;
+        const sev = currentSevs[i];
+        
+        if (!prob.trim()) { alert("Le problème est requis !"); return; }
+        
+        // Send to parent
+        window.parent.postMessage({
+           action: 'liveAuditUpdate',
+           index: i,
+           data: { prob, sev, reco }
+        }, '*');
+        
+        // Clear and close
+        document.getElementById('prob-' + i).value = '';
+        document.getElementById('reco-' + i).value = '';
+        toggleForm(i);
+        alert("Enregistré dans l'audit !");
+      }
+
+      // Navigation
       document.querySelectorAll('.nav-item').forEach(item => {
          item.addEventListener('click', () => {
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             document.querySelectorAll('.content-area').forEach(p => p.classList.remove('active'));
-            
             item.classList.add('active');
-            const pageId = 'page-' + item.getAttribute('data-page');
-            document.getElementById(pageId).classList.add('active');
+            document.getElementById('page-' + item.getAttribute('data-page')).classList.add('active');
          });
       });
+
+      initAuditPanel();
     </script>
   </body>
 </html>
