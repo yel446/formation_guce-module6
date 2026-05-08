@@ -9,572 +9,231 @@
     <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
     <link rel="stylesheet" href="../styles.css" />
     <style>
-      :root {
-        --p-high: #e74c3c;
-        --p-med: #f39c12;
-        --p-low: #27ae60;
-        --bg-gray: #f8fafc;
-        --card-shadow: 0 10px 25px rgba(30, 58, 68, 0.05);
-      }
-
-      .slide-content {
-        background: white !important;
-        padding: 0 !important;
-        display: flex;
-        flex-direction: column;
-        height: 100vh;
-        overflow: hidden;
-      }
-
-      .header {
-        background: var(--primary);
-        color: white;
-        padding: 15px 40px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-        z-index: 100;
-      }
-      .header h2 {
-        font-size: 20px;
-        font-weight: 800;
-        margin: 0;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-      }
-
-      .main-container {
-        display: grid;
-        grid-template-columns: 1fr 400px;
-        flex-grow: 1;
-        overflow: hidden;
-        background: var(--bg-gray);
-      }
+      :root { --p-high: #e74c3c; --p-med: #f39c12; --p-low: #27ae60; --bg-gray: #f8fafc; }
+      .slide-content { background: white !important; padding: 0 !important; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+      .header { background: var(--primary); color: white; padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 20px rgba(0,0,0,0.1); z-index: 100; }
+      .header h2 { font-size: 18px; font-weight: 800; margin: 0; display: flex; align-items: center; gap: 12px; }
+      .main-container { display: grid; grid-template-columns: 1fr 380px; flex-grow: 1; overflow: hidden; background: var(--bg-gray); }
 
       /* Criteria Gallery */
-      .gallery-pane {
-        padding: 30px;
-        overflow-y: auto;
-      }
-      .gallery-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 20px;
-      }
-      .crit-card {
-        background: white;
-        border-radius: 20px;
-        padding: 25px;
-        box-shadow: var(--card-shadow);
-        border: 1px solid #f1f5f9;
-        cursor: pointer;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        position: relative;
-        overflow: hidden;
-      }
-      .crit-card:hover {
-        transform: translateY(-5px);
-        border-color: var(--accent);
-        box-shadow: 0 20px 40px rgba(139, 195, 74, 0.1);
-      }
-      .crit-card.filled {
-        border-left: 8px solid var(--accent);
-      }
+      .gallery-pane { padding: 25px; overflow-y: auto; }
+      .gallery-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+      .crit-card { background: white; border-radius: 15px; padding: 20px; box-shadow: 0 10px 25px rgba(30, 58, 68, 0.05); border: 1px solid #f1f5f9; cursor: pointer; transition: 0.3s; position: relative; }
+      .crit-card:hover { transform: translateY(-3px); border-color: var(--accent); }
+      .crit-card h3 { font-size: 13px; font-weight: 800; color: var(--primary); margin: 0 0 8px 0; display: flex; align-items: center; gap: 8px; }
+      .crit-card p { font-size: 10px; color: #64748b; line-height: 1.4; margin: 0; }
+      .count-badge { position: absolute; top: 15px; right: 15px; background: var(--accent); color: white; font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 50px; display: none; }
 
-      .crit-card h3 {
-        font-size: 14px;
-        font-weight: 800;
-        color: var(--primary);
-        margin: 0 0 10px 0;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-      }
-      .crit-card p {
-        font-size: 11px;
-        color: #64748b;
-        line-height: 1.5;
-        margin: 0;
-      }
-      .crit-card .status-icon {
-        position: absolute;
-        bottom: 15px;
-        right: 20px;
-        font-size: 20px;
-        color: #cbd5e1;
-      }
-      .crit-card.filled .status-icon {
-        color: var(--accent);
-      }
+      /* Kanban */
+      .kanban-pane { background: #f1f5f9; border-left: 1px solid #e2e8f0; padding: 20px; display: flex; flex-direction: column; overflow-y: auto; }
+      .kanban-col { background: #e2e8f0; border-radius: 15px; padding: 12px; margin-bottom: 15px; min-height: 100px; }
+      .col-title { font-size: 9px; font-weight: 800; text-transform: uppercase; margin-bottom: 10px; display: flex; align-items: center; gap: 5px; }
+      .high-col .col-title { color: var(--p-high); }
+      .med-col .col-title { color: var(--p-med); }
+      .low-col .col-title { color: var(--p-low); }
+      .reco-card { background: white; padding: 10px; border-radius: 8px; margin-bottom: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); border-left: 3px solid #ccc; animation: slideIn 0.3s ease; }
+      .reco-card h4 { font-size: 10px; font-weight: 800; margin: 0 0 3px 0; color: var(--primary); }
+      .reco-card p { font-size: 9px; color: #475569; margin: 0; line-height: 1.3; }
 
-      /* Kanban Sidebar */
-      .kanban-pane {
-        background: #f1f5f9;
-        border-left: 1px solid #e2e8f0;
-        padding: 25px;
-        display: flex;
-        flex-direction: column;
-        overflow-y: auto;
-      }
-      .kanban-header {
-        font-size: 12px;
-        font-weight: 800;
-        text-transform: uppercase;
-        color: var(--primary);
-        margin-bottom: 20px;
-        letter-spacing: 1px;
-      }
+      /* Form Modal */
+      .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(30, 58, 68, 0.9); backdrop-filter: blur(8px); display: none; justify-content: center; align-items: center; z-index: 2000; }
+      .form-modal { background: white; width: 550px; border-radius: 25px; padding: 35px; box-shadow: 0 25px 50px rgba(0,0,0,0.2); position: relative; max-height: 90vh; overflow-y: auto; }
+      .entry-list { margin-bottom: 25px; border-top: 1px solid #eee; padding-top: 20px; }
+      .entry-item { background: #f8f9fa; padding: 12px; border-radius: 10px; margin-bottom: 10px; font-size: 11px; position: relative; border-left: 4px solid var(--accent); }
+      .btn-del { position: absolute; top: 10px; right: 10px; color: #e74c3c; cursor: pointer; }
+      
+      .form-box { background: #fff; border: 1px solid #e2e8f0; padding: 20px; border-radius: 15px; margin-top: 10px; }
+      .label { font-size: 10px; font-weight: 800; color: #475569; margin-bottom: 5px; text-transform: uppercase; display: block; }
+      .input { width: 100%; padding: 10px; border: 1px solid #e2e8f0; border-radius: 8px; font-family: inherit; font-size: 12px; margin-bottom: 15px; box-sizing: border-box; }
+      .sev-group { display: flex; gap: 8px; margin-bottom: 20px; }
+      .sev-btn { flex: 1; padding: 8px; border-radius: 8px; border: 2px solid #e2e8f0; font-weight: 800; cursor: pointer; font-size: 12px; }
+      .sev-btn.active.s0 { background: #f1f5f9; border-color: #94a3b8; }
+      .sev-btn.active.s1 { background: #f0fdf4; border-color: #4ade80; }
+      .sev-btn.active.s2 { background: #fffbeb; border-color: #fbbf24; }
+      .sev-btn.active.s3 { background: #fff7ed; border-color: #fb923c; }
+      .sev-btn.active.s4 { background: #fef2f2; border-color: #f87171; }
 
-      .kanban-col {
-        background: #e2e8f0;
-        border-radius: 18px;
-        padding: 15px;
-        margin-bottom: 20px;
-        min-height: 120px;
-      }
-      .col-title {
-        font-size: 10px;
-        font-weight: 800;
-        text-transform: uppercase;
-        margin-bottom: 12px;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-      }
-      .high-col .col-title {
-        color: var(--p-high);
-      }
-      .med-col .col-title {
-        color: var(--p-med);
-      }
-      .low-col .col-title {
-        color: var(--p-low);
-      }
-
-      .reco-card {
-        background: white;
-        padding: 12px;
-        border-radius: 12px;
-        margin-bottom: 10px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
-        border-left: 4px solid #ccc;
-        animation: slideIn 0.3s ease;
-      }
-      @keyframes slideIn {
-        from {
-          opacity: 0;
-          transform: translateX(20px);
-        }
-        to {
-          opacity: 1;
-          transform: translateX(0);
-        }
-      }
-      .reco-card h4 {
-        font-size: 11px;
-        font-weight: 800;
-        margin: 0 0 4px 0;
-        color: var(--primary);
-      }
-      .reco-card p {
-        font-size: 10px;
-        color: #475569;
-        margin: 0;
-        line-height: 1.4;
-      }
-
-      /* Modal Form */
-      .modal-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(30, 58, 68, 0.9);
-        backdrop-filter: blur(8px);
-        display: none;
-        justify-content: center;
-        align-items: center;
-        z-index: 2000;
-      }
-      .form-modal {
-        background: white;
-        width: 500px;
-        border-radius: 30px;
-        padding: 40px;
-        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
-        position: relative;
-      }
-      .form-modal h2 {
-        font-size: 20px;
-        font-weight: 800;
-        color: var(--primary);
-        margin-bottom: 5px;
-      }
-      .form-modal p.def {
-        font-size: 12px;
-        color: #64748b;
-        margin-bottom: 30px;
-        font-style: italic;
-      }
-
-      .label {
-        font-size: 11px;
-        font-weight: 800;
-        color: #475569;
-        margin-bottom: 8px;
-        text-transform: uppercase;
-        display: block;
-      }
-      .input {
-        width: 100%;
-        padding: 12px;
-        border: 1px solid #e2e8f0;
-        border-radius: 12px;
-        font-family: inherit;
-        font-size: 13px;
-        margin-bottom: 20px;
-        box-sizing: border-box;
-      }
-      .input:focus {
-        border-color: var(--accent);
-        outline: none;
-        box-shadow: 0 0 0 4px rgba(139, 195, 74, 0.1);
-      }
-
-      .sev-btn-group {
-        display: flex;
-        gap: 10px;
-        margin-bottom: 30px;
-      }
-      .sev-btn {
-        flex: 1;
-        padding: 10px;
-        border-radius: 10px;
-        border: 2px solid #e2e8f0;
-        font-weight: 800;
-        cursor: pointer;
-        transition: 0.2s;
-        font-size: 14px;
-      }
-      .sev-btn.active.s0 {
-        background: #f1f5f9;
-        border-color: #94a3b8;
-        color: #475569;
-      }
-      .sev-btn.active.s1 {
-        background: #f0fdf4;
-        border-color: #4ade80;
-        color: #166534;
-      }
-      .sev-btn.active.s2 {
-        background: #fffbeb;
-        border-color: #fbbf24;
-        color: #92400e;
-      }
-      .sev-btn.active.s3 {
-        background: #fff7ed;
-        border-color: #fb923c;
-        color: #9a3412;
-      }
-      .sev-btn.active.s4 {
-        background: #fef2f2;
-        border-color: #f87171;
-        color: #991b1b;
-      }
-
-      .btn-validate {
-        background: var(--accent);
-        color: white;
-        width: 100%;
-        padding: 15px;
-        border-radius: 15px;
-        font-weight: 800;
-        border: none;
-        cursor: pointer;
-        font-size: 15px;
-        transition: 0.3s;
-      }
-      .btn-validate:hover {
-        transform: scale(1.02);
-        filter: brightness(1.1);
-      }
-
-      .btn-app {
-        background: var(--accent);
-        color: white;
-        padding: 10px 25px;
-        border-radius: 50px;
-        font-weight: 800;
-        border: none;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-      }
-
-      /* App Modal */
-      .app-modal-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: #000;
-        display: none;
-        z-index: 3000;
-      }
-      .app-modal-content {
-        width: 100%;
-        height: 100%;
-        position: relative;
-      }
-      .close-app {
-        position: absolute;
-        top: 20px;
-        right: 30px;
-        background: #e74c3c;
-        color: white;
-        border: none;
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        font-size: 28px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 4000;
-      }
+      .btn-add { background: var(--primary); color: white; width: 100%; padding: 12px; border-radius: 10px; font-weight: 800; border: none; cursor: pointer; font-size: 13px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+      
+      .app-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; display: none; z-index: 3000; }
+      .close-app { position: absolute; top: 20px; right: 30px; background: #e74c3c; color: white; border: none; width: 45px; height: 45px; border-radius: 50%; font-size: 24px; cursor: pointer; z-index: 4000; }
     </style>
   </head>
   <body class="slide-content">
     <div class="header">
-      <h2>
-        <iconify-icon icon="mdi:clipboard-pulse"></iconify-icon> Lab d'audit
-        UX/UI : Bastien & Caspin
-      </h2>
-      <button class="btn-app" onclick="openApp()">
-        <iconify-icon icon="mdi:rocket-launch"></iconify-icon> Lancer l'App à
-        Auditer (Simulation)
+      <h2><iconify-icon icon="mdi:clipboard-pulse"></iconify-icon> Lab d'Audit Multi-Critères</h2>
+      <button style="background: var(--accent); color: white; padding: 10px 25px; border-radius: 50px; font-weight: 800; border: none; cursor: pointer; display: flex; align-items: center; gap: 10px;" onclick="openApp()">
+         <iconify-icon icon="mdi:rocket-launch"></iconify-icon> Ouvrir l'App à Auditer
       </button>
     </div>
 
     <div class="main-container">
-      <!-- Left: Gallery -->
-      <div class="gallery-pane">
-        <div class="gallery-grid" id="criteria-grid"></div>
-      </div>
-
-      <!-- Right: Kanban -->
+      <div class="gallery-pane"><div class="gallery-grid" id="criteria-grid"></div></div>
       <div class="kanban-pane">
-        <div class="kanban-header">Backlog UX Actionnable</div>
-
-        <div class="kanban-col high-col">
-          <div class="col-title">
-            <iconify-icon icon="mdi:fire"></iconify-icon> Haute Priorité
-          </div>
-          <div id="col-high"></div>
-        </div>
-
-        <div class="kanban-col med-col">
-          <div class="col-title">
-            <iconify-icon icon="mdi:clock-alert"></iconify-icon> Priorité
-            Moyenne
-          </div>
-          <div id="col-med"></div>
-        </div>
-
-        <div class="kanban-col low-col">
-          <div class="col-title">
-            <iconify-icon icon="mdi:check-circle"></iconify-icon> Basse Priorité
-          </div>
-          <div id="col-low"></div>
-        </div>
+        <div style="font-size: 11px; font-weight: 800; margin-bottom: 15px; color: var(--primary);">BACKLOG PRIORISÉ</div>
+        <div class="kanban-col high-col"><div class="col-title">🔴 Haute</div><div id="col-high"></div></div>
+        <div class="kanban-col med-col"><div class="col-title">🟠 Moyenne</div><div id="col-med"></div></div>
+        <div class="kanban-col low-col"><div class="col-title">🟢 Basse</div><div id="col-low"></div></div>
       </div>
     </div>
 
-    <!-- Audit Form Modal -->
+    <!-- Form Modal -->
     <div id="form-overlay" class="modal-overlay">
-      <div class="form-modal">
-        <h2 id="modal-title"></h2>
-        <p id="modal-def" class="def"></p>
+       <div class="form-modal">
+          <h2 id="modal-title" style="margin: 0; font-size: 18px; color: var(--primary);"></h2>
+          <p id="modal-def" style="font-size: 11px; color: #64748b; margin-bottom: 20px; font-style: italic;"></p>
+          
+          <div id="existing-entries" class="entry-list"></div>
 
-        <label class="label">Problème identifié (obligatoire)</label>
-        <textarea
-          id="f-prob"
-          class="input"
-          style="height: 80px; resize: none"
-          placeholder="Décrivez le défaut ergonomique observé..."
-        ></textarea>
+          <div class="form-box">
+             <div style="font-weight: 800; font-size: 12px; margin-bottom: 15px; color: var(--primary);">AJOUTER UN PROBLÈME</div>
+             <label class="label">Défaut observé</label>
+             <textarea id="f-prob" class="input" style="height: 60px; resize: none;" placeholder="Ex: Libellé COD_REF peu clair..."></textarea>
+             
+             <label class="label">Sévérité (0 à 4)</label>
+             <div class="sev-group">
+                <button class="sev-btn s0" onclick="setSev(0)">0</button>
+                <button class="sev-btn s1" onclick="setSev(1)">1</button>
+                <button class="sev-btn s2" onclick="setSev(2)">2</button>
+                <button class="sev-btn s3" onclick="setSev(3)">3</button>
+                <button class="sev-btn s4" onclick="setSev(4)">4</button>
+             </div>
 
-        <label class="label">Sévérité du problème</label>
-        <div class="sev-btn-group">
-          <button class="sev-btn s0" onclick="setSev(0)">0</button>
-          <button class="sev-btn s1" onclick="setSev(1)">1</button>
-          <button class="sev-btn s2" onclick="setSev(2)">2</button>
-          <button class="sev-btn s3" onclick="setSev(3)">3</button>
-          <button class="sev-btn s4" onclick="setSev(4)">4</button>
-        </div>
-
-        <label class="label">Recommandation (optionnelle)</label>
-        <input
-          type="text"
-          id="f-reco"
-          class="input"
-          placeholder="Quelle solution préconisez-vous ?"
-        />
-
-        <button class="btn-validate" onclick="validateForm()">
-          Valider & Enregistrer
-        </button>
-      </div>
+             <label class="label">Recommandation (facultative)</label>
+             <input type="text" id="f-reco" class="input" placeholder="Action corrective recommandée...">
+             
+             <button class="btn-add" onclick="addEntry()">
+                <iconify-icon icon="mdi:plus-circle"></iconify-icon> Enregistrer ce problème
+             </button>
+          </div>
+       </div>
     </div>
 
-    <!-- App Simulation Modal -->
     <div id="app-overlay" class="app-modal-overlay">
-      <div class="app-modal-content">
-        <button class="close-app" onclick="closeApp()">×</button>
-        <iframe
-          src="lab/complex_bad_app.html"
-          style="width: 100%; height: 100%; border: none"
-        ></iframe>
-      </div>
+       <button class="close-app" onclick="closeApp()">×</button>
+       <iframe src="lab/complex_bad_app.html" style="width: 100%; height: 100%; border: none;"></iframe>
     </div>
 
     <script>
       const criteria = [
-        {
-          name: "1. Guidage",
-          def: "Ensemble des moyens pour conseiller, orienter, informer et conduire l'utilisateur lors de ses interactions (labels, messages, retours d'état).",
-          icon: "mdi:near-me",
-        },
-        {
-          name: "2. Charge de travail",
-          def: "Optimisation de l'effort mémoriel et mental requis. Réduire le nombre d'étapes et la densité d'informations.",
-          icon: "mdi:brain",
-        },
-        {
-          name: "3. Contrôle explicite",
-          def: "L'utilisateur doit garder la maîtrise des actions système. Rien ne doit se lancer sans son consentement explicite.",
-          icon: "mdi:gesture-tap",
-        },
-        {
-          name: "4. Adaptabilité",
-          def: "Capacité de l'interface à réagir selon le contexte et les besoins spécifiques de l'utilisateur (expert vs débutant).",
-          icon: "mdi:tune",
-        },
-        {
-          name: "5. Gestion des erreurs",
-          def: "Moyens pour éviter ou corriger simplement les erreurs. Les messages doivent être clairs et aider à la résolution.",
-          icon: "mdi:alert-octagon",
-        },
-        {
-          name: "6. Homogénéité",
-          def: "Cohérence des choix de conception (codes, libellés, emplacements) pour des contextes identiques.",
-          icon: "mdi:layers",
-        },
-        {
-          name: "7. Signifiance des codes",
-          def: "Adéquation entre les codes (icônes, abréviations, couleurs) et les objets ou actions qu'ils représentent.",
-          icon: "mdi:tag-text",
-        },
-        {
-          name: "8. Compatibilité",
-          def: "Accord entre les tâches réelles de l'utilisateur et les procédures imposées par le système.",
-          icon: "mdi:handshake",
-        },
+        { name: "1. Guidage", def: "Conseils, orientation et feedback lors des interactions.", icon: "mdi:near-me" },
+        { name: "2. Charge de travail", def: "Optimisation de l'effort mental et mémoriel.", icon: "mdi:brain" },
+        { name: "3. Contrôle explicite", def: "Maîtrise utilisateur sur les actions du système.", icon: "mdi:gesture-tap" },
+        { name: "4. Adaptabilité", def: "Flexibilité selon l'usage (expert vs débutant).", icon: "mdi:tune" },
+        { name: "5. Gestion des erreurs", def: "Prévention et correction simple des erreurs.", icon: "mdi:alert-octagon" },
+        { name: "6. Homogénéité", def: "Cohérence interne des codes et des layouts.", icon: "mdi:layers" },
+        { name: "7. Signifiance des codes", def: "Adéquation entre codes et objets représentés.", icon: "mdi:tag-text" },
+        { name: "8. Compatibilité", def: "Accord entre tâche réelle et logique système.", icon: "mdi:handshake" }
       ];
 
-      let auditState = Array(8)
-        .fill(null)
-        .map(() => ({ prob: "", sev: 0, reco: "" }));
+      let auditState = Array(8).fill(null).map(() => []);
       let activeIndex = null;
       let activeSev = 0;
 
       function init() {
-        const grid = document.getElementById("criteria-grid");
+        const grid = document.getElementById('criteria-grid');
         criteria.forEach((c, i) => {
-          const card = document.createElement("div");
-          card.className = "crit-card";
-          card.id = "card-" + i;
-          card.onclick = () => openForm(i);
+          const card = document.createElement('div');
+          card.className = 'crit-card';
+          card.id = 'card-' + i;
+          card.onclick = () => openModal(i);
           card.innerHTML = `
+            <div class="count-badge" id="count-${i}">0</div>
             <h3><iconify-icon icon="${c.icon}"></iconify-icon> ${c.name}</h3>
             <p>${c.def}</p>
-            <iconify-icon icon="mdi:check-circle" class="status-icon"></iconify-icon>
           `;
           grid.appendChild(card);
         });
       }
 
-      function openForm(i) {
+      function openModal(i) {
         activeIndex = i;
-        const state = auditState[i];
-        document.getElementById("modal-title").innerText = criteria[i].name;
-        document.getElementById("modal-def").innerText = criteria[i].def;
-        document.getElementById("f-prob").value = state.prob;
-        document.getElementById("f-reco").value = state.reco;
-        setSev(state.sev);
-        document.getElementById("form-overlay").style.display = "flex";
+        document.getElementById('modal-title').innerText = criteria[i].name;
+        document.getElementById('modal-def').innerText = criteria[i].def;
+        renderEntries();
+        resetForm();
+        document.getElementById('form-overlay').style.display = "flex";
+      }
+
+      function resetForm() {
+        document.getElementById('f-prob').value = '';
+        document.getElementById('f-reco').value = '';
+        setSev(0);
       }
 
       function setSev(s) {
         activeSev = s;
-        document.querySelectorAll(".sev-btn").forEach((btn, idx) => {
-          btn.className = "sev-btn s" + idx;
-          if (idx === s) btn.classList.add("active");
+        document.querySelectorAll('.sev-btn').forEach((btn, idx) => {
+          btn.className = 'sev-btn s' + idx;
+          if (idx === s) btn.classList.add('active');
         });
       }
 
-      function validateForm() {
-        const prob = document.getElementById("f-prob").value;
-        const reco = document.getElementById("f-reco").value;
+      function addEntry() {
+        const prob = document.getElementById('f-prob').value.trim();
+        const reco = document.getElementById('f-reco').value.trim();
+        if (!prob) { alert("Veuillez décrire le problème."); return; }
+        
+        auditState[activeIndex].push({ prob, sev: activeSev, reco });
+        renderEntries();
+        resetForm();
+        updateUI();
+      }
 
-        if (!prob.trim()) {
-          alert("Le problème est obligatoire !");
-          return;
+      function deleteEntry(idx) {
+        auditState[activeIndex].splice(idx, 1);
+        renderEntries();
+        updateUI();
+      }
+
+      function renderEntries() {
+        const container = document.getElementById('existing-entries');
+        const entries = auditState[activeIndex];
+        if (entries.length === 0) {
+           container.innerHTML = "<p style='font-size: 10px; color: #999;'>Aucun problème enregistré pour ce critère.</p>";
+           return;
         }
-
-        auditState[activeIndex] = { prob, sev: activeSev, reco };
-        document.getElementById("card-" + activeIndex).classList.add("filled");
-        document.getElementById("form-overlay").style.display = "none";
-        refreshKanban();
+        container.innerHTML = entries.map((e, idx) => `
+           <div class="entry-item">
+              <strong>Prob:</strong> ${e.prob} <br>
+              <strong>Sév:</strong> ${e.sev}/4 | <strong>Reco:</strong> ${e.reco || '--'}
+              <iconify-icon icon="mdi:delete" class="btn-del" onclick="deleteEntry(${idx})"></iconify-icon>
+           </div>
+        `).join('');
       }
 
-      function refreshKanban() {
-        document.getElementById("col-high").innerHTML = "";
-        document.getElementById("col-med").innerHTML = "";
-        document.getElementById("col-low").innerHTML = "";
+      function updateUI() {
+        // Update badges
+        auditState.forEach((entries, i) => {
+           const badge = document.getElementById('count-' + i);
+           badge.innerText = entries.length;
+           badge.style.display = entries.length > 0 ? "block" : "none";
+           document.getElementById('card-' + i).style.borderColor = entries.length > 0 ? "var(--accent)" : "#f1f5f9";
+        });
 
-        auditState.forEach((state, i) => {
-          if (state.reco.trim()) {
-            const card = document.createElement("div");
-            card.className = "reco-card";
-            card.innerHTML = `<h4>${criteria[i].name}</h4><p>${state.reco}</p>`;
+        // Update Kanban
+        document.getElementById('col-high').innerHTML = '';
+        document.getElementById('col-med').innerHTML = '';
+        document.getElementById('col-low').innerHTML = '';
 
-            if (state.sev >= 3) {
-              card.style.borderLeftColor = "var(--p-high)";
-              document.getElementById("col-high").appendChild(card);
-            } else if (state.sev === 2) {
-              card.style.borderLeftColor = "var(--p-med)";
-              document.getElementById("col-med").appendChild(card);
-            } else {
-              card.style.borderLeftColor = "var(--p-low)";
-              document.getElementById("col-low").appendChild(card);
-            }
-          }
+        auditState.forEach((entries, i) => {
+           entries.forEach(e => {
+              if (e.reco) {
+                 const card = document.createElement('div');
+                 card.className = 'reco-card';
+                 card.innerHTML = `<h4>${criteria[i].name}</h4><p>${e.reco}</p>`;
+                 if (e.sev >= 3) { card.style.borderLeftColor = "var(--p-high)"; document.getElementById('col-high').appendChild(card); }
+                 else if (e.sev === 2) { card.style.borderLeftColor = "var(--p-med)"; document.getElementById('col-med').appendChild(card); }
+                 else { card.style.borderLeftColor = "var(--p-low)"; document.getElementById('col-low').appendChild(card); }
+              }
+           });
         });
       }
 
-      function openApp() {
-        document.getElementById("app-overlay").style.display = "block";
-      }
-      function closeApp() {
-        document.getElementById("app-overlay").style.display = "none";
-      }
+      document.getElementById("form-overlay").addEventListener("click", e => { if (e.target === e.currentTarget) e.currentTarget.style.display = "none"; });
+      window.addEventListener("message", e => { if (e.data.action === "closeApp") closeApp(); });
+      function openApp() { document.getElementById('app-overlay').style.display = "block"; }
+      function closeApp() { document.getElementById('app-overlay').style.display = "none"; }
 
       init();
     </script>
