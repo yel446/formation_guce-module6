@@ -9,302 +9,201 @@
     <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
     <link rel="stylesheet" href="../styles.css" />
     <style>
-      :root { --p-high: #e74c3c; --p-med: #f39c12; --p-low: #27ae60; --bg-gray: #f8fafc; }
+      :root { --p-high: #e74c3c; --p-med: #f39c12; --p-low: #27ae60; --bg-gray: #f8fafc; --accent: #8bc34a; }
       .slide-content { background: white !important; padding: 0 !important; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
       
       .header { background: var(--primary); color: white; padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 20px rgba(0,0,0,0.1); z-index: 100; }
       .header h2 { font-size: 18px; font-weight: 800; margin: 0; display: flex; align-items: center; gap: 12px; }
       
-      .main-container { display: grid; grid-template-columns: 1fr 400px; flex-grow: 1; overflow: hidden; background: var(--bg-gray); }
+      .main-container { display: grid; grid-template-columns: 1fr 380px; flex-grow: 1; overflow: hidden; background: var(--bg-gray); }
 
-      /* Criteria Gallery */
-      .gallery-pane { padding: 25px; overflow-y: auto; position: relative; }
-      .gallery-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-      .gallery-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+      /* Audit Grid Pane */
+      .audit-pane { padding: 30px; overflow-y: auto; background: white; }
+      .pane-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+      .pane-title { font-size: 16px; font-weight: 800; color: var(--primary); display: flex; align-items: center; gap: 10px; }
       
-      .crit-card { background: white; border-radius: 15px; padding: 20px; box-shadow: 0 10px 25px rgba(30, 58, 68, 0.05); border: 1px solid #f1f5f9; cursor: pointer; transition: 0.3s; position: relative; }
-      .crit-card:hover { transform: translateY(-3px); border-color: var(--accent); }
-      .crit-card h3 { font-size: 13px; font-weight: 800; color: var(--primary); margin: 0 0 8px 0; display: flex; align-items: center; gap: 8px; }
-      .crit-card p { font-size: 10px; color: #64748b; line-height: 1.4; margin: 0; }
-      .count-badge { position: absolute; top: 15px; right: 15px; background: var(--accent); color: white; font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 50px; display: none; }
+      .audit-table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+      .audit-table th { text-align: left; padding: 12px; border-bottom: 2px solid var(--accent); color: var(--primary); font-weight: 800; font-size: 11px; text-transform: uppercase; }
+      .audit-table td { padding: 15px 12px; border-bottom: 1px solid #f1f5f9; vertical-align: top; }
 
-      /* Kanban */
-      .kanban-pane { background: #f1f5f9; border-left: 1px solid #e2e8f0; padding: 20px; display: flex; flex-direction: column; overflow-y: auto; }
-      .kanban-col { background: #e2e8f0; border-radius: 18px; padding: 12px; margin-bottom: 20px; min-height: 150px; }
-      .col-title { font-size: 10px; font-weight: 800; text-transform: uppercase; margin-bottom: 12px; display: flex; align-items: center; gap: 5px; }
+      .crit-info h4 { margin: 0; font-size: 13px; color: var(--primary); font-weight: 800; }
+      .crit-info p { margin: 4px 0 0 0; font-size: 10px; color: #64748b; line-height: 1.4; font-style: italic; }
+
+      .input-group { margin-bottom: 15px; }
+      .input { width: 100%; padding: 10px; border: 1px solid #e2e8f0; border-radius: 8px; font-family: inherit; font-size: 12px; box-sizing: border-box; }
+      .input:focus { border-color: var(--accent); outline: none; }
+      
+      .sev-select { padding: 8px; border-radius: 8px; font-weight: 800; border: 2px solid #e2e8f0; font-size: 13px; width: 60px; cursor: pointer; }
+      .s0 { color: #94a3b8; } .s1 { color: #2ecc71; } .s2 { color: #f1c40f; } .s3 { color: #e67e22; } .s4 { color: #e74c3c; }
+
+      /* Kanban Pane */
+      .kanban-pane { background: #f1f5f9; border-left: 1px solid #e2e8f0; padding: 25px; overflow-y: auto; }
+      .kanban-header { font-size: 12px; font-weight: 800; color: var(--primary); margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; }
+      
+      .kanban-col { background: #e2e8f0; border-radius: 18px; padding: 15px; margin-bottom: 20px; min-height: 120px; }
+      .col-title { font-size: 10px; font-weight: 800; text-transform: uppercase; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
       .high-col .col-title { color: var(--p-high); }
       .med-col .col-title { color: var(--p-med); }
       .low-col .col-title { color: var(--p-low); }
 
-      .reco-card { background: white; padding: 12px; border-radius: 12px; margin-bottom: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); border-left: 4px solid #ccc; animation: slideIn 0.3s ease; }
-      .reco-card .crit-tag { font-size: 8px; font-weight: 800; color: #94a3b8; text-transform: uppercase; margin-bottom: 5px; display: block; }
-      .reco-card h4 { font-size: 11px; font-weight: 800; margin: 0 0 4px 0; color: var(--primary); }
-      .reco-card p { font-size: 10px; color: #475569; margin: 0; line-height: 1.4; font-style: italic; border-top: 1px solid #f1f5f9; padding-top: 8px; margin-top: 8px; }
-
-      /* Form Modal */
-      .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(30, 58, 68, 0.9); backdrop-filter: blur(8px); display: none; justify-content: center; align-items: center; z-index: 2000; }
-      .form-modal { background: white; width: 450px; border-radius: 30px; padding: 40px; box-shadow: 0 25px 50px rgba(0,0,0,0.2); position: relative; }
-      .form-modal h2 { font-size: 18px; font-weight: 800; color: var(--primary); margin: 0 0 5px 0; }
-      .form-modal p.def { font-size: 11px; color: #64748b; margin-bottom: 30px; font-style: italic; line-height: 1.4; }
-      
-      .label { font-size: 10px; font-weight: 800; color: #475569; margin-bottom: 5px; text-transform: uppercase; display: block; }
-      .input { width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 12px; font-family: inherit; font-size: 12px; margin-bottom: 20px; box-sizing: border-box; }
-      
-      .sev-group { display: flex; gap: 8px; margin-bottom: 30px; }
-      .sev-btn { flex: 1; padding: 10px; border-radius: 10px; border: 2px solid #e2e8f0; font-weight: 800; cursor: pointer; transition: 0.2s; font-size: 14px; }
-      .sev-btn.active.s0 { background: #f1f5f9; border-color: #94a3b8; color: #475569; }
-      .sev-btn.active.s1 { background: #f0fdf4; border-color: #4ade80; color: #166534; }
-      .sev-btn.active.s2 { background: #fffbeb; border-color: #fbbf24; color: #92400e; }
-      .sev-btn.active.s3 { background: #fff7ed; border-color: #fb923c; color: #9a3412; }
-      .sev-btn.active.s4 { background: #fef2f2; border-color: #f87171; color: #991b1b; }
-
-      .btn-validate { background: var(--accent); color: white; width: 100%; padding: 15px; border-radius: 15px; font-weight: 800; border: none; cursor: pointer; font-size: 15px; transition: 0.3s; }
-      
-      /* Buttons */
-      .btn-action { background: var(--accent); color: white; border: none; padding: 10px 25px; border-radius: 50px; font-weight: 800; font-size: 12px; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 10px; }
-      .btn-app { background: var(--accent); }
-      .btn-results { background: var(--primary); }
+      .reco-card { background: white; padding: 12px; border-radius: 12px; margin-bottom: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border-left: 4px solid #ccc; animation: slideIn 0.3s ease; }
+      .reco-card h4 { font-size: 11px; font-weight: 800; margin: 0 0 5px 0; color: var(--primary); }
+      .reco-card p { font-size: 10px; color: #475569; margin: 0; line-height: 1.4; border-top: 1px solid #f8f9fa; padding-top: 8px; margin-top: 8px; font-style: italic; }
 
       /* App Modal */
-      .app-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(30, 58, 68, 0.85); backdrop-filter: blur(5px); display: none; z-index: 10000; }
-      .app-modal-content { position: absolute; top: 100px; left: 100px; right: 100px; bottom: 100px; width: auto; height: auto; background: white; border-radius: 25px; overflow: hidden; box-shadow: 0 50px 100px rgba(0,0,0,0.3); border: 2px solid rgba(255,255,255,0.1); }
-      .close-app { position: absolute; top: 20px; right: 20px; background: #e74c3c; color: white; border: none; width: 40px; height: 40px; border-radius: 50%; font-size: 22px; cursor: pointer; z-index: 4000; display: flex; align-items: center; justify-content: center; transition: 0.3s; }
-      .close-app:hover { transform: rotate(90deg); background: #c0392b; }
+      .app-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; display: none; z-index: 10000; }
+      .app-modal-content { width: 100%; height: 100%; position: relative; }
+      .close-app { position: absolute; top: 20px; right: 30px; background: #e74c3c; color: white; border: none; width: 50px; height: 50px; border-radius: 50%; font-size: 28px; cursor: pointer; z-index: 11000; }
 
-      /* Results Overlay */
-      .results-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; display: none; z-index: 5000; flex-direction: column; padding: 60px; overflow-y: auto; }
-      .results-header { border-bottom: 2px solid var(--primary); padding-bottom: 20px; margin-bottom: 40px; display: flex; justify-content: space-between; align-items: center; }
-      .results-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; }
-      .res-block { background: #f8f9fa; border-radius: 20px; padding: 30px; border: 1px solid #eee; }
-      .res-title { font-size: 14px; font-weight: 800; color: var(--primary); text-transform: uppercase; margin-bottom: 20px; border-left: 4px solid var(--accent); padding-left: 15px; }
-      .res-entry { border-bottom: 1px solid #eee; padding: 15px 0; font-size: 13px; }
-      .res-entry:last-child { border: none; }
+      .btn-action { background: var(--accent); color: white; border: none; padding: 12px 25px; border-radius: 50px; font-weight: 800; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: 0.3s; }
+      .btn-action:hover { transform: scale(1.05); filter: brightness(1.1); }
     </style>
   </head>
   <body class="slide-content">
     <div class="header">
-      <h2><iconify-icon icon="mdi:clipboard-pulse"></iconify-icon> Lab d'Audit UX/UI : Bastien & Scapin</h2>
-      <div style="display: flex; gap: 15px;">
-        <button class="btn-action btn-results" onclick="openResults()">
-           <iconify-icon icon="mdi:file-document-check-outline"></iconify-icon> Présenter la Grille
-        </button>
-        <button class="btn-action btn-app" onclick="openApp()">
-           <iconify-icon icon="mdi:rocket-launch"></iconify-icon> Ouvrir l'App à Auditer
-        </button>
-      </div>
+      <h2><iconify-icon icon="mdi:clipboard-pulse"></iconify-icon> Workspace : Audit Bastien & Scapin</h2>
+      <button class="btn-action" onclick="openApp()">
+         <iconify-icon icon="mdi:rocket-launch"></iconify-icon> Ouvrir l'App à Auditer (Plein Écran)
+      </button>
     </div>
 
     <div class="main-container">
-      <!-- Left: Gallery -->
-      <div class="gallery-pane">
-        <div class="gallery-header">
-           <div style="font-size: 13px; font-weight: 800; color: var(--primary);">CHOISIR UN CRITÈRE D'AUDIT</div>
+      <!-- Audit Grid -->
+      <div class="audit-pane">
+        <div class="pane-header">
+           <div class="pane-title"><iconify-icon icon="mdi:table-edit"></iconify-icon> Grille d'Audit Détaillée</div>
+           <button class="btn-action" style="background: var(--primary); font-size: 11px; padding: 8px 20px;" onclick="window.print()">Exporter PDF</button>
         </div>
-        <div class="gallery-grid" id="criteria-grid"></div>
+        
+        <table class="audit-table">
+          <thead>
+            <tr>
+              <th style="width: 180px;">Critère</th>
+              <th>Problèmes & Recommandations</th>
+              <th style="width: 80px;">Sévérité</th>
+            </tr>
+          </thead>
+          <tbody id="audit-body"></tbody>
+        </table>
       </div>
 
-      <!-- Right: Kanban -->
+      <!-- Kanban -->
       <div class="kanban-pane">
-        <div style="font-size: 11px; font-weight: 800; margin-bottom: 20px; color: var(--primary); text-transform: uppercase; letter-spacing: 1px;">Backlog des Recommandations</div>
-        
-        <div class="kanban-col high-col">
-          <div class="col-title"><iconify-icon icon="mdi:fire"></iconify-icon> Haute Priorité</div>
-          <div id="col-high"></div>
-        </div>
-        
-        <div class="kanban-col med-col">
-          <div class="col-title"><iconify-icon icon="mdi:clock-alert"></iconify-icon> Priorité Moyenne</div>
-          <div id="col-med"></div>
-        </div>
-        
-        <div class="kanban-col low-col">
-          <div class="col-title"><iconify-icon icon="mdi:check-circle"></iconify-icon> Basse Priorité</div>
-          <div id="col-low"></div>
-        </div>
+        <div class="kanban-header">Backlog UX Priorisé</div>
+        <div class="kanban-col high-col"><div class="col-title">🔴 Haute Priorité</div><div id="col-high"></div></div>
+        <div class="kanban-col med-col"><div class="col-title">🟠 Moyenne Priorité</div><div id="col-med"></div></div>
+        <div class="kanban-col low-col"><div class="col-title">🟢 Basse Priorité</div><div id="col-low"></div></div>
       </div>
     </div>
 
-    <!-- Audit Form Modal -->
-    <div id="form-overlay" class="modal-overlay">
-       <div class="form-modal">
-          <h2 id="modal-title"></h2>
-          <p id="modal-def" class="def"></p>
-          
-          <label class="label">Problème observé</label>
-          <textarea id="f-prob" class="input" style="height: 70px; resize: none;" placeholder="Décrivez le défaut..."></textarea>
-          
-          <label class="label">Sévérité (0 à 4)</label>
-          <div class="sev-group">
-             <button class="sev-btn s0" onclick="setSev(0)">0</button>
-             <button class="sev-btn s1" onclick="setSev(1)">1</button>
-             <button class="sev-btn s2" onclick="setSev(2)">2</button>
-             <button class="sev-btn s3" onclick="setSev(3)">3</button>
-             <button class="sev-btn s4" onclick="setSev(4)">4</button>
-          </div>
-
-          <label class="label">Recommandation corrective (optionnelle)</label>
-          <input type="text" id="f-reco" class="input" placeholder="Action à mener...">
-          
-          <button class="btn-validate" onclick="validateForm()">Valider & Enregistrer</button>
-       </div>
-    </div>
-
-    <!-- App Simulation Modal -->
+    <!-- Full Screen App Modal -->
     <div id="app-overlay" class="app-modal-overlay">
-       <button class="close-app" onclick="closeApp()">×</button>
-       <iframe src="lab/complex_bad_app.html" style="width: 100%; height: 100%; border: none;"></iframe>
-    </div>
-
-    <!-- Results Overlay -->
-    <div id="results-overlay" class="results-overlay">
-       <div class="results-header">
-          <h1 style="margin: 0; color: var(--primary); font-size: 28px; font-weight: 800;">Résultats de l'Audit UX</h1>
-          <button class="btn-action" onclick="closeResults()">Retourner au Workspace</button>
+       <div class="app-modal-content">
+          <button class="close-app" onclick="closeApp()">×</button>
+          <iframe src="lab/complex_bad_app.html" style="width: 100%; height: 100%; border: none;"></iframe>
        </div>
-       <div class="results-grid" id="res-grid"></div>
     </div>
 
     <script>
       const criteria = [
-        { name: "1. Guidage", def: "Conseils, orientation et feedback lors des interactions.", icon: "mdi:near-me" },
-        { name: "2. Charge de travail", def: "Optimisation de l'effort mental et mémoriel.", icon: "mdi:brain" },
-        { name: "3. Contrôle explicite", def: "Maîtrise utilisateur sur les actions du système.", icon: "mdi:gesture-tap" },
-        { name: "4. Adaptabilité", def: "Flexibilité selon l'usage (expert vs débutant).", icon: "mdi:tune" },
-        { name: "5. Gestion des erreurs", def: "Prévention et correction simple des erreurs.", icon: "mdi:alert-octagon" },
-        { name: "6. Homogénéité", def: "Cohérence interne des codes et des layouts.", icon: "mdi:layers" },
-        { name: "7. Signifiance des codes", def: "Adéquation entre codes et objets représentés.", icon: "mdi:tag-text" },
-        { name: "8. Compatibilité", def: "Accord entre tâche réelle et logique système.", icon: "mdi:handshake" }
+        { name: "1. Guidage", def: "Moyens pour conseiller et orienter." },
+        { name: "2. Charge de travail", def: "Réduire l'effort mental et mémoriel." },
+        { name: "3. Contrôle explicite", def: "Maîtrise utilisateur sur les actions système." },
+        { name: "4. Adaptabilité", def: "Flexibilité selon l'usage et l'utilisateur." },
+        { name: "5. Gestion des erreurs", def: "Prévenir et corriger simplement." },
+        { name: "6. Homogénéité", def: "Cohérence interne des choix de conception." },
+        { name: "7. Signifiance des codes", def: "Adéquation codes et signification." },
+        { name: "8. Compatibilité", def: "Accord entre tâche réelle et logique système." }
       ];
 
-      let auditState = Array(8).fill(null).map(() => []);
-      let activeIndex = null;
-      let activeSev = 0;
+      let auditData = Array(8).fill(null).map(() => ({ prob: "", reco: "", sev: 0 }));
 
       function init() {
-        const grid = document.getElementById('criteria-grid');
+        const body = document.getElementById('audit-body');
         criteria.forEach((c, i) => {
-          const card = document.createElement('div');
-          card.className = 'crit-card';
-          card.id = 'card-' + i;
-          card.onclick = () => openModal(i);
-          card.innerHTML = `
-            <div class="count-badge" id="count-${i}">0</div>
-            <h3><iconify-icon icon="${c.icon}"></iconify-icon> ${c.name}</h3>
-            <p>${c.def}</p>
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>
+               <div class="crit-info">
+                  <h4>${c.name}</h4>
+                  <p>${c.def}</p>
+               </div>
+            </td>
+            <td>
+               <input type="text" class="input" placeholder="Défaut identifié..." id="prob-${i}" oninput="updateState(${i})">
+               <input type="text" class="input" placeholder="Recommandation..." id="reco-${i}" oninput="updateState(${i})" style="margin-top: 8px;">
+            </td>
+            <td>
+               <select class="sev-select s0" id="sev-${i}" onchange="updateState(${i})">
+                  <option value="0" class="s0">0</option>
+                  <option value="1" class="s1">1</option>
+                  <option value="2" class="s2">2</option>
+                  <option value="3" class="s3">3</option>
+                  <option value="4" class="s4">4</option>
+               </select>
+            </td>
           `;
-          grid.appendChild(card);
+          body.appendChild(row);
         });
       }
 
-      function openModal(i) {
-        activeIndex = i;
-        document.getElementById('modal-title').innerText = criteria[i].name;
-        document.getElementById('modal-def').innerText = criteria[i].def;
-        resetForm();
-        document.getElementById('form-overlay').style.display = "flex";
-      }
-
-      function resetForm() {
-        document.getElementById('f-prob').value = '';
-        document.getElementById('f-reco').value = '';
-        setSev(0);
-      }
-
-      function setSev(s) {
-        activeSev = s;
-        document.querySelectorAll('.sev-btn').forEach((btn, idx) => {
-          btn.className = 'sev-btn s' + idx;
-          if (idx === s) btn.classList.add('active');
-        });
-      }
-
-      function validateForm() {
-        const prob = document.getElementById('f-prob').value.trim();
-        const reco = document.getElementById('f-reco').value.trim();
-        if (!prob) { alert("Veuillez décrire le problème."); return; }
+      function updateState(i) {
+        const prob = document.getElementById('prob-' + i).value;
+        const reco = document.getElementById('reco-' + i).value;
+        const sev = parseInt(document.getElementById('sev-' + i).value);
         
-        auditState[activeIndex].push({ prob, sev: activeSev, reco });
-        document.getElementById('form-overlay').style.display = "none";
-        updateUI();
+        auditData[i] = { prob, reco, sev };
+        const sel = document.getElementById('sev-' + i);
+        sel.className = 'sev-select s' + sev;
+        
+        refreshKanban();
       }
 
-      function updateUI() {
-        auditState.forEach((entries, i) => {
-           const badge = document.getElementById('count-' + i);
-           badge.innerText = entries.length;
-           badge.style.display = entries.length > 0 ? "block" : "none";
-           document.getElementById('card-' + i).style.borderColor = entries.length > 0 ? "var(--accent)" : "#f1f5f9";
-        });
-
-        // Kanban
+      function refreshKanban() {
         document.getElementById('col-high').innerHTML = '';
         document.getElementById('col-med').innerHTML = '';
         document.getElementById('col-low').innerHTML = '';
 
-        auditState.forEach((entries, i) => {
-           entries.forEach(e => {
-              if (e.reco) {
-                 const card = document.createElement('div');
-                 card.className = 'reco-card';
-                 card.innerHTML = `<span class="crit-tag">${criteria[i].name}</span><h4>${e.reco}</h4><p>Problème : ${e.prob}</p>`;
-                 if (e.sev >= 3) { card.style.borderLeftColor = "var(--p-high)"; document.getElementById('col-high').appendChild(card); }
-                 else if (e.sev === 2) { card.style.borderLeftColor = "var(--p-med)"; document.getElementById('col-med').appendChild(card); }
-                 else { card.style.borderLeftColor = "var(--p-low)"; document.getElementById('col-low').appendChild(card); }
+        auditData.forEach((data, i) => {
+           if (data.reco.trim()) {
+              const card = document.createElement('div');
+              card.className = 'reco-card';
+              card.innerHTML = `<h4>${criteria[i].name}</h4><div style="font-size:10px; font-weight:700;">${data.reco}</div><p>${data.prob}</p>`;
+              
+              if (data.sev >= 3) {
+                 card.style.borderLeftColor = "var(--p-high)";
+                 document.getElementById('col-high').appendChild(card);
+              } else if (data.sev === 2) {
+                 card.style.borderLeftColor = "var(--p-med)";
+                 document.getElementById('col-med').appendChild(card);
+              } else {
+                 card.style.borderLeftColor = "var(--p-low)";
+                 document.getElementById('col-low').appendChild(card);
               }
-           });
-        });
-      }
-
-      function openResults() {
-        const grid = document.getElementById('res-grid');
-        grid.innerHTML = '';
-        auditState.forEach((entries, i) => {
-           if (entries.length > 0) {
-              const block = document.createElement('div');
-              block.className = 'res-block';
-              block.innerHTML = `<div class="res-title">${criteria[i].name}</div>`;
-              entries.forEach(e => {
-                 block.innerHTML += `
-                    <div class="res-entry">
-                       <strong>Sévérité ${e.sev}/4</strong> : ${e.prob} <br>
-                       <span style="color: var(--accent); font-weight: 700;">Recommandation :</span> ${e.reco || '--'}
-                    </div>
-                 `;
-              });
-              grid.appendChild(block);
            }
         });
-        if (grid.innerHTML === '') grid.innerHTML = "<p style='grid-column: span 2; text-align: center; color: #999;'>Aucun critère n'a été audité pour le moment.</p>";
-        document.getElementById('results-overlay').style.display = "flex";
       }
 
-      // Handle messages from iframe
+      function openApp() {
+        document.getElementById('app-overlay').style.display = "block";
+        if (window.parent) window.parent.postMessage({ action: 'toggleFooter', visible: false }, '*');
+      }
+      function closeApp() {
+        document.getElementById('app-overlay').style.display = "none";
+        if (window.parent) window.parent.postMessage({ action: 'toggleFooter', visible: true }, '*');
+      }
+
       window.addEventListener("message", function(e) {
-        if (e.data.action === "closeApp") {
-          closeApp();
-        }
+        if (e.data.action === "closeApp") closeApp();
         if (e.data.action === "liveAuditUpdate") {
-          const { index, data } = e.data;
-          auditState[index].push(data);
-          updateUI();
+           const { index, data } = e.data;
+           document.getElementById('prob-' + index).value = data.prob;
+           document.getElementById('reco-' + index).value = data.reco;
+           document.getElementById('sev-' + index).value = data.sev;
+           updateState(index);
         }
       });
 
-      // Close modals on click outside
-      document.getElementById("form-overlay").addEventListener("click", function(e) {
-        if (e.target === this) this.style.display = "none";
-      });
-      document.getElementById("info-modal").addEventListener("click", function(e) {
-        if (e.target === this) this.style.display = "none";
-      });
-      document.getElementById("app-overlay").addEventListener("click", function(e) {
-        if (e.target === this) closeApp();
-      });
-      
-      function closeResults() { document.getElementById('results-overlay').style.display = "none"; }
-      function openApp() { document.getElementById('app-overlay').style.display = "block"; }
-      function closeApp() { document.getElementById('app-overlay').style.display = "none"; }
-      
       init();
     </script>
   </body>
